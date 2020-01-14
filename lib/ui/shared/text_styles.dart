@@ -7,4 +7,7 @@ class CTextStyle {
       fontFamily: "Fira Sans",
       color: Colors.white,
       letterSpacing: 1);
+  static final TextStyle checkHabits = TextStyle(
+    color: Colors.white24,
+  );
 }

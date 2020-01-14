@@ -4,8 +4,8 @@ import 'package:habitize3/core/serivces/db_api/db_api.dart';
 import 'package:habitize3/core/utils/locator.dart';
 import 'package:habitize3/ui/screens/screen_habit_list/bottom_time_line.dart';
 
+import '../utils/functions.dart';
 import 'base_model.dart';
-import 'functions.dart';
 
 class ModelHabitList extends BaseModel {
   DB_API db_api = locator();
@@ -16,17 +16,15 @@ class ModelHabitList extends BaseModel {
   Habit _selectedHabit;
 
   List<Habit> _listHabits;
-  List<Widget> bottomBarElements = List();
+  List<Widget> bottomBarElements;
 
-  ModelHabitList() {
-    setDefualtState(Model2State.busy);
-  }
+  ModelHabitList();
 
   Future initModel() async {
-    print("=========model init done =========");
+    setDefualtState(Model2State.busy);
     _majorHabit = await db_api.getMajorHabit();
+    _listHabits = await db_api.getAllHabits();
     buildTimelineCircles();
-    setModelState(Model2State.idle);
   }
 
   String getTitle() {
@@ -47,6 +45,7 @@ class ModelHabitList extends BaseModel {
   }
 
   buildTimelineCircles() {
+    bottomBarElements = List();
     // every iteration of indexDay, it moves backward one step (one day before)
     for (int indexDay = 0; indexDay < 7; indexDay++) {
       DateTime day = getTodayDate().subtract(Duration(days: indexDay));
@@ -116,6 +115,12 @@ class ModelHabitList extends BaseModel {
     }
   }
 
+  Future loadHabits() async {
+    _listHabits = await db_api.getAllHabits();
+    notifyListeners();
+    print("=========list updated=========");
+  }
+
 //=============> GETTER & SETTERS <==============\\
 
   Habit get selectedHabit => _selectedHabit;
@@ -130,4 +135,6 @@ class ModelHabitList extends BaseModel {
     _selectedDate = value;
     notifyListeners();
   }
+
+  List<Habit> get listHabits => _listHabits;
 }
