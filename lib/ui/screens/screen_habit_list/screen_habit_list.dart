@@ -18,7 +18,6 @@ class HomeWid extends StatelessWidget {
         body: SafeArea(
           child: Consumer<ModelHabitList>(
             builder: (_, model, __) {
-              print("=========list widget updated=========");
               return Column(
                 children: <Widget>[
                   CAppbar(),

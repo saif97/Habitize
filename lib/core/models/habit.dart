@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:habitize3/core/utils/functions.dart';
 import 'package:habitize3/ui/shared/constants.dart';
 import 'package:intl/intl.dart';
 
+enum HabitMode { Majror, Bonus }
 
 class Habit {
   ///
@@ -13,9 +15,6 @@ class Habit {
   //       3: bonus habits such as brushing teeth, shower once.
   ///
 
-  static final int HABIT_MODE_MAJOR = 0;
-  static final int HABIT_MODE_BONUS = 1;
-
   @required
   final int id;
   @required
@@ -23,7 +22,7 @@ class Habit {
   final int streak;
   Map<int, int> dates;
 
-  int mode;
+  HabitMode mode;
 
   // number of iterations.
   int goal;
@@ -44,7 +43,7 @@ class Habit {
       streak: map[HABIT_STREAK] ?? 0,
       dates: listDate,
       goal: map[HABIT_GOAL],
-      mode: map[HABIT_MODE],
+      mode: modeFromString(map[HABIT_MODE]),
     );
     return habit;
   }
@@ -55,7 +54,7 @@ class Habit {
       HABIT_STREAK: this.streak,
       HABIT_DATES: this.dates,
       HABIT_GOAL: this.goal,
-      HABIT_MODE: this.mode,
+      HABIT_MODE: this.mode.toString(),
     };
     return r;
   }
@@ -91,7 +90,7 @@ class Habit {
         "Streak: $streak\n"
         "Checked On:\n$map\n"
         "---------- END ----------  \n";
-    print(str);
+    print(str); // don't you dare deleting this line.
   }
 
   printThisMonthDates() {

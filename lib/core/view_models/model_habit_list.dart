@@ -21,9 +21,11 @@ class ModelHabitList extends BaseModel {
   ModelHabitList();
 
   Future initModel() async {
-    setDefualtState(Model2State.busy);
     _majorHabit = await db_api.getMajorHabit();
     _listHabits = await db_api.getAllHabits();
+		print("=========Model done inited=========");
+		print(_listHabits);
+		print("==================");
     buildTimelineCircles();
   }
 
@@ -118,7 +120,6 @@ class ModelHabitList extends BaseModel {
   Future loadHabits() async {
     _listHabits = await db_api.getAllHabits();
     notifyListeners();
-    print("=========list updated=========");
   }
 
 //=============> GETTER & SETTERS <==============\\
@@ -137,4 +138,7 @@ class ModelHabitList extends BaseModel {
   }
 
   List<Habit> get listHabits => _listHabits;
+
+	Habit get majorHabit => _majorHabit;
+
 }

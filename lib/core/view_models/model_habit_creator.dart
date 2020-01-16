@@ -4,7 +4,6 @@ import 'package:habitize3/core/models/habit.dart';
 import 'package:habitize3/core/serivces/db_api/db_api.dart';
 import 'package:habitize3/core/utils/locator.dart';
 import 'package:habitize3/core/view_models/model_habit_list.dart';
-import 'package:habitize3/ui/shared/widgets.dart';
 import 'package:provider/provider.dart';
 
 class ModelHabitCreator {
@@ -18,35 +17,25 @@ class ModelHabitCreator {
       _controller_name.text = _habitToBeEditted.name;
   }
 
-  Future<bool> submit(BuildContext context, {int goal}) async {
+  Future<bool> submit(BuildContext context,
+      {int goal, HabitMode habitMode }) async {
     if (globalKey.currentState.validate()) {
+      Habit habit = _habitToBeEditted ?? Habit();
+      habit.name = _controller_name.text;
+      habit.mode = habitMode;
+      habit.goal = goal;
+
       // Update the habit.
-      if (_habitToBeEditted != null) {
-        var habit = _habitToBeEditted;
-        habit.name = _controller_name.text;
-        habit.mode = 1;
-        habit.goal = goal;
+      _habitToBeEditted != null
+          ? await _db_api.updateHabit(habit)
+          : await _db_api.storeHabit2(habit);
 
-        _db_api.updateHabit(habit);
-        Navigator.pop(context);
-        return true;
-      }
-
-      // create new habit.
-      Habit habitMajor = await _db_api.getMajorHabit();
-      if (habitMajor != null) {
-        CFlushBar(context, "You already have a major habit.");
-        return false;
-      }
-      await _db_api.storeHabit(_controller_name.text, false, 1, goal);
-      ModelHabitList model =
-          Provider.of<ModelHabitList>(context, listen: false);
-			print("=========before =========");
-
+      ModelHabitList model = Provider.of(context, listen: false);
       await model.initModel();
-      print("=========done addition=========");
       Navigator.pop(context);
+      return true;
     }
+    return false;
   }
 
 //=============> GETTERS & SETTERS <==============\\

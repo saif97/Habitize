@@ -33,18 +33,16 @@ class DB_API {
     return listHabits;
   }
 
-  Future storeHabit(
-      String name, bool isBonuseHabit, int importance, int goal) async {
+  Future storeHabit2(Habit habit) async {
     await SembastUtils.store.add(dbSembast, {
-      HABIT_NAME: name,
+      HABIT_NAME: habit.name,
       HABIT_STREAK: 0,
-      HABIT_IS_BONUS: isBonuseHabit,
-      HABIT_MODE: importance,
-      HABIT_GOAL: goal
+      HABIT_MODE: habit.mode.toString(),
+      HABIT_GOAL: habit.goal
     });
   }
 
-  void updateHabit(Habit habit) async {
+  Future updateHabit(Habit habit) async {
     await SembastUtils.store.record(habit.id).update(dbSembast, habit.toMap());
     getAllHabits();
   }
@@ -104,6 +102,7 @@ class DB_API {
     else
       return Habit.fromMap(record.value, record.key);
   }
+
 }
 
 class SembastUtils {

@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:habitize3/core/models/habit.dart';
+import 'package:habitize3/core/utils/functions.dart';
 import 'package:habitize3/core/view_models/model_habit_creator.dart';
+import 'package:habitize3/core/view_models/model_habit_list.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 
@@ -18,10 +20,7 @@ class ScreenCreateHabit extends StatelessWidget {
         appBar: AppBar(
           title: Text("Create Habit"),
         ),
-        body: ChangeNotifierProvider<_ProviderModel>.value(
-          value: _ProviderModel(0, editedHabit: habitToBeEditted),
-          child: _Main(),
-        ),
+        body: _Main(),
       ),
     );
   }
@@ -35,19 +34,34 @@ class _Main extends StatefulWidget {
 class __MainState extends State<_Main> {
   bool isBonusHabit;
   int goal = 1;
-  ModelHabitCreator model;
-  List<bool> _listSelectedItems = List.filled(2, false);
-  List<String> _listToggleOptions = ['Major', 'Bonus'];
+  ModelHabitCreator _model;
+  ModelHabitList _modelHabitList;
+  List<bool> _listSelectedItems;
+  List<HabitMode> _listToggleOptions = List.of(HabitMode.values);
+
+  HabitMode selectedMode = HabitMode.Bonus;
 
   @override
   Widget build(BuildContext context) {
-    model ??= Provider.of(context);
+    _model ??= Provider.of(context);
+    _modelHabitList ??= Provider.of(context);
+
+    var isMajroHabitExist = _modelHabitList.majorHabit == null;
+    _listSelectedItems = List.filled(isMajroHabitExist ? 1 : 2, false);
+
+    if (isMajroHabitExist) _listToggleOptions.remove(HabitMode.Majror);
+
+    print("=========toggle=========");
+    print(_listSelectedItems);
+    print(_listToggleOptions);
+    print("==================");
+
     return Container(
       margin: EdgeInsets.all(20),
       child: ListView(
         children: <Widget>[
           Form(
-            key: model.globalKey,
+            key: _model.globalKey,
             child: TextFormField(
               validator: (value) {
                 if (value.isEmpty) {
@@ -55,28 +69,24 @@ class __MainState extends State<_Main> {
                 }
                 return null;
               },
-              controller: model.controller_name,
+              controller: _model.controller_name,
               maxLines: 1,
               maxLength: 40,
               decoration: InputDecoration(labelText: 'name'),
             ),
           ),
-//          ToggleButtons(
-//              borderRadius: BorderRadius.circular(10),
-//              isSelected: _listSelectedItems,
-//              children: _listToggleOptions.map((f) => Text(f)).toList(),
-//              onPressed: (int i) => setState(() {
-//                    _listSelectedItems[i] = true;
-//                    selectedCondition = listToggleButtons[i];
-//                  })),
-//					Align(
-//						child: Padding(
-//							padding: const EdgeInsets.all(20),
-//							child: ToggleSwitch(
-//								options: ['Major', 'Bonus'],
-//								),
-//							),
-//						),
+          Align(
+            child: ToggleButtons(
+                borderRadius: BorderRadius.circular(10),
+                isSelected: _listSelectedItems,
+                children: _listToggleOptions
+                    .map((f) => Text(strFromMode(f)))
+                    .toList(),
+                onPressed: (int i) => setState(() {
+                      _listSelectedItems[i] = true;
+                      selectedMode = _listToggleOptions[i];
+                    })),
+          ),
           Align(
             child: NumberPicker.integer(
               initialValue: goal,
@@ -90,7 +100,8 @@ class __MainState extends State<_Main> {
           ),
           Align(
             child: RaisedButton(
-              onPressed: () => model.submit(context, goal: goal),
+              onPressed: () =>
+                  _model.submit(context, goal: goal, habitMode: selectedMode),
               child: Text('Done'),
               color: Colors.green,
             ),
@@ -98,61 +109,5 @@ class __MainState extends State<_Main> {
         ],
       ),
     );
-  }
-}
-
-//class ToggleSwitch extends StatefulWidget {
-//	List<String> options;
-//
-//	ToggleSwitch({this.options});
-//
-//	@override
-//	_ToggleSwitchState createState() => _ToggleSwitchState();
-//}
-//
-//class _ToggleSwitchState extends State<ToggleSwitch> {
-//	@override
-//	Widget build(BuildContext context) {
-//		return Container(
-//			decoration: BoxDecoration(
-//					border: Border.all(width: 1, color: Colors.green),
-//					borderRadius: BorderRadius.all(Radius.circular(5))),
-//			child: Wrap(
-//				children: <Widget>[
-//					for (int i = 0; i < widget.options.length; i++)
-//						InkWell(
-//							onTap: () => setState(() => model.habitMode = i),
-//							child: Container(
-//								padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-//								color: i == model.habitMode ? Colors.green : null,
-//								child: Text(
-//									widget.options[i],
-//									style: TextStyle(
-//										color: i == model.habitMode ? Colors.black : Colors.white,
-//										),
-//									),
-//								),
-//							)
-//				],
-//				),
-//			);
-//	}
-//}
-
-class _ProviderModel with ChangeNotifier {
-  int _habitMode;
-  final Habit editedHabit;
-
-  _ProviderModel(this._habitMode, {this.editedHabit}) {
-    if (editedHabit != null) {
-      habitMode = editedHabit.mode;
-    }
-  }
-
-  int get habitMode => _habitMode;
-
-  set habitMode(int value) {
-    _habitMode = value;
-    notifyListeners();
   }
 }

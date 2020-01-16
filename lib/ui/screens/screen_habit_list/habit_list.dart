@@ -28,17 +28,20 @@ class HabitStream extends StatelessWidget {
               Habit habit = model.listHabits[index];
               bool isHabitChecked =
                   api.isHabitChecked(habit: habit, date: model.selectedDate);
-              if (habitMode != null && habit.mode != habitMode)
-                return Container();
 
-              // showCheckedHabits is null then show all habits regardless of weither they're checked or not.
+//              if (habitMode != null && habit.mode != habitMode)
+//                return Container();
+//
+//              // showCheckedHabits is null then show all habits regardless of weither they're checked or not.
+//
+//              // if habit is checked and I don't want to show checked habits.
+//              if (isHabitChecked && !showCheckedHabits)
+//                return Container();
+//              // if habit is not checked and I only want to show checked habits.
+//              else if (!isHabitChecked && showCheckedHabits) return Container();
 
-              // if habit is checked and I don't want to show checked habits.
-              if (isHabitChecked && !showCheckedHabits)
-                return Container();
-              // if habit is not checked and I only want to show checked habits.
-              else if (!isHabitChecked && showCheckedHabits) return Container();
-
+							print("=========hello=========");
+							print(habit);
               return ChangeNotifierProvider<ModelHabitCard>(
                   create: (context) =>
                       ModelHabitCard(habit, model.selectedDate),
