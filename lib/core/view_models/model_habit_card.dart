@@ -6,6 +6,8 @@ import 'package:habitize3/core/serivces/db_api/db_api.dart';
 import 'package:habitize3/core/utils/functions.dart';
 import 'package:habitize3/core/utils/locator.dart';
 import 'package:habitize3/core/view_models/base_model.dart';
+import 'package:habitize3/core/view_models/model_habit_list.dart';
+import 'package:habitize3/ui/screens/habit_info/screen_habit_info.dart';
 
 class ModelHabitCard extends BaseModel {
   DB_API _db_api = locator();
@@ -29,11 +31,8 @@ class ModelHabitCard extends BaseModel {
   }
 
   openHabitInfo(BuildContext context) {
-//		Navigator.push(
-//				context,
-//				MaterialPageRoute(
-//						builder: (context) =>
-//								ScreenHabitInfo(model.selectedHabit)));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ScreenHabitInfo(habit)));
   }
 
   String _getHabitStreak() {
@@ -104,18 +103,18 @@ class ModelHabitCard extends BaseModel {
   bool slidableOnWillDismiss(SlideActionType actionType) {
     if (actionType == SlideActionType.primary) {
       // check if habit is checked for today.
-      _db_api.checkHabitDone(
-        habit.id,
-        selectedDate,
-        undo: isHabitChecked,
-      );
+      slidableCheckHabit(true);
       return true;
     }
     return false;
   }
 
-  Future<bool> slidableCheckAllHabits() =>
-      _db_api.checkHabitDone(habit.id, selectedDate, checkAll: !isHabitChecked);
+  Future slidableCheckHabit(bool checkOnce) async {
+    await _db_api.checkHabitDone(habit.id, selectedDate,
+        checkAll: checkOnce ? null : !isHabitChecked);
+
+    locator<ModelHabitList>().initModel();
+  }
 
 //=============> GETTERS & SETTERS <==============\\
   String get currentIteration => _currentIteration;

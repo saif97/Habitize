@@ -4,6 +4,7 @@ import 'package:habitize3/core/models/habit.dart';
 import 'package:habitize3/core/serivces/db_api/db_api.dart';
 import 'package:habitize3/core/utils/locator.dart';
 import 'package:habitize3/core/view_models/model_habit_card.dart';
+import 'package:habitize3/core/view_models/model_habit_list.dart';
 import 'package:habitize3/ui/shared/text_styles.dart';
 import 'package:provider/provider.dart';
 
@@ -71,13 +72,14 @@ class CustomSlidable extends StatelessWidget {
           caption: model.getSwipeRightText(),
           icon: Icons.done,
           color: model.isHabitChecked ? Colors.amberAccent : Colors.lightGreen,
+          onTap: () => model.slidableCheckHabit(true),
         ),
         if (habit.goal > 1)
           IconSlideAction(
             caption: "Check All",
             icon: model.isHabitChecked ? Icons.done_outline : Icons.done_all,
             color: model.isHabitChecked ? Colors.amber : Colors.green,
-            onTap: () => model.slidableCheckAllHabits(),
+            onTap: () => model.slidableCheckHabit(false),
           )
       ],
       secondaryActions: <Widget>[
@@ -120,8 +122,9 @@ class CustomSlidable extends StatelessWidget {
             actions: <Widget>[
               FlatButton(
                 child: Text('Accept'),
-                onPressed: () {
-                  _dp_api.deleteHabit(habit.id);
+                onPressed: () async {
+                  await _dp_api.deleteHabit(habit.id);
+                  await locator<ModelHabitList>().initModel();
                   Navigator.pop(context);
                 },
               ),

@@ -24,9 +24,14 @@ class DB_API {
     dbSembast = await SembastUtils.instance.database;
   }
 
-  Future<List<Habit>> getAllHabits() async {
-    var listRecords = await SembastUtils.store.find(dbSembast);
+  Future<List<Habit>> getAllHabits({HabitMode habitMode}) async {
+    Finder finder;
+    if (habitMode != null)
+      finder = Finder(filter: Filter.equals(HABIT_MODE, habitMode.toString()));
 
+    var listRecords = await SembastUtils.store.find(dbSembast, finder: finder);
+
+    if (listRecords.isEmpty) return null;
     List<Habit> listHabits = listRecords.map((record) {
       return Habit.fromMap(record.value, record.key);
     }).toList();
@@ -84,7 +89,7 @@ class DB_API {
 //      _audio.playSoundIterationChecked();
   }
 
-  void deleteHabit(int habitID) async {
+  Future deleteHabit(int habitID) async {
     await SembastUtils.store.record(habitID).delete(dbSembast);
     getAllHabits();
   }
@@ -93,16 +98,6 @@ class DB_API {
     if (date == null) date = getTodayDate();
     return habit.dates[date.millisecondsSinceEpoch] == 0;
   }
-
-  Future<Habit> getMajorHabit() async {
-    var finder = Finder(filter: Filter.equals(HABIT_MODE, 0));
-    var record = await SembastUtils.store.findFirst(dbSembast, finder: finder);
-    if (record == null)
-      return null;
-    else
-      return Habit.fromMap(record.value, record.key);
-  }
-
 }
 
 class SembastUtils {

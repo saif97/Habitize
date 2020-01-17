@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habitize3/core/models/habit.dart';
 import 'package:habitize3/core/utils/locator.dart';
 import 'package:habitize3/core/view_models/model_habit_list.dart';
 import 'package:habitize3/ui/shared/text_styles.dart';
@@ -62,16 +63,16 @@ class CAppbar extends StatelessWidget {
 class SliverScrollView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ModelHabitList model = locator();
+
     return CustomScrollView(
       slivers: <Widget>[
-        HabitStream(habitMode: 0),
+        HabitStream(model.getListHabits([HabitMode.Majror], false)),
         Saperator(color: Colors.red),
         Saperator(color: Colors.amber),
-        HabitStream(habitMode: 1),
+        HabitStream(model.getListHabits([HabitMode.Bonus], false)),
         Saperator(color: Colors.green),
-        HabitStream(
-          showCheckedHabits: true,
-        ),
+        HabitStream(model.getListHabits(HabitMode.values, true)),
       ],
     );
   }

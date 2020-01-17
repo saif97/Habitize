@@ -21,12 +21,12 @@ class ModelHabitList extends BaseModel {
   ModelHabitList();
 
   Future initModel() async {
-    _majorHabit = await db_api.getMajorHabit();
+		print("=========List Model is updated=========");
+    _majorHabit =
+        (await db_api.getAllHabits(habitMode: HabitMode.Majror))?.first;
     _listHabits = await db_api.getAllHabits();
-		print("=========Model done inited=========");
-		print(_listHabits);
-		print("==================");
     buildTimelineCircles();
+    notifyListeners();
   }
 
   String getTitle() {
@@ -117,11 +117,6 @@ class ModelHabitList extends BaseModel {
     }
   }
 
-  Future loadHabits() async {
-    _listHabits = await db_api.getAllHabits();
-    notifyListeners();
-  }
-
 //=============> GETTER & SETTERS <==============\\
 
   Habit get selectedHabit => _selectedHabit;
@@ -137,8 +132,13 @@ class ModelHabitList extends BaseModel {
     notifyListeners();
   }
 
-  List<Habit> get listHabits => _listHabits;
+  List<Habit> getListHabits(List<HabitMode> habitMode, bool showChecked) =>
+      _listHabits.where((habit) {
+        bool isHabitChecked =
+            db_api.isHabitChecked(habit: habit, date: _selectedDate);
 
-	Habit get majorHabit => _majorHabit;
+        return habitMode.contains(habit.mode) && isHabitChecked == showChecked;
+      }).toList();
 
+  Habit get majorHabit => _majorHabit;
 }

@@ -12,6 +12,6 @@ Future CFlushBar(context, String message, {bool isDelayed}) async {
   isDelayed ?? await Future.delayed(Duration(milliseconds: 500));
   Flushbar(
     message: message,
-    duration: Duration(seconds: 1),
+    duration: Duration(seconds: 2),
   )..show(context);
 }

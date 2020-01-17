@@ -4,6 +4,7 @@ import 'package:habitize3/core/models/habit.dart';
 import 'package:habitize3/core/utils/functions.dart';
 import 'package:habitize3/core/view_models/model_habit_creator.dart';
 import 'package:habitize3/core/view_models/model_habit_list.dart';
+import 'package:habitize3/ui/shared/widgets.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +37,7 @@ class __MainState extends State<_Main> {
   int goal = 1;
   ModelHabitCreator _model;
   ModelHabitList _modelHabitList;
-  List<bool> _listSelectedItems;
+  List<bool> _listSelectedItems = List.filled(2, false);
   List<HabitMode> _listToggleOptions = List.of(HabitMode.values);
 
   HabitMode selectedMode = HabitMode.Bonus;
@@ -46,15 +47,7 @@ class __MainState extends State<_Main> {
     _model ??= Provider.of(context);
     _modelHabitList ??= Provider.of(context);
 
-    var isMajroHabitExist = _modelHabitList.majorHabit == null;
-    _listSelectedItems = List.filled(isMajroHabitExist ? 1 : 2, false);
-
-    if (isMajroHabitExist) _listToggleOptions.remove(HabitMode.Majror);
-
-    print("=========toggle=========");
-    print(_listSelectedItems);
-    print(_listToggleOptions);
-    print("==================");
+    var isMajroHabitExist = _modelHabitList.majorHabit != null;
 
     return Container(
       margin: EdgeInsets.all(20),
@@ -83,6 +76,15 @@ class __MainState extends State<_Main> {
                     .map((f) => Text(strFromMode(f)))
                     .toList(),
                 onPressed: (int i) => setState(() {
+                      print("weeed");
+                      _listSelectedItems = List.filled(2, false);
+
+                      if (_listToggleOptions[i] == HabitMode.Majror &&
+                          isMajroHabitExist) {
+                        CFlushBar(context, "You already have Majro Habit");
+                        return;
+                      }
+
                       _listSelectedItems[i] = true;
                       selectedMode = _listToggleOptions[i];
                     })),
