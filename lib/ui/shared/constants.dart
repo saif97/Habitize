@@ -1,11 +1,11 @@
-final String COLLECTION_HABITS = 'habits';
-final String HABIT_NAME = 'name';
-final String HABIT_STREAK = 'streak';
-final String HABIT_LAST_STREAK_DATE = 'lastStreak';
-final String HABIT_DATES = 'Days';
-final String HABIT_IS_BONUS = 'isBonus';
-final String HABIT_GOAL = 'goal';
-final String HABIT_MODE = 'importance';
+const String COLLECTION_HABITS = 'habits';
+const String HABIT_NAME = 'name';
+const String HABIT_STREAK = 'streak';
+const String HABIT_LAST_STREAK_DATE = 'lastStreak';
+const String HABIT_DATES = 'Days';
+const String HABIT_IS_BONUS = 'isBonus';
+const String HABIT_GOAL = 'goal';
+const String HABIT_MODE = 'importance';
 
 
 final List<String> months = [

@@ -1,0 +1,19 @@
+include: package:lint/analysis_options.yaml
+
+# https://github.com/passsy/dart-lint/blob/master/lib/analysis_options.yaml
+# To enable new Rules
+#linter:
+#  rules:
+#    - parameter_assignments
+#    first_rule: false # disable
+#    second_rule: true # enable
+
+# To modify rule state
+analyzer:
+  errors:
+#    Possible values ignore, info, warning and error.
+    missing_required_param: error
+    avoid_single_cascade_in_expression_statements: ignore
+    non_constant_identifier_names: ignore
+    curly_braces_in_flow_control_structures: ignore
+    avoid_void_async: error

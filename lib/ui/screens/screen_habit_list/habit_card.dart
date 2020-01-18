@@ -9,13 +9,14 @@ import 'package:habitize3/ui/shared/text_styles.dart';
 import 'package:provider/provider.dart';
 
 class HabitCard extends StatelessWidget {
-  Habit habit;
+  final Habit habit;
 
-  HabitCard(this.habit);
+  const HabitCard(this.habit);
 
   @override
   Widget build(BuildContext context) {
-    ModelHabitCard model = Provider.of(context);
+    print("=========Habit Card is built=========");
+    final ModelHabitCard model = Provider.of(context);
     return CustomSlidable(
       habit: habit,
       child: InkWell(
@@ -44,42 +45,42 @@ class HabitCard extends StatelessWidget {
 
 class CustomSlidable extends StatelessWidget {
   @required
-  Habit habit;
+  final Habit habit;
   @required
-  Widget child;
+  final Widget child;
 
-  CustomSlidable({this.habit, this.child});
+  const CustomSlidable({this.habit, this.child});
 
   @override
   Widget build(BuildContext context) {
-    SlidableController slidableController = SlidableController();
-    ModelHabitCard model = Provider.of(context);
+    final SlidableController slidableController = SlidableController();
+    final ModelHabitCard model = Provider.of(context);
 
     return Slidable(
       controller: slidableController,
       key: model.key,
-      actionPane: SlidableDrawerActionPane(),
+      actionPane: const SlidableDrawerActionPane(),
       dismissal: SlidableDismissal(
-        dismissThresholds: <SlideActionType, double>{
+        dismissThresholds: const <SlideActionType, double>{
           SlideActionType.primary: 0,
           SlideActionType.secondary: 1
         },
-        child: SlidableDrawerDismissal(),
         onWillDismiss: (actionType) => model.slidableOnWillDismiss(actionType),
+        child: const SlidableDrawerDismissal(),
       ),
       actions: <Widget>[
         IconSlideAction(
           caption: model.getSwipeRightText(),
           icon: Icons.done,
           color: model.isHabitChecked ? Colors.amberAccent : Colors.lightGreen,
-          onTap: () => model.slidableCheckHabit(true),
+          onTap: () => model.slidableCheckHabit(checkOnce: true),
         ),
         if (habit.goal > 1)
           IconSlideAction(
             caption: "Check All",
             icon: model.isHabitChecked ? Icons.done_outline : Icons.done_all,
             color: model.isHabitChecked ? Colors.amber : Colors.green,
-            onTap: () => model.slidableCheckHabit(false),
+            onTap: () => model.slidableCheckHabit(checkOnce: false),
           )
       ],
       secondaryActions: <Widget>[
@@ -108,34 +109,35 @@ class CustomSlidable extends StatelessWidget {
           },
         ),
       ],
-      child: this.child,
+      child: child,
     );
   }
 
-  Widget createAlertDialog(BuildContext context) {
-    DB_API _dp_api = locator();
+  void createAlertDialog(BuildContext context) {
+    final DB_API _dp_api = locator<DB_API>();
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Delete Habit?'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Accept'),
-                onPressed: () async {
-                  await _dp_api.deleteHabit(habit.id);
-                  await locator<ModelHabitList>().initModel();
-                  Navigator.pop(context);
-                },
-              ),
-              FlatButton(
-                child: Text('Cancel'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          );
-        });
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Delete Habit?'),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () async {
+                await _dp_api.deleteHabit(habit.id);
+                await locator<ModelHabitList>().initModel();
+                Navigator.pop(context);
+              },
+              child: const Text('Accept'),
+            ),
+            FlatButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

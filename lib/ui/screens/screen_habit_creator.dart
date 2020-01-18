@@ -9,9 +9,9 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 
 class ScreenCreateHabit extends StatelessWidget {
-  Habit habitToBeEditted;
+  final Habit habitToBeEditted;
 
-  ScreenCreateHabit({this.habitToBeEditted});
+  const ScreenCreateHabit({this.habitToBeEditted});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class ScreenCreateHabit extends StatelessWidget {
       create: (context) => ModelHabitCreator(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Create Habit"),
+          title: const Text("Create Habit"),
         ),
         body: _Main(),
       ),
@@ -38,7 +38,7 @@ class __MainState extends State<_Main> {
   ModelHabitCreator _model;
   ModelHabitList _modelHabitList;
   List<bool> _listSelectedItems = List.filled(2, false);
-  List<HabitMode> _listToggleOptions = List.of(HabitMode.values);
+  final List<HabitMode> _listToggleOptions = List.of(HabitMode.values);
 
   HabitMode selectedMode = HabitMode.Bonus;
 
@@ -47,10 +47,10 @@ class __MainState extends State<_Main> {
     _model ??= Provider.of(context);
     _modelHabitList ??= Provider.of(context);
 
-    var isMajroHabitExist = _modelHabitList.majorHabit != null;
+    final bool isMajroHabitExist = _modelHabitList.majorHabit != null;
 
     return Container(
-      margin: EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
       child: ListView(
         children: <Widget>[
           Form(
@@ -65,29 +65,28 @@ class __MainState extends State<_Main> {
               controller: _model.controller_name,
               maxLines: 1,
               maxLength: 40,
-              decoration: InputDecoration(labelText: 'name'),
+              decoration: const InputDecoration(labelText: 'name'),
             ),
           ),
           Align(
             child: ToggleButtons(
-                borderRadius: BorderRadius.circular(10),
-                isSelected: _listSelectedItems,
-                children: _listToggleOptions
-                    .map((f) => Text(strFromMode(f)))
-                    .toList(),
-                onPressed: (int i) => setState(() {
-                      print("weeed");
-                      _listSelectedItems = List.filled(2, false);
+              borderRadius: BorderRadius.circular(10),
+              isSelected: _listSelectedItems,
+              onPressed: (int i) => setState(() {
+                _listSelectedItems = List.filled(2, false);
 
-                      if (_listToggleOptions[i] == HabitMode.Majror &&
-                          isMajroHabitExist) {
-                        CFlushBar(context, "You already have Majro Habit");
-                        return;
-                      }
+                if (_listToggleOptions[i] == HabitMode.Majror &&
+                    isMajroHabitExist) {
+                  CFlushBar(context, "You already have Majro Habit");
+                  return;
+                }
 
-                      _listSelectedItems[i] = true;
-                      selectedMode = _listToggleOptions[i];
-                    })),
+                _listSelectedItems[i] = true;
+                selectedMode = _listToggleOptions[i];
+              }),
+              children:
+                  _listToggleOptions.map((f) => Text(strFromMode(f))).toList(),
+            ),
           ),
           Align(
             child: NumberPicker.integer(
@@ -97,15 +96,15 @@ class __MainState extends State<_Main> {
               scrollDirection: Axis.horizontal,
               listViewWidth: 150,
               itemExtent: 30,
-              onChanged: (val) => setState(() => goal = val),
+              onChanged: (val) => setState(() => goal = val as int),
             ),
           ),
           Align(
             child: RaisedButton(
               onPressed: () =>
                   _model.submit(context, goal: goal, habitMode: selectedMode),
-              child: Text('Done'),
               color: Colors.green,
+              child: const Text('Done'),
             ),
           )
         ],

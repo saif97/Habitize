@@ -7,12 +7,12 @@ import 'package:habitize3/core/view_models/model_habit_list.dart';
 import 'package:provider/provider.dart';
 
 class ModelHabitCreator {
-  DB_API _db_api = locator();
-  TextEditingController _controller_name = TextEditingController();
-  Habit _habitToBeEditted;
-  GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
+  final DB_API _db_api = locator<DB_API>() ;
+  final TextEditingController _controller_name = TextEditingController();
+  final Habit _habitToBeEditted;
+  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
 
-  ModelHabitCreator({habit}) : _habitToBeEditted = habit {
+  ModelHabitCreator({Habit habit}) : _habitToBeEditted = habit {
     if (_habitToBeEditted != null)
       _controller_name.text = _habitToBeEditted.name;
   }
@@ -20,7 +20,7 @@ class ModelHabitCreator {
   Future<bool> submit(BuildContext context,
       {int goal, HabitMode habitMode }) async {
     if (globalKey.currentState.validate()) {
-      Habit habit = _habitToBeEditted ?? Habit();
+      final Habit habit = _habitToBeEditted ?? Habit();
       habit.name = _controller_name.text;
       habit.mode = habitMode;
       habit.goal = goal;
@@ -30,7 +30,7 @@ class ModelHabitCreator {
           ? await _db_api.updateHabit(habit)
           : await _db_api.storeHabit2(habit);
 
-      ModelHabitList model = Provider.of(context, listen: false);
+      final ModelHabitList model = Provider.of(context, listen: false);
       await model.initModel();
       Navigator.pop(context);
       return true;

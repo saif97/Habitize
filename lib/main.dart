@@ -6,7 +6,7 @@ import 'file:///L:/Flutter/Projects/habitize3/lib/ui/screens/screen_habit_list/s
 
 import 'core/utils/locator.dart';
 
-void main() async {
+Future main() async {
   runApp(SplashScreen());
   await setupLocator();
   runApp(MyApp());
@@ -33,7 +33,7 @@ class SplashScreen extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
-      home: Container(child: Text("Splash Screen")),
+      home: const Text("Splash Screen"),
     );
   }
 }

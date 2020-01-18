@@ -6,15 +6,6 @@ import 'package:intl/intl.dart';
 enum HabitMode { Majror, Bonus }
 
 class Habit {
-  ///
-  //    mode:
-  //       0: major habits where you can only have one such habit. Checking it makes your day successful.
-  //       else, the rest of the habits won't be counted.
-  //
-  //       1: after a streak of 66 days of doing the habit, Major habits will be moved here.
-  //       3: bonus habits such as brushing teeth, shower once.
-  ///
-
   @required
   final int id;
   @required
@@ -28,56 +19,53 @@ class Habit {
   int goal;
 
   Habit({this.id, this.dates, this.name, this.streak, this.goal, this.mode}) {
-    dates ??= Map<int, int>();
+    dates ??= <int, int>{};
   }
 
   factory Habit.fromMap(Map map, int id) {
-    Map<int, int> listDate = Map();
+    final Map<int, int> listDate = <int, int>{};
 
-    (map[HABIT_DATES] as Map)
-        ?.forEach(((k, v) => listDate.addAll({int.parse(k): v})));
+    (map[HABIT_DATES])
+        ?.forEach((String k, v) => listDate.addAll({int.parse(k): v as int}));
 
-    var habit = Habit(
+    final Habit habit = Habit(
       id: id,
-      name: map[HABIT_NAME],
-      streak: map[HABIT_STREAK] ?? 0,
+      name: map[HABIT_NAME] as String,
+      streak: map[HABIT_STREAK] as int ?? 0,
       dates: listDate,
-      goal: map[HABIT_GOAL],
-      mode: modeFromString(map[HABIT_MODE]),
+      goal: map[HABIT_GOAL] as int,
+      mode: modeFromString(map[HABIT_MODE] as String),
     );
     return habit;
   }
 
-  Map<String, dynamic> toMap() {
-    var r = {
-      HABIT_NAME: this.name,
-      HABIT_STREAK: this.streak,
-      HABIT_DATES: this.dates,
-      HABIT_GOAL: this.goal,
-      HABIT_MODE: this.mode.toString(),
-    };
-    return r;
-  }
+  Map<String, dynamic> toMap() => {
+        HABIT_NAME: name,
+        HABIT_STREAK: streak,
+        HABIT_DATES: dates,
+        HABIT_GOAL: goal,
+        HABIT_MODE: mode.toString(),
+      };
 
-  printData({bool detailedDatesInfo = false, bool onlyThisMonth = true}) {
+  void printData({bool detailedDatesInfo = false, bool onlyThisMonth = true}) {
     String map = '';
     // sort the keys decending order to have latest days checked first printed.
-    List<int> listSortedKeys = dates.keys.toList()
+    final List<int> listSortedKeys = dates.keys.toList()
       ..sort((a, b) => b.compareTo(a));
 
-    DateFormat formatter = DateFormat('yyyy-MM-dd');
-    for (int dateInMill in listSortedKeys) {
-      int iteration = dates[dateInMill];
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    for (final int dateInMill in listSortedKeys) {
+      final int iteration = dates[dateInMill];
 
       if (detailedDatesInfo || ((!detailedDatesInfo) && iteration == 0)) {
-        var date = DateTime.fromMillisecondsSinceEpoch(dateInMill);
+        final date = DateTime.fromMillisecondsSinceEpoch(dateInMill);
 
         // only print dates from this month.
         if (onlyThisMonth &&
             date.isBefore(DateTime(DateTime.now().year, DateTime.now().month)))
           break;
 
-        var formatedDateString = formatter.format(date);
+        final formatedDateString = formatter.format(date);
 
         map += " \t $formatedDateString : $iteration , \n";
       }

@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 class BottomTimeLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    ModelHabitList model = Provider.of(context);
+    final ModelHabitList model = Provider.of(context);
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: Container(
@@ -25,11 +25,11 @@ class TimeLineCircle extends StatelessWidget {
   final DateTime day;
   final bool isAllchecked;
 
-  TimeLineCircle(this.day, this.isAllchecked);
+  const TimeLineCircle(this.day, {@required this.isAllchecked});
 
   @override
   Widget build(BuildContext context) {
-    ModelHabitList model = Provider.of(context);
+    final ModelHabitList model = Provider.of(context);
     return InkWell(
       onTap: () => model.selectedDate = day,
       splashColor: Colors.transparent,
@@ -40,7 +40,7 @@ class TimeLineCircle extends StatelessWidget {
             color: Colors.green,
             blurRadius: 20,
             spreadRadius: -10,
-            offset: Offset(0, 0),
+            offset: const Offset(0, 0),
           )
         ]),
         child: CircleAvatar(

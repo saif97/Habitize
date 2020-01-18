@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:habitize3/core/models/habit.dart';
 import 'package:habitize3/core/utils/locator.dart';
+import 'package:habitize3/core/view_models/model_habit_card.dart';
 import 'package:habitize3/core/view_models/model_habit_list.dart';
 import 'package:habitize3/ui/shared/text_styles.dart';
 import 'package:provider/provider.dart';
 
 import '../screen_habit_creator.dart';
 import 'bottom_time_line.dart';
-import 'habit_list.dart';
+import 'habit_card.dart';
 
 class HomeWid extends StatelessWidget {
   @override
@@ -15,7 +16,7 @@ class HomeWid extends StatelessWidget {
     return ChangeNotifierProvider.value(
       value: locator<ModelHabitList>(),
       child: Scaffold(
-        backgroundColor: Color(0xFF393e46),
+        backgroundColor: const Color(0xFF393e46),
         body: SafeArea(
           child: Consumer<ModelHabitList>(
             builder: (_, model, __) {
@@ -37,7 +38,7 @@ class HomeWid extends StatelessWidget {
 class CAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    ModelHabitList model = Provider.of(context);
+    final ModelHabitList model = Provider.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -63,25 +64,52 @@ class CAppbar extends StatelessWidget {
 class SliverScrollView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    ModelHabitList model = locator();
-
+    final ModelHabitList model = locator<ModelHabitList>();
     return CustomScrollView(
       slivers: <Widget>[
-        HabitStream(model.getListHabits([HabitMode.Majror], false)),
+        HabitStream(model
+            .getListHabits(habitMode: [HabitMode.Majror], showChecked: false)),
         Saperator(color: Colors.red),
         Saperator(color: Colors.amber),
-        HabitStream(model.getListHabits([HabitMode.Bonus], false)),
+        HabitStream(model
+            .getListHabits(habitMode: [HabitMode.Bonus], showChecked: false)),
         Saperator(color: Colors.green),
-        HabitStream(model.getListHabits(HabitMode.values, true)),
+        HabitStream(model.getListHabits(
+            habitMode: HabitMode.values, showChecked: true)),
       ],
     );
   }
 }
 
-class Saperator extends StatelessWidget {
-  MaterialColor color;
+class HabitStream extends StatelessWidget {
+  final List<Habit> listHabits;
 
-  Saperator({this.color});
+  const HabitStream(this.listHabits);
+
+  @override
+  Widget build(BuildContext context) {
+    ModelHabitList modelHabitList = Provider.of(context);
+    return SliverList(
+      delegate: SliverChildListDelegate([
+        ListView.builder(
+            shrinkWrap: true,
+            itemCount: listHabits.length,
+            itemBuilder: (context, index) {
+              final Habit habit = listHabits[index];
+              return ProxyProvider0(
+                  update: (_, __) =>
+                      ModelHabitCard(habit, modelHabitList.selectedDate),
+                  child: HabitCard(habit));
+            })
+      ]),
+    );
+  }
+}
+
+class Saperator extends StatelessWidget {
+  final MaterialColor color;
+
+  const Saperator({this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +118,7 @@ class Saperator extends StatelessWidget {
         Card(
           elevation: 10,
           child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
             child: Container(
               width: double.infinity,
               height: 5,

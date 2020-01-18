@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 class CProgressIndecator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(child: CircularProgressIndicator());
+    return const Center(child: CircularProgressIndicator());
   }
 }
 
-Future CFlushBar(context, String message, {bool isDelayed}) async {
-  isDelayed ?? await Future.delayed(Duration(milliseconds: 500));
+Future CFlushBar(BuildContext context, String message, {bool isDelayed}) async {
+  isDelayed ?? await Future.delayed(const Duration(milliseconds: 500));
   Flushbar(
     message: message,
-    duration: Duration(seconds: 2),
+    duration: const Duration(seconds: 2),
   )..show(context);
 }

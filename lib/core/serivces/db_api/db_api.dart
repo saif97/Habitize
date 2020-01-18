@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:habitize3/core/models/habit.dart';
 import 'package:habitize3/core/utils/audio.dart';
 import 'package:habitize3/core/utils/functions.dart';
@@ -24,15 +25,19 @@ class DB_API {
     dbSembast = await SembastUtils.instance.database;
   }
 
+  Future<Habit> getHabitByID({int id}) async =>
+      Habit.fromMap(await SembastUtils.store.record(id).get(dbSembast), id);
+
   Future<List<Habit>> getAllHabits({HabitMode habitMode}) async {
     Finder finder;
     if (habitMode != null)
       finder = Finder(filter: Filter.equals(HABIT_MODE, habitMode.toString()));
 
-    var listRecords = await SembastUtils.store.find(dbSembast, finder: finder);
+    final listRecords =
+        await SembastUtils.store.find(dbSembast, finder: finder);
 
     if (listRecords.isEmpty) return null;
-    List<Habit> listHabits = listRecords.map((record) {
+    final List<Habit> listHabits = listRecords.map((record) {
       return Habit.fromMap(record.value, record.key);
     }).toList();
     return listHabits;
@@ -47,18 +52,16 @@ class DB_API {
     });
   }
 
-  Future updateHabit(Habit habit) async {
-    await SembastUtils.store.record(habit.id).update(dbSembast, habit.toMap());
-    getAllHabits();
-  }
+  Future updateHabit(Habit habit) async =>
+      SembastUtils.store.record(habit.id).update(dbSembast, habit.toMap());
 
-  Future checkHabitDone(int habitDocID, DateTime date,
+  Future<Habit> checkHabitDone(int habitDocID, DateTime date,
       {bool undo = false, bool checkAll}) async {
-    int dateInt = date.millisecondsSinceEpoch;
-    var record = SembastUtils.store.record(habitDocID);
+    final int dateInt = date.millisecondsSinceEpoch;
+    final record = SembastUtils.store.record(habitDocID);
     Map map = await record.get(dbSembast);
 
-    Habit habit = Habit.fromMap(map, habitDocID);
+    final Habit habit = Habit.fromMap(map, habitDocID);
 
     habit.dates[dateInt] ??= habit.goal;
 
@@ -68,25 +71,25 @@ class DB_API {
       else
         habit.dates[dateInt] =
             habit.goal; // reset habit iteration if unCheck all is pressed
-    } else {
+    } else
       undo ? habit.dates[dateInt]++ : habit.dates[dateInt]--;
-    }
 
-    Map<String, int> r = Map();
+    Map<String, int> r = <String, int>{};
 
     habit.dates.forEach((k, v) {
       r.addAll({k.toString(): v});
     });
 
-    await record.update(dbSembast, {
+    final Map updatedHabitMap = await record.update(dbSembast, {
       HABIT_DATES: r,
     });
-    getAllHabits();
 
-//    if (habit.dates[dateInt] == 0)
-//      _audio.playSoundAllChecked();
-//    else
-//      _audio.playSoundIterationChecked();
+    if (habit.dates[dateInt] == 0)
+      _audio.playSoundAllChecked();
+    else
+      _audio.playSoundIterationChecked();
+
+    return Habit.fromMap(updatedHabitMap, habitDocID);
   }
 
   Future deleteHabit(int habitID) async {
@@ -94,8 +97,8 @@ class DB_API {
     getAllHabits();
   }
 
-  bool isHabitChecked({Habit habit, DateTime date}) {
-    if (date == null) date = getTodayDate();
+  bool isHabitChecked({@required Habit habit, @required DateTime date}) {
+    date ??= getTodayDate();
     return habit.dates[date.millisecondsSinceEpoch] == 0;
   }
 }
