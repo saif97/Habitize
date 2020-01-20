@@ -23,9 +23,7 @@ class ModelHabitList extends BaseModel {
     _majorHabit =
         (await db_api.getAllHabits(habitMode: HabitMode.Majror))?.first;
     _listHabits = await db_api.getAllHabits() ?? [];
-    for (Habit habit in _listHabits) {
-      habit.printData();
-    }
+
     buildTimelineCircles();
     notifyListeners();
   }

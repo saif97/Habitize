@@ -36,6 +36,7 @@ class DB_API {
     final listRecords =
         await SembastUtils.store.find(dbSembast, finder: finder);
 
+
     if (listRecords.isEmpty) return null;
     final List<Habit> listHabits = listRecords.map((record) {
       return Habit.fromMap(record.value, record.key);

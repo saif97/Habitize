@@ -42,4 +42,5 @@ class ModelHabitCreator {
   TextEditingController get controller_name => _controller_name;
 
   GlobalKey<FormState> get globalKey => _globalKey;
+
 }

@@ -12,7 +12,6 @@ class ModelHabitInfo extends BaseModel {
   final DB_API _db_api = locator<DB_API>() ;
 
   List<List<Widget>> getMatrixDateCircles(String month) {
-    print("=========materix updated=========");
     final List<List<Widget>> matrixDateCircles = [];
     final DateTime now = DateTime.now();
     final DateTime firstDayOfMonth =

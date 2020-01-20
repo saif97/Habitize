@@ -15,7 +15,6 @@ class HabitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("=========Habit Card is built=========");
     final ModelHabitCard model = Provider.of(context);
     return CustomSlidable(
       habit: habit,
