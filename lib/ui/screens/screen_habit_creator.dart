@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:habitize3/core/models/habit.dart';
+import 'package:habitize3/core/models/Habit.dart';
 import 'package:habitize3/core/utils/functions.dart';
 import 'package:habitize3/core/view_models/model_habit_creator.dart';
 import 'package:habitize3/core/view_models/model_habit_list.dart';

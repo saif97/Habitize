@@ -1,16 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:habitize3/core/models/habit.dart';
-import 'package:habitize3/core/serivces/db_api/db_api.dart';
+import 'package:habitize3/core/models/Habit.dart';
 import 'package:habitize3/core/utils/functions.dart';
 import 'package:habitize3/core/utils/locator.dart';
 import 'package:habitize3/core/view_models/model_habit_list.dart';
 import 'package:habitize3/ui/screens/habit_info/screen_habit_info.dart';
 
 class ModelHabitCard {
-  final DB_API _db_api = locator<DB_API>();
-
   ModelHabitList modelHabitList = locator<ModelHabitList>();
   bool _isHabitChecked;
   String _currentIteration;
@@ -20,7 +17,7 @@ class ModelHabitCard {
   final DateTime selectedDate;
 
   void initModel() {
-    _isHabitChecked = _db_api.isHabitChecked(habit: habit, date: selectedDate);
+    _isHabitChecked = habit.isHabitChecked(selectedDate);
 
     _currentIteration = (habit.dates[selectedDate.millisecondsSinceEpoch] ??=
             habit.goal)
@@ -28,7 +25,7 @@ class ModelHabitCard {
     _habitStreak = _getHabitStreak();
 
     _key = Key(
-        "${habit.id}-${habit.dates[selectedDate.millisecondsSinceEpoch] ?? -2}");
+        "${habit.key}-${habit.dates[selectedDate.millisecondsSinceEpoch] ?? -2}");
   }
 
   Future openHabitInfo(BuildContext context) async {
@@ -43,7 +40,6 @@ class ModelHabitCard {
     // get how many days the habit is checked in a row by, getting the last day
     // the habit was checked & compare it to today or yesterday.
     int streak = 1;
-		print("=========$selectedDate=========");
     final Map<int, int> dates = habit.dates;
     final List<int> ordredDateKeys = dates.keys.toList()..sort();
 
@@ -56,9 +52,8 @@ class ModelHabitCard {
     // check if today and yesterday are stored in the habit.
     if (dates.containsKey(todayInMilSecs) &&
         dates.containsKey(yesterdayInMilSecs)) {
-
-    	// check if today and yesterday for this habit is checked all or more.
-			// all in this case is 0 more is in the minus.
+      // check if today and yesterday for this habit is checked all or more.
+      // all in this case is 0 more is in the minus.
       final bool bool1 = dates[todayInMilSecs] <= 0;
       final bool bool2 = dates[yesterdayInMilSecs] <= 0;
 
@@ -68,12 +63,12 @@ class ModelHabitCard {
           final DateTime date1 =
               DateTime.fromMillisecondsSinceEpoch(ordredDateKeys.elementAt(i));
 
-          if (!_db_api.isHabitChecked(habit: habit, date: date1)) break;
+          if (!habit.isHabitChecked(date1)) break;
 
           final date2 = DateTime.fromMillisecondsSinceEpoch(
               ordredDateKeys.elementAt(i - 1));
 
-          if (!_db_api.isHabitChecked(habit: habit, date: date2)) break;
+          if (!habit.isHabitChecked(date2)) break;
 
           if (date1.difference(date2) == const Duration(days: 1))
             streak++;
@@ -116,7 +111,7 @@ class ModelHabitCard {
   }
 
   Future slidableCheckHabit({@required bool checkOnce}) async {
-    await _db_api.checkHabitDone(habit.id, selectedDate,
+    habit.checkHabitDone(selectedDate,
         checkAll: checkOnce ? null : !isHabitChecked);
 
     await modelHabitList.initModel();

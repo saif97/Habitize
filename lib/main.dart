@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:habitize3/core/view_models/model_habit_list.dart';
 import 'package:provider/provider.dart';
 
-import 'file:///L:/Flutter/Projects/habitize3/lib/ui/screens/screen_habit_list/screen_habit_list.dart';
 
 import 'core/utils/locator.dart';
+import 'ui/screens/habit_list/screen_habit_list.dart';
 
 Future main() async {
   runApp(SplashScreen());

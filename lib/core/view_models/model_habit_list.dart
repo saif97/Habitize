@@ -1,28 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:habitize3/core/models/habit.dart';
-import 'package:habitize3/core/serivces/db_api/db_api.dart';
-import 'package:habitize3/core/utils/locator.dart';
-import 'package:habitize3/ui/screens/screen_habit_list/bottom_time_line.dart';
+import 'package:habitize3/core/models/Habit.dart';
+import 'package:habitize3/core/serivces/db_api/hive_db.dart';
+import 'package:habitize3/ui/screens/habit_list/bottom_time_line.dart';
 
 import '../utils/functions.dart';
 import 'base_model.dart';
 
 class ModelHabitList extends BaseModel {
-  DB_API db_api = locator<DB_API>();
-
   Habit _majorHabit;
 
   DateTime _selectedDate = getTodayDate();
 
-  List<Habit> _listHabits;
   List<Widget> bottomBarElements;
 
   ModelHabitList();
 
-  Future initModel() async {
-    _majorHabit =
-        (await db_api.getAllHabits(habitMode: HabitMode.Majror))?.first;
-    _listHabits = await db_api.getAllHabits() ?? [];
+  void initModel() {
+    _majorHabit = Hive_DB_API.getMajorHabit();
 
     buildTimelineCircles();
     notifyListeners();
@@ -54,7 +48,7 @@ class ModelHabitList extends BaseModel {
       bool isAllchecked = false;
       if (_majorHabit != null) {
         DateTime date = getTodayDate().subtract(Duration(days: indexDay));
-        isAllchecked = db_api.isHabitChecked(habit: _majorHabit, date: date);
+        isAllchecked = _majorHabit.isHabitChecked(date);
       }
 
       bottomBarElements.add(TimeLineCircle(
@@ -74,11 +68,10 @@ class ModelHabitList extends BaseModel {
     notifyListeners();
   }
 
-  List<Habit> getListHabits(
+  List<Habit> filterHabits(List listHabits,
           {List<HabitMode> habitMode, @required bool showChecked}) =>
-      _listHabits?.where((habit) {
-        final bool isHabitChecked =
-            db_api.isHabitChecked(habit: habit, date: _selectedDate);
+      (listHabits.cast<Habit>())?.where((habit) {
+        final bool isHabitChecked = habit.isHabitChecked(_selectedDate);
 
         return habitMode.contains(habit.mode) && isHabitChecked == showChecked;
       })?.toList() ??

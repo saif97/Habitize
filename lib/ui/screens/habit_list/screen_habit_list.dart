@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:habitize3/core/models/habit.dart';
+import 'package:habitize3/core/models/Habit.dart';
 import 'package:habitize3/core/utils/locator.dart';
 import 'package:habitize3/core/view_models/model_habit_card.dart';
 import 'package:habitize3/core/view_models/model_habit_list.dart';
+import 'package:habitize3/ui/shared/constants.dart';
 import 'package:habitize3/ui/shared/text_styles.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../screen_habit_creator.dart';
@@ -64,43 +67,50 @@ class CAppbar extends StatelessWidget {
 class SliverScrollView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final ModelHabitList model = locator<ModelHabitList>();
     return CustomScrollView(
       slivers: <Widget>[
-        HabitStream(model
-            .getListHabits(habitMode: [HabitMode.Majror], showChecked: false)),
+        HabitStream(habitMode: [HabitMode.Majror], showChecked: false),
         Saperator(color: Colors.red),
         Saperator(color: Colors.amber),
-        HabitStream(model
-            .getListHabits(habitMode: [HabitMode.Bonus], showChecked: false)),
+        HabitStream(habitMode: [HabitMode.Bonus], showChecked: false),
         Saperator(color: Colors.green),
-        HabitStream(model.getListHabits(
-            habitMode: HabitMode.values, showChecked: true)),
+        HabitStream(habitMode: HabitMode.values, showChecked: true),
       ],
     );
   }
 }
 
 class HabitStream extends StatelessWidget {
-  final List<Habit> listHabits;
+  final List<HabitMode> habitMode;
+  final bool showChecked;
 
-  const HabitStream(this.listHabits);
+  HabitStream({@required this.habitMode, @required this.showChecked});
 
   @override
   Widget build(BuildContext context) {
-    ModelHabitList modelHabitList = Provider.of(context);
+    ModelHabitList _modelHabitList = Provider.of(context);
     return SliverList(
       delegate: SliverChildListDelegate([
-        ListView.builder(
-            shrinkWrap: true,
-            itemCount: listHabits.length,
-            itemBuilder: (context, index) {
-              final Habit habit = listHabits[index];
-              return ProxyProvider0(
-                  update: (_, __) =>
-                      ModelHabitCard(habit, modelHabitList.selectedDate),
-                  child: HabitCard(habit));
-            })
+        ValueListenableBuilder<Box>(
+          valueListenable: Hive.box(HIVE_BOX_HABITS).listenable(),
+          builder: (context, box, child) {
+            List<Habit> filteredHabits = _modelHabitList.filterHabits(
+                box.values.toList(),
+                showChecked: showChecked,
+                habitMode: habitMode);
+
+            return ListView.builder(
+                shrinkWrap: true,
+                itemCount: filteredHabits.length,
+                itemBuilder: (context, index) {
+                  final Habit habit = filteredHabits[index];
+                  return ProxyProvider0(
+                      update: (_, __) =>
+                          ModelHabitCard(habit, _modelHabitList.selectedDate),
+                      child: HabitCard(habit));
+                });
+          },
+        )
       ]),
     );
   }

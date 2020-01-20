@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:habitize3/core/models/habit.dart';
-import 'package:habitize3/core/serivces/db_api/db_api.dart';
-import 'package:habitize3/core/utils/locator.dart';
+import 'package:habitize3/core/models/Habit.dart';
+import 'package:habitize3/core/serivces/db_api/hive_db.dart';
 import 'package:habitize3/core/view_models/model_habit_card.dart';
-import 'package:habitize3/core/view_models/model_habit_list.dart';
 import 'package:habitize3/ui/shared/text_styles.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +21,7 @@ class HabitCard extends StatelessWidget {
         highlightColor: Colors.transparent,
         onTap: () => model.openHabitInfo(context),
         child: ListTile(
-          key: Key(habit.id.toString()),
+          key: Key(habit.key.toString()),
           title: Text(
             habit.name ?? "error no name",
             style: model.isHabitChecked ? CTextStyle.checkHabits : null,
@@ -113,7 +111,6 @@ class CustomSlidable extends StatelessWidget {
   }
 
   void createAlertDialog(BuildContext context) {
-    final DB_API _dp_api = locator<DB_API>();
     showDialog(
       context: context,
       builder: (context) {
@@ -122,8 +119,7 @@ class CustomSlidable extends StatelessWidget {
           actions: <Widget>[
             FlatButton(
               onPressed: () async {
-                await _dp_api.deleteHabit(habit.id);
-                await locator<ModelHabitList>().initModel();
+                Hive_DB_API.deleteHabit(habit);
                 Navigator.pop(context);
               },
               child: const Text('Accept'),

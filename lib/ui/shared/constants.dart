@@ -7,6 +7,8 @@ const String HABIT_IS_BONUS = 'isBonus';
 const String HABIT_GOAL = 'goal';
 const String HABIT_MODE = 'importance';
 
+const String HIVE_BOX_HABITS = 'habitsBox';
+
 
 final List<String> months = [
 	'January',

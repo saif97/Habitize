@@ -1,7 +1,10 @@
 import 'package:get_it/get_it.dart';
-import 'package:habitize3/core/serivces/db_api/db_api.dart';
+import 'package:habitize3/core/models/Habit.dart';
 import 'package:habitize3/core/utils/audio.dart';
 import 'package:habitize3/core/view_models/model_habit_list.dart';
+import 'package:habitize3/ui/shared/constants.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -10,17 +13,23 @@ bool isLocatorInitialized = false;
 
 setupLocator() async {
 //  DB_API db_api = USE_FAKE_DB_IMPLEMENTATION ? Fake_DB_API() : Real_DB_API;
-  UtilsAudio utilsAudio = UtilsAudio();
+  AudioUtils utilsAudio = AudioUtils();
 
-  DB_API db_api = DB_API(utilsAudio);
-  await db_api.init();
-  locator.registerLazySingleton(() => db_api);
-
+  await _setupHive();
   ModelHabitList modelHabitList = ModelHabitList();
-  await modelHabitList.initModel();
+  modelHabitList.initModel();
 
   locator.registerLazySingleton(() => utilsAudio);
   locator.registerLazySingleton(() => modelHabitList);
 
   return true;
+}
+
+Future _setupHive() async{
+  await Hive.initFlutter();
+  Hive.registerAdapter(HabitAdapter());
+  Hive.registerAdapter(HabitModeAdapter());
+
+  await Hive.openBox(HIVE_BOX_HABITS);
+//  Hive.box(HIVE_BOX_HABITS).deleteFromDisk();
 }

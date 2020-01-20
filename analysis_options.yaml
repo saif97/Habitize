@@ -17,3 +17,4 @@ analyzer:
     non_constant_identifier_names: ignore
     curly_braces_in_flow_control_structures: ignore
     avoid_void_async: error
+    file_names: ignore

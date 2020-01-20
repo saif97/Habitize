@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:habitize3/core/serivces/db_api/db_api.dart';
 import 'package:habitize3/core/utils/functions.dart';
-import 'package:habitize3/core/utils/locator.dart';
 import 'package:habitize3/core/view_models/model_habit_info.dart';
 import 'package:habitize3/ui/shared/constants.dart';
 import 'package:provider/provider.dart';
@@ -86,20 +84,18 @@ class _DateCircleState extends State<DateCircle> {
   bool isLeftChecked;
   bool isRightChecked;
   ModelHabitInfo model;
-  final DB_API _db_api = locator<DB_API>();
 
   @override
   Widget build(BuildContext context) {
     model ??= Provider.of(context);
 
-    isChecked = _db_api.isHabitChecked(habit: model.habit, date: widget.date);
+    isChecked = model.habit.isHabitChecked(widget.date);
 
-    isLeftChecked = _db_api.isHabitChecked(
-        habit: model.habit,
-        date: widget.date.subtract(const Duration(days: 1)));
+    isLeftChecked = model.habit
+        .isHabitChecked(widget.date.subtract(const Duration(days: 1)));
 
-    isRightChecked = _db_api.isHabitChecked(
-        habit: model.habit, date: widget.date.add(const Duration(days: 1)));
+    isRightChecked =
+        model.habit.isHabitChecked(widget.date.add(const Duration(days: 1)));
 
     return Stack(
       children: <Widget>[

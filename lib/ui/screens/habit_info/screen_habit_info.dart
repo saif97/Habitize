@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:habitize3/core/models/habit.dart';
+import 'package:habitize3/core/models/Habit.dart';
 import 'package:habitize3/core/view_models/model_habit_info.dart';
 import 'package:provider/provider.dart';
 

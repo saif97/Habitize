@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:habitize3/core/models/habit.dart';
-import 'package:habitize3/core/serivces/db_api/db_api.dart';
+import 'package:habitize3/core/models/Habit.dart';
 import 'package:habitize3/core/utils/functions.dart';
-import 'package:habitize3/core/utils/locator.dart';
 import 'package:habitize3/core/view_models/base_model.dart';
 import 'package:habitize3/ui/screens/habit_info/sub_monthly_calendar.dart';
 import 'package:habitize3/ui/shared/constants.dart';
 
+//TODO: by using ValueListenableBuilder I don't need to use basemodels anymore.
 class ModelHabitInfo extends BaseModel {
   Habit _habit;
-  final DB_API _db_api = locator<DB_API>() ;
 
   List<List<Widget>> getMatrixDateCircles(String month) {
     final List<List<Widget>> matrixDateCircles = [];
@@ -35,16 +33,10 @@ class ModelHabitInfo extends BaseModel {
     return matrixDateCircles;
   }
 
-  Future checkHabitInCalender(DateTime date, {bool undo, bool checkAll}) async {
+  void checkHabitInCalender(DateTime date, {bool undo, bool checkAll}) {
     // make sure the checked date isn't not after today to prevent checks in future
     if (date.isBefore(getTodayDate().add(const Duration(days: 1)))) {
-      _habit = await _db_api.checkHabitDone(
-        habit.id,
-        date,
-        undo: undo,
-        checkAll: checkAll,
-      );
-      notifyListeners();
+      habit.checkHabitDone(date, undo: undo, checkAll: checkAll);
     }
   }
 
