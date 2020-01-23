@@ -13,7 +13,7 @@ class ModelHabitList extends BaseModel {
 
   List<Widget> bottomBarElements;
 
-  ModelHabitList();
+  final keyAnimatedList = GlobalKey<AnimatedListState>();
 
   void initModel() {
     _majorHabit = Hive_DB_API.getMajorHabit();

@@ -7,7 +7,7 @@ import 'package:habitize3/ui/shared/constants.dart';
 
 //TODO: by using ValueListenableBuilder I don't need to use basemodels anymore.
 class ModelHabitInfo extends BaseModel {
-  Habit _habit;
+  final Habit _habit;
 
   List<List<Widget>> getMatrixDateCircles(String month) {
     final List<List<Widget>> matrixDateCircles = [];

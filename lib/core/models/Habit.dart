@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:habitize3/core/serivces/db_api/hive_db.dart';
 import 'package:habitize3/core/utils/audio.dart';
 import 'package:habitize3/core/utils/functions.dart';
 import 'package:habitize3/core/utils/locator.dart';
@@ -18,7 +17,7 @@ enum HabitMode {
 
 @HiveType(typeId: 1)
 class Habit {
-	@HiveField(0)
+  @HiveField(0)
   @required
   final Key key = UniqueKey();
 
@@ -57,20 +56,20 @@ class Habit {
       if (checkAll)
         dates[dateInt] = 0;
       else
-        dates[dateInt] =
-            goal; // reset habit iteration if unCheck all is pressed
+        // reset habit iteration if unCheck all is pressed
+        dates[dateInt] = goal;
     } else
       undo ? dates[dateInt]++ : dates[dateInt]--;
 
-    Map<String, int> r = <String, int>{};
+		final Map<String, int> r = <String, int>{};
 
     dates.forEach((k, v) {
       r.addAll({k.toString(): v});
     });
 
-		Hive.box(HIVE_BOX_HABITS).put(key.toString(), this);
+    Hive.box(HIVE_BOX_HABITS).put(key.toString(), this);
 
-    AudioUtils audioUtils = locator<AudioUtils>();
+    final AudioUtils audioUtils = locator<AudioUtils>();
     if (dates[dateInt] == 0) {
       audioUtils.playSoundAllChecked();
     } else

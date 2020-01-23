@@ -50,14 +50,9 @@ class CAppbar extends StatelessWidget {
           child: Text(model.getTitle(), style: CTextStyle.title),
         ),
         IconButton(
-          icon: Icon(
-            Icons.edit,
-            size: 30,
-          ),
-          onPressed: () async {
-            await Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ScreenCreateHabit()));
-          },
+          icon: Icon(Icons.edit, size: 30),
+          onPressed: () async => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const ScreenCreateHabit())),
         )
       ],
     );
@@ -99,16 +94,17 @@ class HabitStream extends StatelessWidget {
                 showChecked: showChecked,
                 habitMode: habitMode);
 
-            return ListView.builder(
-                shrinkWrap: true,
-                itemCount: filteredHabits.length,
-                itemBuilder: (context, index) {
-                  final Habit habit = filteredHabits[index];
-                  return ProxyProvider0(
-                      update: (_, __) =>
-                          ModelHabitCard(habit, _modelHabitList.selectedDate),
-                      child: HabitCard(habit));
-                });
+            return AnimatedList(
+              shrinkWrap: true,
+              initialItemCount: filteredHabits.length,
+              itemBuilder: (context, index, a) {
+                final Habit habit = filteredHabits[index];
+                return ProxyProvider0(
+                    update: (_, __) =>
+                        ModelHabitCard(habit, _modelHabitList.selectedDate),
+                    child: HabitCard(habit));
+              },
+            );
           },
         )
       ]),
