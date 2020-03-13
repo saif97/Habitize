@@ -89,13 +89,13 @@ class _DateCircleState extends State<DateCircle> {
   Widget build(BuildContext context) {
     model ??= Provider.of(context);
 
-    isChecked = model.habit.isHabitChecked(widget.date);
+    isChecked = model.habit.utils.isHabitChecked(widget.date);
 
-    isLeftChecked = model.habit
+    isLeftChecked = model.habit.utils
         .isHabitChecked(widget.date.subtract(const Duration(days: 1)));
 
-    isRightChecked =
-        model.habit.isHabitChecked(widget.date.add(const Duration(days: 1)));
+    isRightChecked = model.habit.utils
+        .isHabitChecked(widget.date.add(const Duration(days: 1)));
 
     return Stack(
       children: <Widget>[

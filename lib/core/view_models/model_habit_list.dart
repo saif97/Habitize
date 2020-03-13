@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:habitize3/core/models/Habit.dart';
-import 'package:habitize3/core/serivces/db_api/hive_db.dart';
+import 'package:habitize3/core/serivces/db_api/real_db.dart';
 import 'package:habitize3/ui/screens/habit_list/bottom_time_line.dart';
 
 import '../utils/functions.dart';
@@ -16,7 +16,7 @@ class ModelHabitList extends BaseModel {
   final keyAnimatedList = GlobalKey<AnimatedListState>();
 
   void initModel() {
-    _majorHabit = Hive_DB_API.getMajorHabit();
+    _majorHabit = RealDB.getMajorHabit();
 
     buildTimelineCircles();
     notifyListeners();
@@ -48,7 +48,7 @@ class ModelHabitList extends BaseModel {
       bool isAllchecked = false;
       if (_majorHabit != null) {
         DateTime date = getTodayDate().subtract(Duration(days: indexDay));
-        isAllchecked = _majorHabit.isHabitChecked(date);
+        isAllchecked = _majorHabit.utils.isHabitChecked(date);
       }
 
       bottomBarElements.add(TimeLineCircle(
@@ -71,7 +71,7 @@ class ModelHabitList extends BaseModel {
   List<Habit> filterHabits(List listHabits,
           {List<HabitMode> habitMode, @required bool showChecked}) =>
       (listHabits.cast<Habit>())?.where((habit) {
-        final bool isHabitChecked = habit.isHabitChecked(_selectedDate);
+        final bool isHabitChecked = habit.utils.isHabitChecked(_selectedDate);
 
         return habitMode.contains(habit.mode) && isHabitChecked == showChecked;
       })?.toList() ??

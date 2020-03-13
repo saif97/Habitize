@@ -51,8 +51,10 @@ class CAppbar extends StatelessWidget {
         ),
         IconButton(
           icon: Icon(Icons.edit, size: 30),
-          onPressed: () async => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const ScreenCreateHabit())),
+          onPressed: () async => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const ScreenCreateHabit())),
         )
       ],
     );
@@ -83,7 +85,7 @@ class HabitStream extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ModelHabitList _modelHabitList = Provider.of(context);
+    final ModelHabitList _modelHabitList = Provider.of(context);
     return SliverList(
       delegate: SliverChildListDelegate([
         ValueListenableBuilder<Box>(
@@ -93,16 +95,21 @@ class HabitStream extends StatelessWidget {
                 box.values.toList(),
                 showChecked: showChecked,
                 habitMode: habitMode);
+						print(filteredHabits);
 
             return AnimatedList(
               shrinkWrap: true,
               initialItemCount: filteredHabits.length,
               itemBuilder: (context, index, a) {
                 final Habit habit = filteredHabits[index];
-                return ProxyProvider0(
-                    update: (_, __) =>
-                        ModelHabitCard(habit, _modelHabitList.selectedDate),
-                    child: HabitCard(habit));
+                return ValueListenableBuilder<Box>(
+                  valueListenable: Hive.box(HIVE_BOX_HABITS).listenable(keys: [habit.key.toString()]),
+                  builder: (context, box, _)=>ProxyProvider0(
+											update: (_, __) =>
+													ModelHabitCard(habit, _modelHabitList.selectedDate),
+											child: HabitCard(habit)),
+
+									);
               },
             );
           },

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:habitize3/core/models/Habit.dart';
 import 'package:habitize3/core/utils/functions.dart';
-import 'package:habitize3/core/view_models/base_model.dart';
 import 'package:habitize3/ui/screens/habit_info/sub_monthly_calendar.dart';
 import 'package:habitize3/ui/shared/constants.dart';
 
 //TODO: by using ValueListenableBuilder I don't need to use basemodels anymore.
-class ModelHabitInfo extends BaseModel {
+class ModelHabitInfo {
   final Habit _habit;
 
   List<List<Widget>> getMatrixDateCircles(String month) {
@@ -36,7 +35,7 @@ class ModelHabitInfo extends BaseModel {
   void checkHabitInCalender(DateTime date, {bool undo, bool checkAll}) {
     // make sure the checked date isn't not after today to prevent checks in future
     if (date.isBefore(getTodayDate().add(const Duration(days: 1)))) {
-      habit.checkHabitDone(date, undo: undo, checkAll: checkAll);
+      habit.utils.checkHabitDone(date, undo: undo, checkAll: checkAll);
     }
   }
 

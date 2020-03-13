@@ -17,7 +17,7 @@ class ModelHabitCard {
   final DateTime selectedDate;
 
   void initModel() {
-    _isHabitChecked = habit.isHabitChecked(selectedDate);
+    _isHabitChecked = habit.utils.isHabitChecked(selectedDate);
 
     _currentIteration = (habit.dates[selectedDate.millisecondsSinceEpoch] ??=
             habit.goal)
@@ -30,9 +30,9 @@ class ModelHabitCard {
 
   Future openHabitInfo(BuildContext context) async {
     final bool r = await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ScreenHabitInfo(habit)));
+        MaterialPageRoute(builder: (context) => ScreenHabitInfo(habit.key)));
     if (r ?? false) {
-      await modelHabitList.initModel();
+      modelHabitList.initModel();
     }
   }
 
@@ -63,12 +63,12 @@ class ModelHabitCard {
           final DateTime date1 =
               DateTime.fromMillisecondsSinceEpoch(ordredDateKeys.elementAt(i));
 
-          if (!habit.isHabitChecked(date1)) break;
+          if (!habit.utils.isHabitChecked(date1)) break;
 
           final date2 = DateTime.fromMillisecondsSinceEpoch(
               ordredDateKeys.elementAt(i - 1));
 
-          if (!habit.isHabitChecked(date2)) break;
+          if (!habit.utils.isHabitChecked(date2)) break;
 
           if (date1.difference(date2) == const Duration(days: 1))
             streak++;
@@ -111,7 +111,7 @@ class ModelHabitCard {
   }
 
   Future slidableCheckHabit({@required bool checkOnce}) async {
-    habit.checkHabitDone(selectedDate,
+    habit.utils.checkHabitDone(selectedDate,
         checkAll: checkOnce ? null : !isHabitChecked);
 
     await modelHabitList.initModel();

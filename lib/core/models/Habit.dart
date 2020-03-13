@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habitize3/core/utils/audio.dart';
 import 'package:habitize3/core/utils/functions.dart';
+import 'file:///L:/Flutter/Projects/habitize3/lib/core/serivces/db_api/habitUtils.dart';
 import 'package:habitize3/core/utils/locator.dart';
 import 'package:habitize3/ui/shared/constants.dart';
 import 'package:hive/hive.dart';
@@ -17,9 +18,10 @@ enum HabitMode {
 
 @HiveType(typeId: 1)
 class Habit {
+  HabitUtils _utils;
   @HiveField(0)
   @required
-  final Key key = UniqueKey();
+  final String key;
 
   @HiveField(1)
   @required
@@ -38,41 +40,10 @@ class Habit {
   // number of iterations.
   int goal;
 
-  Habit({this.dates, this.name, this.streak, this.goal, this.mode}) {
-    dates ??= <int, int>{};
+  Habit({this.dates, this.name, this.streak, this.goal, this.mode, this.key}) {
+    dates = <int, int>{};
+    _utils = HabitUtils(this);
   }
 
-  bool isHabitChecked(DateTime date) {
-    date ??= getTodayDate();
-    return dates[date.millisecondsSinceEpoch] == 0;
-  }
-
-  void checkHabitDone(DateTime date, {bool undo = false, bool checkAll}) {
-    final int dateInt = date.millisecondsSinceEpoch;
-
-    dates[dateInt] ??= goal;
-
-    if (checkAll != null) {
-      if (checkAll)
-        dates[dateInt] = 0;
-      else
-        // reset habit iteration if unCheck all is pressed
-        dates[dateInt] = goal;
-    } else
-      undo ? dates[dateInt]++ : dates[dateInt]--;
-
-		final Map<String, int> r = <String, int>{};
-
-    dates.forEach((k, v) {
-      r.addAll({k.toString(): v});
-    });
-
-    Hive.box(HIVE_BOX_HABITS).put(key.toString(), this);
-
-    final AudioUtils audioUtils = locator<AudioUtils>();
-    if (dates[dateInt] == 0) {
-      audioUtils.playSoundAllChecked();
-    } else
-      audioUtils.playSoundIterationChecked();
-  }
+  HabitUtils get utils => _utils;
 }

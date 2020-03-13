@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:habitize3/core/models/Habit.dart';
-import 'package:habitize3/core/serivces/db_api/hive_db.dart';
+import 'package:habitize3/core/serivces/db_api/real_db.dart';
 import 'package:habitize3/core/view_models/model_habit_card.dart';
 import 'package:habitize3/ui/shared/text_styles.dart';
 import 'package:provider/provider.dart';
@@ -119,7 +119,7 @@ class CustomSlidable extends StatelessWidget {
           actions: <Widget>[
             FlatButton(
               onPressed: () async {
-                Hive_DB_API.deleteHabit(habit);
+                RealDB.deleteHabit(habit);
                 Navigator.pop(context);
               },
               child: const Text('Accept'),
