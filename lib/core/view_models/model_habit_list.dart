@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habitize3/core/models/Habit.dart';
-import 'package:habitize3/core/serivces/db_api/real_db.dart';
+import 'package:habitize3/core/serivces/db_api/db.dart';
+import 'package:habitize3/core/utils/locator.dart';
 import 'package:habitize3/ui/screens/habit_list/bottom_time_line.dart';
 
 import '../utils/functions.dart';
@@ -8,15 +9,19 @@ import 'base_model.dart';
 
 class ModelHabitList extends BaseModel {
   Habit _majorHabit;
+  List<Habit> _listHabits;
 
   DateTime _selectedDate = getTodayDate();
 
   List<Widget> bottomBarElements;
 
-  final keyAnimatedList = GlobalKey<AnimatedListState>();
+  final GlobalKey keyAnimatedList = GlobalKey<AnimatedListState>();
+  DB _db;
 
-  void initModel() {
-    _majorHabit = RealDB.getMajorHabit();
+  Future initModel() async {
+    _db = locator<DB>();
+    _listHabits = await _db.getAll();
+    _majorHabit = await getMajorHabit();
 
     buildTimelineCircles();
     notifyListeners();
@@ -68,14 +73,24 @@ class ModelHabitList extends BaseModel {
     notifyListeners();
   }
 
-  List<Habit> filterHabits(List listHabits,
-          {List<HabitMode> habitMode, @required bool showChecked}) =>
-      (listHabits.cast<Habit>())?.where((habit) {
-        final bool isHabitChecked = habit.utils.isHabitChecked(_selectedDate);
+  Future<Habit> getMajorHabit() async {
+    final List<Habit> listHabits = await _db.getAll();
+    return listHabits.firstWhere((v) => v.mode == HabitMode.Majror,
+        orElse: () => null);
+  }
 
-        return habitMode.contains(habit.mode) && isHabitChecked == showChecked;
-      })?.toList() ??
-      [];
+  List<Habit> filterHabits({
+    List<HabitMode> habitMode,
+    @required bool showChecked,
+  }) {
+    return (_listHabits.cast<Habit>())?.where((habit) {
+          final bool isHabitChecked = habit.utils.isHabitChecked(_selectedDate);
+
+          return habitMode.contains(habit.mode) &&
+              isHabitChecked == showChecked;
+        })?.toList() ??
+        [];
+  }
 
   Habit get majorHabit => _majorHabit;
 }

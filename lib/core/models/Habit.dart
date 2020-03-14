@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:habitize3/core/utils/audio.dart';
-import 'package:habitize3/core/utils/functions.dart';
-import 'file:///L:/Flutter/Projects/habitize3/lib/core/serivces/db_api/habitUtils.dart';
-import 'package:habitize3/core/utils/locator.dart';
-import 'package:habitize3/ui/shared/constants.dart';
+import 'package:habitize3/core/utils/habitUtils.dart';
 import 'package:hive/hive.dart';
 
 part 'Habit.g.dart';

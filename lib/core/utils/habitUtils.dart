@@ -1,10 +1,9 @@
 import 'package:habitize3/core/models/Habit.dart';
+import 'package:habitize3/core/serivces/db_api/db.dart';
 import 'package:habitize3/core/utils/functions.dart';
-import 'package:habitize3/ui/shared/constants.dart';
-import 'package:hive/hive.dart';
 
-import '../../utils/audio.dart';
-import '../../utils/locator.dart';
+import 'audio.dart';
+import 'locator.dart';
 
 class HabitUtils {
   final Habit _habit;
@@ -36,8 +35,7 @@ class HabitUtils {
       r.addAll({k.toString(): v});
     });
 
-    Hive.box(HIVE_BOX_HABITS).put(_habit.key.toString(), this);
-
+    locator<DB>().put(_habit);
     final AudioUtils audioUtils = locator<AudioUtils>();
     if (_habit.dates[dateInt] == 0) {
       audioUtils.playSoundAllChecked();

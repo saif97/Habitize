@@ -9,19 +9,22 @@ GetIt locator = GetIt.instance;
 const bool USE_FAKE_DB_IMPLEMENTATION = false;
 bool isLocatorInitialized = false;
 
-setupLocator() async {
+Future setupLocator() async {
 //  DB_API db_api = USE_FAKE_DB_IMPLEMENTATION ? Fake_DB_API() : Real_DB_API;
   AudioUtils utilsAudio = AudioUtils();
 
-  DB db_api = RealDB();
+  final DB db_api = RealHabitDB();
   await db_api.instantiateDB();
 
   ModelHabitList modelHabitList = ModelHabitList();
-  modelHabitList.initModel();
 
+//  locator.register
   locator.registerLazySingleton(() => db_api);
+
   locator.registerLazySingleton(() => utilsAudio);
   locator.registerLazySingleton(() => modelHabitList);
+
+  modelHabitList.initModel();
 
   return true;
 }

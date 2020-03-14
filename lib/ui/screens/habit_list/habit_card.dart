@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:habitize3/core/models/Habit.dart';
-import 'package:habitize3/core/serivces/db_api/real_db.dart';
+import 'package:habitize3/core/serivces/db_api/db.dart';
+import 'package:habitize3/core/utils/locator.dart';
 import 'package:habitize3/core/view_models/model_habit_card.dart';
 import 'package:habitize3/ui/shared/text_styles.dart';
 import 'package:provider/provider.dart';
@@ -18,10 +19,13 @@ class HabitCard extends StatelessWidget {
       habit: habit,
       child: InkWell(
         splashColor: Colors.transparent,
+
+
         highlightColor: Colors.transparent,
         onTap: () => model.openHabitInfo(context),
         child: ListTile(
           key: Key(habit.key.toString()),
+
           title: Text(
             habit.name ?? "error no name",
             style: model.isHabitChecked ? CTextStyle.checkHabits : null,
@@ -119,7 +123,7 @@ class CustomSlidable extends StatelessWidget {
           actions: <Widget>[
             FlatButton(
               onPressed: () async {
-                RealDB.deleteHabit(habit);
+                locator<DB>().delete(habit.key);
                 Navigator.pop(context);
               },
               child: const Text('Accept'),
