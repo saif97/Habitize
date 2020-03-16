@@ -45,10 +45,18 @@ class CAppbar extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Text(model.getTitle(), style: CTextStyle.title),
         ),
+        const Spacer(),
+        FlatButton(
+          onPressed: () => model.showAllHabits = !model.showAllHabits,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          color: model.showAllHabits ? Colors.greenAccent : Colors.redAccent,
+          child: Text(model.showAllHabits ? "Hide All" : "Show All"),
+        ),
         IconButton(
           icon: Icon(Icons.edit, size: 30),
           onPressed: () async => model.openHabitCreator(context),
-        )
+        ),
       ],
     );
   }
@@ -59,45 +67,49 @@ class SliverScrollView extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: <Widget>[
-        HabitStream(habitMode: [HabitMode.Majror], showChecked: false),
+        HabitStream(selectedHabitMode: [HabitMode.Majror], showChecked: false),
         Saperator(color: Colors.red),
         Saperator(color: Colors.amber),
-        HabitStream(habitMode: [HabitMode.Bonus], showChecked: false),
+        HabitStream(selectedHabitMode: [HabitMode.Bonus], showChecked: false),
         Saperator(color: Colors.green),
-        HabitStream(habitMode: HabitMode.values, showChecked: true),
+        HabitStream(selectedHabitMode: HabitMode.values, showChecked: true),
       ],
     );
   }
 }
 
 class HabitStream extends StatelessWidget {
-  final List<HabitMode> habitMode;
+  final List<HabitMode> selectedHabitMode;
   final bool showChecked;
 
-  HabitStream({@required this.habitMode, @required this.showChecked});
+  HabitStream({@required this.selectedHabitMode, @required this.showChecked});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ModelHabitList>(
-      builder: (_, model, __) {
-        final List<Habit> filteredHabits =
-            model.filterHabits(showChecked: showChecked, habitMode: habitMode);
-        return SliverList(
-          delegate: SliverChildListDelegate([
-            ListView.builder(
-              itemCount: filteredHabits.length,
-              shrinkWrap: true,
-              itemBuilder: (context, i) {
-                final Habit habit = filteredHabits[i];
-                return ProxyProvider0(
-                  update: (_, __) => ModelHabitCard(habit, model.selectedDate),
-                  child: HabitCard(habit),
-                );
-              },
-            ),
-          ]),
-        );
-      },
+    return SliverList(
+      delegate: SliverChildListDelegate([
+        Consumer<ModelHabitList>(
+          builder: (_, model, __) {
+            if (model.isShowHabitFor(selectedHabitMode)) {
+              final List<Habit> filteredHabits = model.filterHabits(
+                  showChecked: showChecked, habitMode: selectedHabitMode);
+              return ListView.builder(
+                itemCount: filteredHabits.length,
+                shrinkWrap: true,
+                itemBuilder: (context, i) {
+                  final Habit habit = filteredHabits[i];
+                  return ProxyProvider0(
+                    update: (_, __) =>
+                        ModelHabitCard(habit, model.selectedDate),
+                    child: HabitCard(habit),
+                  );
+                },
+              );
+            } else
+              return Container();
+          },
+        )
+      ]),
     );
   }
 }

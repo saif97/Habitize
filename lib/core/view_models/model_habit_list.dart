@@ -15,6 +15,7 @@ class ModelHabitList extends BaseModel {
   DateTime _selectedDate = getTodayDate();
 
   List<Widget> bottomBarElements;
+  bool _showAllHabits = false;
 
   final GlobalKey keyAnimatedList = GlobalKey<AnimatedListState>();
   DB _db;
@@ -65,6 +66,11 @@ class ModelHabitList extends BaseModel {
     bottomBarElements = List.from(bottomBarElements.reversed);
   }
 
+  bool isShowHabitFor(List<HabitMode> selectedMode) =>
+      showAllHabits ||
+      majorHabit.utils.isHabitCheckedToday() ||
+      selectedMode.contains(HabitMode.Majror);
+
   Future<Habit> getMajorHabit() async {
     final List<Habit> listHabits = await _db.getAll();
     return listHabits.firstWhere((v) => v.mode == HabitMode.Majror,
@@ -93,20 +99,27 @@ class ModelHabitList extends BaseModel {
     if (response) listHabits = await _db.getAll();
   }
 
-//=============> GETTER & SETTERS <==============\\
+  //=============> GETTER & SETTERS <==============\\
+
+  bool get showAllHabits => _showAllHabits;
+
+  set showAllHabits(bool value) {
+    if (value == _showAllHabits) return;
+    _showAllHabits = value;
+    notifyListeners();
+  }
 
   DateTime get selectedDate => _selectedDate;
 
   Habit get majorHabit => _majorHabit;
 
-	set selectedDate(DateTime value) {
-		assert(value.difference(getTodayDate()).inDays <= 0);
-		_selectedDate = value;
-		notifyListeners();
-	}
+  set selectedDate(DateTime value) {
+    assert(value.difference(getTodayDate()).inDays <= 0);
+    _selectedDate = value;
+    notifyListeners();
+  }
 
-
-	set listHabits(List<Habit> value) {
+  set listHabits(List<Habit> value) {
     if (value == _listHabits) return;
     print("pot");
     _listHabits = value;

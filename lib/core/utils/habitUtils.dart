@@ -10,10 +10,10 @@ class HabitUtils {
 
   HabitUtils(this._habit);
 
-  bool isHabitChecked(DateTime date) {
-    date ??= getTodayDate();
-    return _habit.dates[date.millisecondsSinceEpoch] == 0;
-  }
+  bool isHabitCheckedToday() => isHabitChecked(getTodayDate());
+  bool isHabitChecked(DateTime date) =>
+      _habit.dates[date.millisecondsSinceEpoch] == 0;
+
 
   void checkHabitDone(DateTime date, {bool undo = false, bool checkAll}) {
     final int dateInt = date.millisecondsSinceEpoch;
