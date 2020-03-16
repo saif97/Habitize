@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:habitize3/core/models/Habit.dart';
+import 'package:habitize3/core/serivces/db_api/db.dart';
 import 'package:habitize3/core/utils/functions.dart';
 import 'package:habitize3/core/utils/locator.dart';
 import 'package:habitize3/core/view_models/model_habit_list.dart';
@@ -30,7 +31,7 @@ class ModelHabitCard {
 
   Future openHabitInfo(BuildContext context) async {
     final bool r = await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ScreenHabitInfo(habit.key)));
+        MaterialPageRoute(builder: (context) => ScreenHabitInfo(habit)));
     if (r ?? false) {
       modelHabitList.initModel();
     }
@@ -115,6 +116,12 @@ class ModelHabitCard {
         checkAll: checkOnce ? null : !isHabitChecked);
 
     await modelHabitList.initModel();
+  }
+
+  Future deleteHabit() async {
+    final DB db = locator<DB>();
+    await db.delete(habit.key);
+    modelHabitList.listHabits = await db.getAll();
   }
 
   //=============> GETTERS & SETTERS <==============\\

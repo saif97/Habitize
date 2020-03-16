@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:habitize3/core/models/Habit.dart';
 import 'package:habitize3/core/serivces/db_api/db.dart';
 import 'package:habitize3/core/utils/locator.dart';
-import 'package:habitize3/ui/screens/habit_list/bottom_time_line.dart';
+import 'package:habitize3/ui/screens/habit_list/sub_bottom_time_line.dart';
+import 'package:habitize3/ui/screens/screen_habit_creator.dart';
 
 import '../utils/functions.dart';
 import 'base_model.dart';
@@ -50,27 +51,18 @@ class ModelHabitList extends BaseModel {
     for (int indexDay = 0; indexDay < 7; indexDay++) {
       final DateTime day = getTodayDate().subtract(Duration(days: indexDay));
 
-      bool isAllchecked = false;
+      bool isAllChecked = false;
       if (_majorHabit != null) {
         DateTime date = getTodayDate().subtract(Duration(days: indexDay));
-        isAllchecked = _majorHabit.utils.isHabitChecked(date);
+        isAllChecked = _majorHabit.utils.isHabitChecked(date);
       }
 
       bottomBarElements.add(TimeLineCircle(
         day,
-        isAllchecked: isAllchecked,
+        isAllchecked: isAllChecked,
       ));
     }
     bottomBarElements = List.from(bottomBarElements.reversed);
-  }
-
-//=============> GETTER & SETTERS <==============\\
-
-  DateTime get selectedDate => _selectedDate;
-
-  set selectedDate(DateTime value) {
-    _selectedDate = value;
-    notifyListeners();
   }
 
   Future<Habit> getMajorHabit() async {
@@ -92,5 +84,32 @@ class ModelHabitList extends BaseModel {
         [];
   }
 
+  Future openHabitCreator(BuildContext context) async {
+    final bool response = await Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const ScreenCreateHabit())) ??
+        false;
+    if (response) listHabits = await _db.getAll();
+  }
+
+//=============> GETTER & SETTERS <==============\\
+
+  DateTime get selectedDate => _selectedDate;
+
   Habit get majorHabit => _majorHabit;
+
+	set selectedDate(DateTime value) {
+		assert(value.difference(getTodayDate()).inDays <= 0);
+		_selectedDate = value;
+		notifyListeners();
+	}
+
+
+	set listHabits(List<Habit> value) {
+    if (value == _listHabits) return;
+    print("pot");
+    _listHabits = value;
+    notifyListeners();
+  }
 }

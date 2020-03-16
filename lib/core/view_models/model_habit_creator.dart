@@ -25,9 +25,9 @@ class ModelHabitCreator {
       // If we're creating a new habit, a new key will be created. If we're
       // editing a habit, _habitToBeEditted's key will be used.
 
-      locator<DB>().put(habit);
+      await locator<DB>().put(habit);
 
-      Navigator.pop(context);
+      Navigator.pop(context, true);
       return true;
     }
     return false;

@@ -6,9 +6,8 @@ import 'package:habitize3/core/view_models/model_habit_list.dart';
 import 'package:habitize3/ui/shared/text_styles.dart';
 import 'package:provider/provider.dart';
 
-import '../screen_habit_creator.dart';
-import 'bottom_time_line.dart';
-import 'habit_card.dart';
+import 'sub_bottom_time_line.dart';
+import 'sub_habit_card.dart';
 
 class HomeWid extends StatelessWidget {
   @override
@@ -48,10 +47,7 @@ class CAppbar extends StatelessWidget {
         ),
         IconButton(
           icon: Icon(Icons.edit, size: 30),
-          onPressed: () async => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const ScreenCreateHabit())),
+          onPressed: () async => model.openHabitCreator(context),
         )
       ],
     );
@@ -82,25 +78,26 @@ class HabitStream extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ModelHabitList _modelHabitList = Provider.of(context);
-
-    final List<Habit> filteredHabits = _modelHabitList.filterHabits(
-        showChecked: showChecked, habitMode: habitMode);
-    return SliverList(
-      delegate: SliverChildListDelegate([
-        AnimatedList(
-          shrinkWrap: true,
-          initialItemCount: filteredHabits.length,
-          itemBuilder: (context, index, a) {
-            final Habit habit = filteredHabits[index];
-            return ProxyProvider0(
-              update: (_, __) =>
-                  ModelHabitCard(habit, _modelHabitList.selectedDate),
-              child: HabitCard(habit),
-            );
-          },
-        )
-      ]),
+    return Consumer<ModelHabitList>(
+      builder: (_, model, __) {
+        final List<Habit> filteredHabits =
+            model.filterHabits(showChecked: showChecked, habitMode: habitMode);
+        return SliverList(
+          delegate: SliverChildListDelegate([
+            ListView.builder(
+              itemCount: filteredHabits.length,
+              shrinkWrap: true,
+              itemBuilder: (context, i) {
+                final Habit habit = filteredHabits[i];
+                return ProxyProvider0(
+                  update: (_, __) => ModelHabitCard(habit, model.selectedDate),
+                  child: HabitCard(habit),
+                );
+              },
+            ),
+          ]),
+        );
+      },
     );
   }
 }
