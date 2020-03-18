@@ -41,7 +41,7 @@ class ModelHabitCard {
     // get how many days the habit is checked in a row by, getting the last day
     // the habit was checked & compare it to today or yesterday.
     int streak = 1;
-    final Map<int, int> dates = habit.dates;
+    final Map<int, int> dates = habit.dates.cast<int,int>();
     final List<int> ordredDateKeys = dates.keys.toList()..sort();
 
     // is the habit checked before.

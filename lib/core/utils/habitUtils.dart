@@ -6,40 +6,35 @@ import 'audio.dart';
 import 'locator.dart';
 
 class HabitUtils {
-  final Habit _habit;
+	final Habit _habit;
 
-  HabitUtils(this._habit);
+	HabitUtils(this._habit);
 
-  bool isHabitCheckedToday() => isHabitChecked(getTodayDate());
-  bool isHabitChecked(DateTime date) =>
-      _habit.dates[date.millisecondsSinceEpoch] == 0;
+	bool isHabitCheckedToday() => isHabitChecked(getTodayDate());
+
+	bool isHabitChecked(DateTime date) =>
+			_habit.dates[date.millisecondsSinceEpoch] == 0;
 
 
-  void checkHabitDone(DateTime date, {bool undo = false, bool checkAll}) {
-    final int dateInt = date.millisecondsSinceEpoch;
+	Future checkHabitDone(DateTime date, {bool undo = false, bool checkAll}) async {
+		final int dateInt = date.millisecondsSinceEpoch;
 
-    _habit.dates[dateInt] ??= _habit.goal;
+//		_habit.dates[dateInt] ??= _habit.goal;
+//		DateTime.fromMicrosecondsSinceEpoch(1584392400000000)
+		if (checkAll != null) {
+			if (checkAll)
+				_habit.dates[dateInt] = 0;
+			else
+				// reset habit iteration if unCheck all is pressed
+				_habit.dates[dateInt] = _habit.goal;
+		} else
+			undo ? _habit.dates[dateInt]++ : _habit.dates[dateInt]--;
 
-    if (checkAll != null) {
-      if (checkAll)
-        _habit.dates[dateInt] = 0;
-      else
-        // reset habit iteration if unCheck all is pressed
-        _habit.dates[dateInt] = _habit.goal;
-    } else
-      undo ? _habit.dates[dateInt]++ : _habit.dates[dateInt]--;
-
-    final Map<String, int> r = <String, int>{};
-
-    _habit.dates.forEach((k, v) {
-      r.addAll({k.toString(): v});
-    });
-
-    locator<DB>().put(_habit);
-    final AudioUtils audioUtils = locator<AudioUtils>();
-    if (_habit.dates[dateInt] == 0) {
-      audioUtils.playSoundAllChecked();
-    } else
-      audioUtils.playSoundIterationChecked();
-  }
+		await locator<DB>().update(_habit);
+		final AudioUtils audioUtils = locator<AudioUtils>();
+		if (_habit.dates[dateInt] == 0) {
+			audioUtils.playSoundAllChecked();
+		} else
+			audioUtils.playSoundIterationChecked();
+	}
 }

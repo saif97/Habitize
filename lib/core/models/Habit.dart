@@ -4,6 +4,10 @@ import 'package:hive/hive.dart';
 
 part 'Habit.g.dart';
 
+// Make sure file name, class, and <part> are alls same case.
+// run the command below to generate folders files.
+// flutter pub run build_runner build --delete-conflicting-outputs
+
 @HiveType(typeId: 2)
 enum HabitMode {
   @HiveField(0)
@@ -27,17 +31,17 @@ class Habit {
   final int streak;
 
   @HiveField(2)
-  Map<int, int> dates;
-
-  @HiveField(3)
   HabitMode mode;
 
-  @HiveField(4)
+  @HiveField(3)
   // number of iterations.
   int goal;
 
+  @HiveField(4)
+  Map dates;
+
   Habit({this.dates, this.name, this.streak, this.goal, this.mode, this.key}) {
-    dates = <int, int>{};
+    dates ??= <int, int>{};
     _utils = HabitUtils(this);
   }
 

@@ -24,8 +24,8 @@ dependencies:
 
 dev_dependencies:
   mockito: ^4.1.1
-  hive_generator: ^0.7.0
-  build_runner: ^1.7.3
+  hive_generator: ^0.7.0+2
+  build_runner: ^1.8.0
   lint: ^1.1.1
   intl: ^0.16.1
   flutter_test:

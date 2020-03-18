@@ -46,10 +46,10 @@ class HabitAdapter extends TypeAdapter<Habit> {
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Habit(
-      dates: (fields[2] as Map)?.cast<int, int>(),
+      dates: (fields[4] as Map)?.cast<dynamic, dynamic>(),
       name: fields[1] as String,
-      goal: fields[4] as int,
-      mode: fields[3] as HabitMode,
+      goal: fields[3] as int,
+      mode: fields[2] as HabitMode,
       key: fields[0] as String,
     );
   }
@@ -63,10 +63,10 @@ class HabitAdapter extends TypeAdapter<Habit> {
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.dates)
-      ..writeByte(3)
       ..write(obj.mode)
+      ..writeByte(3)
+      ..write(obj.goal)
       ..writeByte(4)
-      ..write(obj.goal);
+      ..write(obj.dates);
   }
 }

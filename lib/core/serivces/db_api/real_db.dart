@@ -23,6 +23,12 @@ class RealHabitDB implements DB {
   }
 
   @override
+  Future<bool> update(Habit habit) async {
+    await _box.put(habit.key.toString(), habit);
+    return true;
+  }
+
+  @override
   Future<bool> delete(String id) async {
     await _box.delete(id);
     return true;

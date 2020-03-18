@@ -54,7 +54,7 @@ class ModelHabitList extends BaseModel {
 
       bool isAllChecked = false;
       if (_majorHabit != null) {
-        DateTime date = getTodayDate().subtract(Duration(days: indexDay));
+        final DateTime date = getTodayDate().subtract(Duration(days: indexDay));
         isAllChecked = _majorHabit.utils.isHabitChecked(date);
       }
 
@@ -66,10 +66,12 @@ class ModelHabitList extends BaseModel {
     bottomBarElements = List.from(bottomBarElements.reversed);
   }
 
-  bool isShowHabitFor(List<HabitMode> selectedMode) =>
-      showAllHabits ||
-      majorHabit.utils.isHabitCheckedToday() ||
-      selectedMode.contains(HabitMode.Majror);
+  bool isShowHabitFor(List<HabitMode> selectedMode) {
+    if (majorHabit == null) return true;
+    return showAllHabits ||
+        majorHabit.utils.isHabitCheckedToday() ||
+        selectedMode.contains(HabitMode.Majror);
+  }
 
   Future<Habit> getMajorHabit() async {
     final List<Habit> listHabits = await _db.getAll();
