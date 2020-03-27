@@ -16,10 +16,10 @@ class ScreenCreateHabit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider<ModelHabitCreator>(
-      create: (context) => ModelHabitCreator(),
+      create: (context) => ModelHabitCreator(habit: habitToBeEditted),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Create Habit"),
+          title: Text(habitToBeEditted == null ? "Create Habit" : "Edit Habit"),
         ),
         body: _Main(),
       ),
@@ -34,13 +34,10 @@ class _Main extends StatefulWidget {
 
 class __MainState extends State<_Main> {
   bool isBonusHabit;
-  int goal = 1;
   ModelHabitCreator _model;
   ModelHabitList _modelHabitList;
   List<bool> _listSelectedItems = [false, true];
   final List<HabitMode> _listToggleOptions = List.of(HabitMode.values);
-
-  HabitMode selectedMode = HabitMode.Bonus;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +70,6 @@ class __MainState extends State<_Main> {
               borderRadius: BorderRadius.circular(10),
               isSelected: _listSelectedItems,
               onPressed: (int i) => setState(() {
-
                 if (_listToggleOptions[i] == HabitMode.Majror &&
                     isMajroHabitExist) {
                   CFlushBar(context, "You already have Majro Habit");
@@ -82,27 +78,59 @@ class __MainState extends State<_Main> {
                 _listSelectedItems = [false, false];
 
                 _listSelectedItems[i] = true;
-                selectedMode = _listToggleOptions[i];
+                _model.habitMode = _listToggleOptions[i];
               }),
               children:
                   _listToggleOptions.map((f) => Text(strFromMode(f))).toList(),
             ),
           ),
-          Align(
-            child: NumberPicker.integer(
-              initialValue: goal,
-              minValue: 1,
-              maxValue: 100,
-              scrollDirection: Axis.horizontal,
-              listViewWidth: 150,
-              itemExtent: 30,
-              onChanged: (val) => setState(() => goal = val as int),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Align(
+                child: Text("Goal", style: getTextTheme(context).subtitle)),
+          ),
+          Container(
+            height: 30,
+            child: Align(
+              child: NumberPicker.integer(
+                initialValue: _model.goal,
+                minValue: 1,
+                maxValue: 100,
+                scrollDirection: Axis.horizontal,
+                listViewWidth: 150,
+                itemExtent: 30,
+                onChanged: (val) => setState(() {
+                  _model.goal = val as int;
+                  _model.extendedGoal = _model.goal;
+                }),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Align(
+                child: Text("Extended Goal",
+                    style: getTextTheme(context).subtitle)),
+          ),
+          Container(
+            height: 30,
+            child: Align(
+              child: NumberPicker.integer(
+                initialValue: _model.extendedGoal ?? _model.goal,
+                minValue: _model.goal,
+                maxValue: 100,
+                scrollDirection: Axis.horizontal,
+                listViewWidth: 150,
+                itemExtent: 30,
+                highlightSelectedValue: true,
+                onChanged: (val) =>
+                    setState(() => _model.extendedGoal = val as int),
+              ),
             ),
           ),
           Align(
             child: RaisedButton(
-              onPressed: () =>
-                  _model.submit(context, goal: goal, habitMode: selectedMode),
+              onPressed: () => _model.submit(context),
               color: Colors.green,
               child: const Text('Done'),
             ),

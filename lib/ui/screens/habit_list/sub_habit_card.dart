@@ -5,6 +5,8 @@ import 'package:habitize3/core/view_models/model_habit_card.dart';
 import 'package:habitize3/ui/shared/text_styles.dart';
 import 'package:provider/provider.dart';
 
+import '../screen_habit_creator.dart';
+
 class HabitCard extends StatelessWidget {
   final Habit habit;
 
@@ -22,7 +24,7 @@ class HabitCard extends StatelessWidget {
         child: ListTile(
           key: Key(habit.key.toString()),
           title: Text(
-            habit.name ?? "error no name",
+            habit.name,
             style: model.isHabitChecked ? CTextStyle.checkHabits : null,
           ),
           subtitle: Text(model.habitStreak),
@@ -32,7 +34,7 @@ class HabitCard extends StatelessWidget {
                   color: Colors.green,
                 )
               : Icon(Icons.home),
-          trailing: habit.goal > 1 ? Text(model.currentIteration) : null,
+          trailing: model.getIterationText(),
         ),
       ),
     );
@@ -69,15 +71,15 @@ class CustomSlidable extends StatelessWidget {
         IconSlideAction(
           caption: model.getSwipeRightText(),
           icon: Icons.done,
-          color: model.isHabitChecked ? Colors.amberAccent : Colors.lightGreen,
-          onTap: () => model.slidableCheckHabit(checkOnce: true),
+          color: Colors.lightGreen,
+          onTap: () => model.slidableCheckHabit(checkAll: false),
         ),
         if (habit.goal > 1)
           IconSlideAction(
             caption: "Check All",
             icon: model.isHabitChecked ? Icons.done_outline : Icons.done_all,
             color: model.isHabitChecked ? Colors.amber : Colors.green,
-            onTap: () => model.slidableCheckHabit(checkOnce: false),
+            onTap: () => model.slidableCheckHabit(checkAll: true),
           )
       ],
       secondaryActions: <Widget>[
@@ -94,15 +96,12 @@ class CustomSlidable extends StatelessWidget {
           icon: Icons.edit,
           color: Colors.orangeAccent,
           onTap: () {
-//						Navigator.push(
-//								context,
-//								MaterialPageRoute(
-//										builder: (context) => ScreenCreateHabit(
-//											editedHabit: habit,
-//											)));
-//						ScreenCreateHabit(
-//							editedHabit: habit,
-//							);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ScreenCreateHabit(
+                          habitToBeEditted: habit,
+                        )));
           },
         ),
       ],

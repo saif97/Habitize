@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:habitize3/core/view_models/model_habit_list.dart';
 import 'package:provider/provider.dart';
 
-
 import 'core/utils/locator.dart';
 import 'ui/screens/habit_list/screen_habit_list.dart';
 
@@ -33,7 +32,7 @@ class SplashScreen extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
-      home: const Text("Splash Screen"),
+      home: const Scaffold(body: Center(child: CircularProgressIndicator())),
     );
   }
 }

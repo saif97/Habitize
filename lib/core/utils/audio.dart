@@ -3,7 +3,7 @@ import 'package:audioplayers/audio_cache.dart';
 class AudioUtils {
   AudioCache audioPlayer = AudioCache();
 
-  playSoundAllChecked() => audioPlayer.play("check.mp3");
+  playSoundAllChecked() => audioPlayer.play("check.mp3" , isNotification: true );
 
-  playSoundIterationChecked() => audioPlayer.play("iteration_check.mp3");
+  playSoundIterationChecked() => audioPlayer.play("iteration_check.mp3" ,isNotification: true);
 }

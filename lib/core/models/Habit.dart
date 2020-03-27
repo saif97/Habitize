@@ -38,9 +38,18 @@ class Habit {
   int goal;
 
   @HiveField(4)
-  Map dates;
+  Map<int, int> dates;
+  @HiveField(5)
+  int extendedGoal;
 
-  Habit({this.dates, this.name, this.streak, this.goal, this.mode, this.key}) {
+  Habit(
+      {this.dates,
+      this.name,
+      this.streak,
+      this.goal,
+      this.mode,
+      this.key,
+      this.extendedGoal}) {
     dates ??= <int, int>{};
     _utils = HabitUtils(this);
   }

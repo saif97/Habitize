@@ -69,7 +69,7 @@ class ModelHabitList extends BaseModel {
   bool isShowHabitFor(List<HabitMode> selectedMode) {
     if (majorHabit == null) return true;
     return showAllHabits ||
-        majorHabit.utils.isHabitCheckedToday() ||
+        majorHabit.utils.isHabitChecked(selectedDate) ||
         selectedMode.contains(HabitMode.Majror);
   }
 
@@ -85,7 +85,6 @@ class ModelHabitList extends BaseModel {
   }) {
     return (_listHabits.cast<Habit>())?.where((habit) {
           final bool isHabitChecked = habit.utils.isHabitChecked(_selectedDate);
-
           return habitMode.contains(habit.mode) &&
               isHabitChecked == showChecked;
         })?.toList() ??
@@ -98,7 +97,12 @@ class ModelHabitList extends BaseModel {
             MaterialPageRoute(
                 builder: (context) => const ScreenCreateHabit())) ??
         false;
-    if (response) listHabits = await _db.getAll();
+    if (response) await initModel();
+  }
+
+  Future hideBounusAllAfter(int sec) async {
+    await Future.delayed(Duration(seconds: sec));
+    showAllHabits = false;
   }
 
   //=============> GETTER & SETTERS <==============\\
@@ -107,6 +111,7 @@ class ModelHabitList extends BaseModel {
 
   set showAllHabits(bool value) {
     if (value == _showAllHabits) return;
+    if (value == true) hideBounusAllAfter(10);
     _showAllHabits = value;
     notifyListeners();
   }

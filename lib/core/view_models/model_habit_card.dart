@@ -11,7 +11,7 @@ import 'package:habitize3/ui/screens/habit_info/screen_habit_info.dart';
 class ModelHabitCard {
   ModelHabitList modelHabitList = locator<ModelHabitList>();
   bool _isHabitChecked;
-  String _currentIteration;
+  bool _isExtendedGoalChecked;
   String _habitStreak;
   Key _key;
   final Habit habit;
@@ -20,9 +20,6 @@ class ModelHabitCard {
   void initModel() {
     _isHabitChecked = habit.utils.isHabitChecked(selectedDate);
 
-    _currentIteration = (habit.dates[selectedDate.millisecondsSinceEpoch] ??=
-            habit.goal)
-        .toString();
     _habitStreak = _getHabitStreak();
 
     _key = Key(
@@ -41,7 +38,7 @@ class ModelHabitCard {
     // get how many days the habit is checked in a row by, getting the last day
     // the habit was checked & compare it to today or yesterday.
     int streak = 1;
-    final Map<int, int> dates = habit.dates.cast<int,int>();
+    final Map<int, int> dates = habit.dates.cast<int, int>();
     final List<int> ordredDateKeys = dates.keys.toList()..sort();
 
     // is the habit checked before.
@@ -102,18 +99,17 @@ class ModelHabitCard {
     return swipeRightText;
   }
 
-  bool slidableOnWillDismiss(SlideActionType actionType) {
+  Future<bool> slidableOnWillDismiss(SlideActionType actionType) async {
     if (actionType == SlideActionType.primary) {
       // check if habit is checked for today.
-      slidableCheckHabit(checkOnce: true);
+      await slidableCheckHabit(checkAll: false);
       return true;
     }
     return false;
   }
 
-  Future slidableCheckHabit({@required bool checkOnce}) async {
-    habit.utils.checkHabitDone(selectedDate,
-        checkAll: checkOnce ? null : !isHabitChecked);
+  Future slidableCheckHabit({@required bool checkAll}) async {
+    habit.utils.checkHabit(selectedDate, checkAll: checkAll);
 
     await modelHabitList.initModel();
   }
@@ -121,7 +117,17 @@ class ModelHabitCard {
   Future deleteHabit() async {
     final DB db = locator<DB>();
     await db.delete(habit.key);
-    modelHabitList.listHabits = await db.getAll();
+    await modelHabitList.initModel();
+  }
+
+  Text getIterationText() {
+    int iteration =
+        habit.dates[selectedDate.millisecondsSinceEpoch] ?? 0;
+
+    if (isHabitChecked && habit.extendedGoal != null) {
+      return Text("$iteration / ${habit.extendedGoal}");
+    } else
+      return habit.goal > 1 ? Text("$iteration / ${habit.goal}") : null;
   }
 
   //=============> GETTERS & SETTERS <==============\\
@@ -129,8 +135,6 @@ class ModelHabitCard {
   ModelHabitCard(this.habit, this.selectedDate) {
     initModel();
   }
-
-  String get currentIteration => _currentIteration;
 
   bool get isHabitChecked => _isHabitChecked;
 

@@ -13,7 +13,7 @@ class RealHabitDB implements DB {
     Hive.registerAdapter(HabitModeAdapter());
 
     _box = await Hive.openBox(HIVE_BOX_HABITS);
-//  Hive.box(HIVE_BOX_HABITS).deleteFromDisk();a
+//  Hive.box(HIVE_BOX_HABITS).deleteFromDisk();
   }
 
   @override

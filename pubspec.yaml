@@ -15,7 +15,7 @@ dependencies:
   material_design_icons_flutter: ^3.2.4096
   audioplayers:
   get_it: 4.0.0
-  flushbar: ^1.9.1
+#  flushbar: ^1.9.1
 
   flutter:
     sdk: flutter

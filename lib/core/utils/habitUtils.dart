@@ -6,35 +6,37 @@ import 'audio.dart';
 import 'locator.dart';
 
 class HabitUtils {
-	final Habit _habit;
+  final Habit _habit;
 
-	HabitUtils(this._habit);
+  HabitUtils(this._habit);
 
-	bool isHabitCheckedToday() => isHabitChecked(getTodayDate());
+  bool isHabitCheckedToday() => isHabitChecked(getTodayDate());
 
-	bool isHabitChecked(DateTime date) =>
-			_habit.dates[date.millisecondsSinceEpoch] == 0;
+  bool isHabitChecked(DateTime date) =>
+      (_habit.dates[date.millisecondsSinceEpoch] ??= 0) >= _habit.goal;
 
 
-	Future checkHabitDone(DateTime date, {bool undo = false, bool checkAll}) async {
-		final int dateInt = date.millisecondsSinceEpoch;
+  bool isExtendedGoalChecked(DateTime date) =>
+      _habit.dates[date.millisecondsSinceEpoch] >= _habit.extendedGoal;
 
-//		_habit.dates[dateInt] ??= _habit.goal;
-//		DateTime.fromMicrosecondsSinceEpoch(1584392400000000)
-		if (checkAll != null) {
-			if (checkAll)
-				_habit.dates[dateInt] = 0;
-			else
-				// reset habit iteration if unCheck all is pressed
-				_habit.dates[dateInt] = _habit.goal;
-		} else
-			undo ? _habit.dates[dateInt]++ : _habit.dates[dateInt]--;
+  Future checkHabit(DateTime date, {bool checkAll}) async {
+    final int dateInt = date.millisecondsSinceEpoch;
+    final AudioUtils _audioUtils = locator<AudioUtils>();
+    _habit.dates[dateInt] ??= 0;
 
-		await locator<DB>().update(_habit);
-		final AudioUtils audioUtils = locator<AudioUtils>();
-		if (_habit.dates[dateInt] == 0) {
-			audioUtils.playSoundAllChecked();
-		} else
-			audioUtils.playSoundIterationChecked();
-	}
+    if (checkAll) {
+      _habit.dates[dateInt] = _habit.goal;
+      _audioUtils.playSoundAllChecked();
+    } else {
+      _habit.dates[dateInt]++;
+      _audioUtils.playSoundIterationChecked();
+    }
+    await locator<DB>().update(_habit);
+  }
+
+  Future resetIteration(DateTime date) async {
+    final int dateInt = date.millisecondsSinceEpoch;
+    _habit.dates[dateInt] = _habit.goal;
+    await locator<DB>().update(_habit);
+  }
 }

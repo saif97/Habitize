@@ -1,4 +1,3 @@
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 class CProgressIndecator extends StatelessWidget {
@@ -10,8 +9,9 @@ class CProgressIndecator extends StatelessWidget {
 
 Future CFlushBar(BuildContext context, String message, {bool isDelayed}) async {
   isDelayed ?? await Future.delayed(const Duration(milliseconds: 500));
-  Flushbar(
-    message: message,
-    duration: const Duration(seconds: 2),
-  )..show(context);
+
+//  Flushbar(
+//    message: message,
+//    duration: const Duration(seconds: 2),
+//  )..show(context);
 }

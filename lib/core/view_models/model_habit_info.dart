@@ -35,7 +35,10 @@ class ModelHabitInfo {
   void checkHabitInCalender(DateTime date, {bool undo, bool checkAll}) {
     // make sure the checked date isn't not after today to prevent checks in future
     if (date.isBefore(getTodayDate().add(const Duration(days: 1)))) {
-      habit.utils.checkHabitDone(date, undo: undo, checkAll: checkAll);
+      if (undo)
+        habit.utils.resetIteration(date);
+      else
+        habit.utils.checkHabit(date, checkAll: checkAll);
     }
   }
 

@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:habitize3/core/models/Habit.dart';
 import 'package:intl/intl.dart';
 
@@ -25,12 +27,12 @@ void printData(Habit habit,
     {bool detailedDatesInfo = false, bool onlyThisMonth = true}) {
   String map = '';
   // sort the keys decending order to have latest days checked first printed.
-  final List<int> listSortedKeys = habit.dates.cast<int,int>().keys.toList()
+  final List<int> listSortedKeys = habit.dates.cast<int, int>().keys.toList()
     ..sort((a, b) => b.compareTo(a));
 
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
   for (final int dateInMill in listSortedKeys) {
-    final int iteration = habit.dates.cast<int,int>()[dateInMill];
+    final int iteration = habit.dates.cast<int, int>()[dateInMill];
 
     if (detailedDatesInfo || ((!detailedDatesInfo) && iteration == 0)) {
       final date = DateTime.fromMillisecondsSinceEpoch(dateInMill);
@@ -58,13 +60,13 @@ void printData(Habit habit,
 ///Takes a habit and prints its the dates when the habit is checked.
 void printThisMonthDates(Habit habit) {
   // sort the keys decending order to have latest days checked first printed.
-  List<int> listSortedKeys = habit.dates.cast<int,int>().keys.toList()
+  List<int> listSortedKeys = habit.dates.cast<int, int>().keys.toList()
     ..sort((a, b) => b.compareTo(a));
   DateFormat formatter = DateFormat('yyyy-MM-dd');
 
   String map = "";
   listSortedKeys.forEach((dateInMill) {
-    int iteration = habit.dates.cast<int,int>()[dateInMill];
+    int iteration = habit.dates.cast<int, int>()[dateInMill];
     final DateTime date = DateTime.fromMillisecondsSinceEpoch(dateInMill);
 
     var formatedDateString = formatter.format(date);
@@ -74,7 +76,8 @@ void printThisMonthDates(Habit habit) {
     else
       map += " $formatedDateString : Checked";
 
-    if (!isDateZeroedAtDayStart(date)) map += " ---- Warning, Date is not Zeroed";
+    if (!isDateZeroedAtDayStart(date))
+      map += " ---- Warning, Date is not Zeroed";
   });
 
   String str = "---------- START ----------  \n"
@@ -86,6 +89,9 @@ void printThisMonthDates(Habit habit) {
 }
 
 bool isDateZeroedAtDayStart(DateTime date) {
-
   return date.microsecond == 0;
+}
+
+TextTheme getTextTheme(BuildContext context) {
+  return Theme.of(context).textTheme;
 }
