@@ -52,13 +52,15 @@ class HabitAdapter extends TypeAdapter<Habit> {
       mode: fields[2] as HabitMode,
       key: fields[0] as String,
       extendedGoal: fields[5] as int,
-    );
+    )
+      ..when = fields[6] as String
+      ..reward = fields[7] as String;
   }
 
   @override
   void write(BinaryWriter writer, Habit obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.key)
       ..writeByte(1)
@@ -70,6 +72,10 @@ class HabitAdapter extends TypeAdapter<Habit> {
       ..writeByte(4)
       ..write(obj.dates)
       ..writeByte(5)
-      ..write(obj.extendedGoal);
+      ..write(obj.extendedGoal)
+      ..writeByte(6)
+      ..write(obj.when)
+      ..writeByte(7)
+      ..write(obj.reward);
   }
 }

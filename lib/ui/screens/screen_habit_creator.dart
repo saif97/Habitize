@@ -44,7 +44,7 @@ class __MainState extends State<_Main> {
     _model ??= Provider.of(context);
     _modelHabitList ??= Provider.of(context);
 
-    final bool isMajroHabitExist = _modelHabitList.majorHabit != null;
+    final bool isMajorHabitExist = _modelHabitList.majorHabit != null;
 
     return Container(
       margin: const EdgeInsets.all(20),
@@ -52,17 +52,33 @@ class __MainState extends State<_Main> {
         children: <Widget>[
           Form(
             key: _model.globalKey,
-            child: TextFormField(
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please Enter a Name';
-                }
-                return null;
-              },
-              controller: _model.controller_name,
-              maxLines: 1,
-              maxLength: 40,
-              decoration: const InputDecoration(labelText: 'name'),
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please Enter a Name';
+                    }
+                    return null;
+                  },
+                  controller: _model.controller_name,
+                  maxLines: 1,
+                  maxLength: 40,
+                  decoration: const InputDecoration(labelText: 'name'),
+                ),
+                TextFormField(
+                  controller: _model.controller_when,
+                  maxLines: 1,
+                  maxLength: 10,
+                  decoration: const InputDecoration(labelText: 'when'),
+                ),
+                TextFormField(
+                  controller: _model.controller_reward,
+                  maxLines: 1,
+                  maxLength: 10,
+                  decoration: const InputDecoration(labelText: 'Reward'),
+                ),
+              ],
             ),
           ),
           Align(
@@ -71,7 +87,7 @@ class __MainState extends State<_Main> {
               isSelected: _listSelectedItems,
               onPressed: (int i) => setState(() {
                 if (_listToggleOptions[i] == HabitMode.Majror &&
-                    isMajroHabitExist) {
+                    isMajorHabitExist) {
                   CFlushBar(context, "You already have Majro Habit");
                   return;
                 }

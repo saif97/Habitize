@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:habitize3/core/models/Habit.dart';
@@ -21,20 +22,32 @@ class HabitCard extends StatelessWidget {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         onTap: () => model.openHabitInfo(context),
-        child: ListTile(
-          key: Key(habit.key.toString()),
-          title: Text(
-            habit.name,
-            style: model.isHabitChecked ? CTextStyle.checkHabits : null,
+        child: Container(
+          height: 75,
+          child: ListTile(
+            key: Key(habit.key.toString()),
+            title: Text(
+              habit.name,
+              style: model.isHabitChecked ? CTextStyle.checkHabits : null,
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+								crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text("When: ${habit.when ?? ""}"),
+                  Text("Reward: ${habit.reward ?? ""}"),
+                ],
+              ),
+            ),
+            leading: model.isHabitChecked
+                ? Icon(
+                    Icons.check,
+                    color: Colors.green,
+                  )
+                : Icon(Icons.home),
+            trailing: model.getIterationText(),
           ),
-          subtitle: Text(model.habitStreak),
-          leading: model.isHabitChecked
-              ? Icon(
-                  Icons.check,
-                  color: Colors.green,
-                )
-              : Icon(Icons.home),
-          trailing: model.getIterationText(),
         ),
       ),
     );

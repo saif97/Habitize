@@ -26,7 +26,7 @@ class Habit {
   @HiveField(1)
   @required
   String name;
-
+// 100.580 there a{ 46
   @Deprecated('Calculate it on runtime is more maintainalbe')
   final int streak;
 
@@ -42,6 +42,12 @@ class Habit {
   @HiveField(5)
   int extendedGoal;
 
+  @HiveField(6)
+  String when;
+
+  @HiveField(7)
+  String reward;
+
   Habit(
       {this.dates,
       this.name,
@@ -49,6 +55,8 @@ class Habit {
       this.goal,
       this.mode,
       this.key,
+      this.reward,
+      this.when,
       this.extendedGoal}) {
     dates ??= <int, int>{};
     _utils = HabitUtils(this);
