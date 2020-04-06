@@ -15,7 +15,7 @@ class ModelHabitList extends BaseModel {
   DateTime _selectedDate = getTodayDate();
 
   List<Widget> bottomBarElements;
-  bool _showAllHabits = false;
+  bool _showAllHabits = true;
 
   final GlobalKey keyAnimatedList = GlobalKey<AnimatedListState>();
   DB _db;

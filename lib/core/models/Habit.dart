@@ -26,6 +26,7 @@ class Habit {
   @HiveField(1)
   @required
   String name;
+
 // 100.580 there a{ 46
   @Deprecated('Calculate it on runtime is more maintainalbe')
   final int streak;
@@ -38,6 +39,7 @@ class Habit {
   int goal;
 
   @HiveField(4)
+  @protected
   Map<int, int> dates;
   @HiveField(5)
   int extendedGoal;
@@ -63,4 +65,8 @@ class Habit {
   }
 
   HabitUtils get utils => _utils;
+
+//=============> GETTERS & SETTERS <==============\\
+
+
 }

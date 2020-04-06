@@ -12,6 +12,7 @@ include: package:lint/analysis_options.yaml
 analyzer:
   errors:
 #    Possible values ignore, info, warning and error.
+#    inva
     missing_required_param: error
     avoid_single_cascade_in_expression_statements: ignore
     non_constant_identifier_names: ignore

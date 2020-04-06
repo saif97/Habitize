@@ -33,19 +33,14 @@ class HabitCard extends StatelessWidget {
             subtitle: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
-								crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text("When: ${habit.when ?? ""}"),
-                  Text("Reward: ${habit.reward ?? ""}"),
+                  if (habit.when != null) Text("When: ${habit.when}"),
+                  if (habit.reward != null) Text("Reward: ${habit.reward ?? ""}") ,
                 ],
               ),
             ),
-            leading: model.isHabitChecked
-                ? Icon(
-                    Icons.check,
-                    color: Colors.green,
-                  )
-                : Icon(Icons.home),
+            leading: Text(model.habitStreak),
             trailing: model.getIterationText(),
           ),
         ),

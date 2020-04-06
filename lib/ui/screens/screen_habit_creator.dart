@@ -69,13 +69,13 @@ class __MainState extends State<_Main> {
                 TextFormField(
                   controller: _model.controller_when,
                   maxLines: 1,
-                  maxLength: 10,
+                  maxLength: 20,
                   decoration: const InputDecoration(labelText: 'when'),
                 ),
                 TextFormField(
                   controller: _model.controller_reward,
                   maxLines: 1,
-                  maxLength: 10,
+                  maxLength: 20,
                   decoration: const InputDecoration(labelText: 'Reward'),
                 ),
               ],

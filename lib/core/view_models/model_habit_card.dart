@@ -20,15 +20,14 @@ class ModelHabitCard {
   void initModel() {
     _isHabitChecked = habit.utils.isHabitChecked(selectedDate);
 
-    _habitStreak = _getHabitStreak();
+    _habitStreak = _getHabitStreak2();
 
-    _key = Key(
-        "${habit.key}-${habit.dates[selectedDate.millisecondsSinceEpoch] ?? -2}");
+    _key = Key("${habit.key}-${habit.dates[selectedDate.millisecondsSinceEpoch] ?? -2}");
   }
 
   Future openHabitInfo(BuildContext context) async {
-    final bool r = await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ScreenHabitInfo(habit)));
+    final bool r = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ScreenHabitInfo(habit)));
     if (r ?? false) {
       modelHabitList.initModel();
     }
@@ -37,55 +36,69 @@ class ModelHabitCard {
   String _getHabitStreak() {
     // get how many days the habit is checked in a row by, getting the last day
     // the habit was checked & compare it to today or yesterday.
-    int streak = 1;
-    final Map<int, int> dates = habit.dates.cast<int, int>();
+    int streak = 0;
+    final Map<int, int> dates = habit.dates;
     final List<int> ordredDateKeys = dates.keys.toList()..sort();
 
     // is the habit checked before.
     final int todayInMilSecs = getTodayDateInt();
 
-    final int yesterdayInMilSecs =
-        getTodayDateInt(addDuration: const Duration(days: -1));
+    final int yesterdayInMilSecs = getTodayDateInt(addDuration: const Duration(days: -1));
 
-    // check if today and yesterday are stored in the habit.
-    if (dates.containsKey(todayInMilSecs) &&
-        dates.containsKey(yesterdayInMilSecs)) {
-      // check if today and yesterday for this habit is checked all or more.
-      // all in this case is 0 more is in the minus.
-      final bool bool1 = dates[todayInMilSecs] <= 0;
-      final bool bool2 = dates[yesterdayInMilSecs] <= 0;
+    // check if today and yesterday for this habit is checked all or more.
+    // all in this case is 0 more is in the minus.
+    final bool bool1 = habit.utils.isHabitChecked(getTodayDate());
+    final bool bool2 =
+        habit.utils.isHabitChecked(getTodayDate(addDuration: const Duration(days: -1)));
 
-      if (bool1 || bool2) {
-        // iterate over all the dates in the map and check if they're in row.
-        for (var i = ordredDateKeys.length - 1; i > 0; --i) {
-          final DateTime date1 =
-              DateTime.fromMillisecondsSinceEpoch(ordredDateKeys.elementAt(i));
+    if (bool1 || bool2) {
+      // iterate over all the dates in the map and check if they're in row.
+      for (var i = ordredDateKeys.length - 1; i > 0; --i) {
+        final DateTime date1 = DateTime.fromMillisecondsSinceEpoch(ordredDateKeys.elementAt(i));
+        if (!habit.utils.isHabitChecked(date1)) break;
 
-          if (!habit.utils.isHabitChecked(date1)) break;
+        final date2 = DateTime.fromMillisecondsSinceEpoch(ordredDateKeys.elementAt(i - 1));
+        if (!habit.utils.isHabitChecked(date2)) break;
 
-          final date2 = DateTime.fromMillisecondsSinceEpoch(
-              ordredDateKeys.elementAt(i - 1));
-
-          if (!habit.utils.isHabitChecked(date2)) break;
-
-          if (date1.difference(date2) == const Duration(days: 1))
-            streak++;
-          else
-            break;
-        }
+        if (date1.difference(date2) == const Duration(days: 1))
+          streak++;
+        else
+          break;
       }
     }
 
-    if (streak == 1)
-      return 'Check today to have your first streak';
-    else {
-      if (streak < 21)
-        return '${streak.toString()} => 21';
-      else if (streak < 43)
-        return '${streak.toString()} => 43';
-      else if (streak < 66) return '${streak.toString()} => 66';
-      return streak.toString();
+    if (streak < 21)
+      return '${streak.toString()} => 21';
+    else if (streak < 43)
+      return '${streak.toString()} => 43';
+    else if (streak < 66) return '${streak.toString()} => 66';
+    return streak.toString();
+  }
+
+  // Note: Not checked habits will not be present in the dates map.
+  String _getHabitStreak2() {
+    int streak = 0;
+
+    // check today OR yestday if checked.
+
+    final List<int> ordredDateKeys = habit.utils.getListCheckedDatesKeys();
+
+    // loop throgh the the dates
+    for (int i = 0; i < ordredDateKeys.length; ++i) {
+      DateTime date = dateFromInt(ordredDateKeys[i]);
+      print(printDate(date));
+      if (habit.utils.isHabitChecked(date)) {
+        streak++;
+        // check if the next date is tomrrow.
+        if (!habit.dates.containsKey(intFromDate(date.add(Duration(days: -1))))) break;
+      } else {
+        // If toady (i=0) is not checked it is OK
+        if (i == 0) continue;
+        break;
+      }
     }
+
+    return streak.toString();
   }
 
   String getSwipeRightText() {
@@ -121,8 +134,7 @@ class ModelHabitCard {
   }
 
   Text getIterationText() {
-    int iteration =
-        habit.dates[selectedDate.millisecondsSinceEpoch] ?? 0;
+    final int iteration = habit.dates[selectedDate.millisecondsSinceEpoch] ?? 0;
 
     if (isHabitChecked && habit.extendedGoal != null) {
       return Text("$iteration / ${habit.extendedGoal}");
