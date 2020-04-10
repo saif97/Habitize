@@ -6,8 +6,6 @@ import 'package:habitize3/core/view_models/model_habit_card.dart';
 import 'package:habitize3/ui/shared/text_styles.dart';
 import 'package:provider/provider.dart';
 
-import '../screen_habit_creator.dart';
-
 class HabitCard extends StatelessWidget {
   final Habit habit;
 
@@ -15,33 +13,49 @@ class HabitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double cardRadius = 15;
     final ModelHabitCard model = Provider.of(context);
-    return CustomSlidable(
-      habit: habit,
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(cardRadius)),
       child: InkWell(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         onTap: () => model.openHabitInfo(context),
         child: Container(
-          height: 75,
-          child: ListTile(
-            key: Key(habit.key.toString()),
-            title: Text(
-              habit.name,
-              style: model.isHabitChecked ? CTextStyle.checkHabits : null,
-            ),
-            subtitle: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  if (habit.when != null) Text("When: ${habit.when}"),
-                  if (habit.reward != null) Text("Reward: ${habit.reward ?? ""}") ,
-                ],
+          height: 185,
+          child: Column(
+            children: <Widget>[
+              ClipRRect( 
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(cardRadius),
+                  topRight: Radius.circular(cardRadius),
+                ),
+                child: Image.asset("assets/test_images/work.jpg",
+                    height: 100, width: double.infinity, fit: BoxFit.fitWidth),
               ),
-            ),
-            leading: Text(model.habitStreak),
-            trailing: model.getIterationText(),
+              CustomSlidable(
+                habit: habit,
+                child: ListTile(
+                  key: Key(habit.key.toString()),
+                  title: Text(
+                    habit.name,
+                    style: model.isHabitChecked ? CTextStyle.checkHabits : null,
+                  ),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        if (habit.when != null) Text("When: ${habit.when}"),
+                        if (habit.reward != null) Text("Reward: ${habit.reward ?? ""}"),
+                      ],
+                    ),
+                  ),
+                  leading: Text(model.habitStreak),
+                  trailing: model.getIterationText(),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -102,15 +116,8 @@ class CustomSlidable extends StatelessWidget {
         IconSlideAction(
           caption: "Edit",
           icon: Icons.edit,
+          onTap: () => model.OpenHabitEditor(context),
           color: Colors.orangeAccent,
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ScreenCreateHabit(
-                          habitToBeEditted: habit,
-                        )));
-          },
         ),
       ],
       child: child,

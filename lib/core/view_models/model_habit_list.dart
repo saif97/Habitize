@@ -79,10 +79,8 @@ class ModelHabitList extends BaseModel {
         orElse: () => null);
   }
 
-  List<Habit> filterHabits({
-    List<HabitMode> habitMode,
-    @required bool showChecked,
-  }) {
+  List<Habit> filterHabits(
+      {List<HabitMode> habitMode, @required bool showChecked}) {
     return (_listHabits.cast<Habit>())?.where((habit) {
           final bool isHabitChecked = habit.utils.isHabitChecked(_selectedDate);
           return habitMode.contains(habit.mode) &&

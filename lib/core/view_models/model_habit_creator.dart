@@ -5,9 +5,9 @@ import 'package:habitize3/core/serivces/db_api/db.dart';
 import 'package:habitize3/core/utils/locator.dart';
 
 class ModelHabitCreator {
-	final TextEditingController _controller_name = TextEditingController();
-	final TextEditingController _controller_when = TextEditingController();
-	final TextEditingController _controller_reward = TextEditingController();
+  final TextEditingController _controller_name = TextEditingController();
+  final TextEditingController _controller_when = TextEditingController();
+  final TextEditingController _controller_reward = TextEditingController();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   HabitMode habitMode = HabitMode.Bonus;
   final Habit _habitToBeEditted;
@@ -51,10 +51,9 @@ class ModelHabitCreator {
 //=============> GETTERS & SETTERS <==============\\
   TextEditingController get controller_name => _controller_name;
 
+  TextEditingController get controller_when => _controller_when;
 
-	TextEditingController get controller_when => _controller_when;
+  GlobalKey<FormState> get globalKey => _globalKey;
 
-	GlobalKey<FormState> get globalKey => _globalKey;
-
-	TextEditingController get controller_reward => _controller_reward;
+  TextEditingController get controller_reward => _controller_reward;
 }

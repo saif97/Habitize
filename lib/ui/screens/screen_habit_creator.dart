@@ -47,7 +47,7 @@ class __MainState extends State<_Main> {
     final bool isMajorHabitExist = _modelHabitList.majorHabit != null;
 
     return Container(
-      margin: const EdgeInsets.all(20),
+      margin: const EdgeInsets.symmetric(horizontal: 30),
       child: ListView(
         children: <Widget>[
           Form(
@@ -86,8 +86,7 @@ class __MainState extends State<_Main> {
               borderRadius: BorderRadius.circular(10),
               isSelected: _listSelectedItems,
               onPressed: (int i) => setState(() {
-                if (_listToggleOptions[i] == HabitMode.Majror &&
-                    isMajorHabitExist) {
+                if (_listToggleOptions[i] == HabitMode.Majror && isMajorHabitExist) {
                   CFlushBar(context, "You already have Majro Habit");
                   return;
                 }
@@ -96,15 +95,12 @@ class __MainState extends State<_Main> {
                 _listSelectedItems[i] = true;
                 _model.habitMode = _listToggleOptions[i];
               }),
-              children:
-                  _listToggleOptions.map((f) => Text(strFromMode(f))).toList(),
+              children: _listToggleOptions.map((f) => Text(strFromMode(f))).toList(),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(20),
-            child: Align(
-                child: Text("Goal", style: getTextTheme(context).subtitle)),
-          ),
+              padding: const EdgeInsets.all(20),
+              child: Align(child: Text("Goal", style: getTextTheme(context).subtitle))),
           Container(
             height: 30,
             child: Align(
@@ -124,9 +120,7 @@ class __MainState extends State<_Main> {
           ),
           Padding(
             padding: const EdgeInsets.all(20),
-            child: Align(
-                child: Text("Extended Goal",
-                    style: getTextTheme(context).subtitle)),
+            child: Align(child: Text("Extended Goal", style: getTextTheme(context).subtitle)),
           ),
           Container(
             height: 30,
@@ -139,8 +133,7 @@ class __MainState extends State<_Main> {
                 listViewWidth: 150,
                 itemExtent: 30,
                 highlightSelectedValue: true,
-                onChanged: (val) =>
-                    setState(() => _model.extendedGoal = val as int),
+                onChanged: (val) => setState(() => _model.extendedGoal = val as int),
               ),
             ),
           ),
