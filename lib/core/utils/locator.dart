@@ -3,6 +3,7 @@ import 'package:habitize3/core/serivces/db_api/db.dart';
 import 'package:habitize3/core/serivces/db_api/real_db.dart';
 import 'package:habitize3/core/utils/audio.dart';
 import 'package:habitize3/core/view_models/model_habit_list.dart';
+import 'package:logging/logging.dart';
 
 GetIt locator = GetIt.instance;
 

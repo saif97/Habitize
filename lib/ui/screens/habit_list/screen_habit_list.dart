@@ -18,15 +18,7 @@ class HomeWid extends StatelessWidget {
         backgroundColor: const Color(0xFF393e46),
         body: SafeArea(
           child: Consumer<ModelHabitList>(
-            builder: (_, model, __) {
-              return Column(
-                children: <Widget>[
-                  CAppbar(),
-                  Expanded(child: SliverScrollView()),
-                  BottomTimeLine(),
-                ],
-              );
-            },
+            builder: (_, model, __) => Column(children: <Widget>[CAppbar(), HabitListing(), BottomTimeLine()]),
           ),
         ),
       ),
@@ -38,6 +30,7 @@ class CAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ModelHabitList model = Provider.of(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -48,8 +41,7 @@ class CAppbar extends StatelessWidget {
         const Spacer(),
         FlatButton(
           onPressed: () => model.showAllHabits = !model.showAllHabits,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           color: model.showAllHabits ? Colors.greenAccent : Colors.redAccent,
           child: Text(model.showAllHabits ? "Hide All" : "Show All"),
         ),
@@ -62,55 +54,39 @@ class CAppbar extends StatelessWidget {
   }
 }
 
-class SliverScrollView extends StatelessWidget {
+class HabitListing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: <Widget>[
-        HabitStream(selectedHabitMode: [HabitMode.Majror], showChecked: false),
-        Saperator(color: Colors.red),
-        Saperator(color: Colors.amber),
-        HabitStream(selectedHabitMode: [HabitMode.Bonus], showChecked: false),
-        Saperator(color: Colors.green),
-        HabitStream(selectedHabitMode: HabitMode.values, showChecked: true),
-      ],
+    return Expanded(
+      child: ListView(
+        children: <Widget>[
+          ..._getHabits(selectedHabitMode: [HabitMode.Majror], showChecked: false),
+          Saperator(color: Colors.red),
+          Saperator(color: Colors.amber),
+          ..._getHabits(selectedHabitMode: [HabitMode.Bonus], showChecked: false),
+          Saperator(color: Colors.green),
+          ..._getHabits(selectedHabitMode: HabitMode.values, showChecked: true),
+        ],
+      ),
     );
   }
-}
 
-class HabitStream extends StatelessWidget {
-  final List<HabitMode> selectedHabitMode;
-  final bool showChecked;
+  List<Widget> _getHabits(
+      {@required List<HabitMode> selectedHabitMode, @required bool showChecked}) {
+    final ModelHabitList _model = locator<ModelHabitList>();
 
-  HabitStream({@required this.selectedHabitMode, @required this.showChecked});
+    if (_model.isShowHabitFor(selectedHabitMode)) {
+      final List<Habit> filteredHabits =
+          _model.filterHabits(showChecked: showChecked, habitMode: selectedHabitMode);
 
-  @override
-  Widget build(BuildContext context) {
-    return SliverList(
-      delegate: SliverChildListDelegate([
-        Consumer<ModelHabitList>(
-          builder: (_, model, __) {
-            if (model.isShowHabitFor(selectedHabitMode)) {
-              final List<Habit> filteredHabits = model.filterHabits(
-                  showChecked: showChecked, habitMode: selectedHabitMode);
-              return ListView.builder(
-                itemCount: filteredHabits.length,
-                shrinkWrap: true,
-                itemBuilder: (context, i) {
-                  final Habit habit = filteredHabits[i];
-                  return ProxyProvider0(
-                    update: (_, __) =>
-                        ModelHabitCard(habit, model.selectedDate),
-                    child: HabitCard(habit),
-                  );
-                },
-              );
-            } else
-              return Container();
-          },
-        )
-      ]),
-    );
+      return filteredHabits
+          .map((habit) => ProxyProvider0(
+                update: (_, __) => ModelHabitCard(habit, _model.selectedDate),
+                child: HabitCard(habit),
+              ))
+          .toList();
+    } else
+      return [];
   }
 }
 
@@ -121,20 +97,16 @@ class Saperator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverList(
-      delegate: SliverChildListDelegate([
-        Card(
-          elevation: 10,
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
-            child: Container(
-              width: double.infinity,
-              height: 5,
-              color: color,
-            ),
-          ),
-        )
-      ]),
+    return Card(
+      elevation: 10,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
+        child: Container(
+          width: double.infinity,
+          height: 5,
+          color: color,
+        ),
+      ),
     );
   }
 }

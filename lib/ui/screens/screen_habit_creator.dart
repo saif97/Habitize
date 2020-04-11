@@ -47,7 +47,7 @@ class __MainState extends State<_Main> {
     final bool isMajorHabitExist = _modelHabitList.majorHabit != null;
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 30),
       child: ListView(
         children: <Widget>[
           Form(

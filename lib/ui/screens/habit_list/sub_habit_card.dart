@@ -11,6 +11,8 @@ class HabitCard extends StatelessWidget {
 
   const HabitCard(this.habit);
 
+  // TODO: The swiping bit that comes when you swipe is odd.
+  // TODO: apply one single rounded clip to the whole widget. 
   @override
   Widget build(BuildContext context) {
     const double cardRadius = 15;
