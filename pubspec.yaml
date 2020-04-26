@@ -1,22 +1,28 @@
 name: habitize3
-# name: habitize3_test 
+# name: habitize3_test
 description: A new Flutter project.
 
-version: 1.0.0+1
+version: 0.1.0+1
 
 environment:
-  sdk: ">=2.6.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
-dependencies:
+dependencies: 
+  uic: ^0.3.3
+  floating_search_bar: ^0.3.0
+  unsplash_client:
+    git:
+      url: https://github.com/saif97/unsplash_client
   hive: ^1.4.1+1
-  hive_flutter: ^0.3.0+2 
+  hive_flutter: ^0.3.0+2
   provider: ^4.0.4
   numberpicker: ^1.2.0
   flutter_slidable: ^0.5.4
   material_design_icons_flutter: ^3.2.4096
   audioplayers:
   get_it: 4.0.0
-#  flushbar: ^1.9.1
+  cached_network_image: ^2.1.0+1
+  #  flushbar: ^1.9.1
 
   flutter:
     sdk: flutter
@@ -24,8 +30,8 @@ dependencies:
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
-  logging: ^0.11.4
-  logger: ^0.8.3 
+  colorize_lumberdash: ^2.1.0
+  lumberdash: ^2.1.1
   mockito: ^4.1.1
   hive_generator: ^0.7.0+2
   build_runner: ^1.8.0
@@ -33,14 +39,18 @@ dev_dependencies:
   intl: ^0.16.1
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.7.4
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/app_icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -50,4 +60,3 @@ flutter:
   assets:
     - assets/
     - assets/test_images/
-

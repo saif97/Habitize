@@ -4,6 +4,7 @@ import 'package:habitize3/core/models/Habit.dart';
 import 'package:habitize3/core/utils/functions.dart';
 import 'package:habitize3/core/view_models/model_habit_creator.dart';
 import 'package:habitize3/core/view_models/model_habit_list.dart';
+import 'package:habitize3/ui/shared/constants.dart';
 import 'package:habitize3/ui/shared/widgets.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +16,7 @@ class ScreenCreateHabit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<ModelHabitCreator>(
+    return ChangeNotifierProvider<ModelHabitCreator>(
       create: (context) => ModelHabitCreator(habit: habitToBeEditted),
       child: Scaffold(
         appBar: AppBar(
@@ -46,9 +47,9 @@ class __MainState extends State<_Main> {
 
     final bool isMajorHabitExist = _modelHabitList.majorHabit != null;
 
-    return Container(
+    return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 30),
-      child: ListView(
+      child: Column(
         children: <Widget>[
           Form(
             key: _model.globalKey,
@@ -137,15 +138,40 @@ class __MainState extends State<_Main> {
               ),
             ),
           ),
+          Unsplash(),
           Align(
             child: RaisedButton(
               onPressed: () => _model.submit(context),
               color: Colors.green,
               child: const Text('Done'),
             ),
-          )
+          ),
         ],
       ),
+    );
+  }
+}
+
+class Unsplash extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ModelHabitCreator _model = Provider.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: _model.imgURL == null
+          ? Container(
+              height: UNSPLASH_IMAGE_HEIGHT,
+              width: double.infinity,
+              child: RaisedButton(
+                onPressed: () => _model.openUnsplash(context),
+                child: const Text("Tap to Choose Image"),
+              ),
+            )
+          : InkWell(
+              onTap: () => _model.openDialogAdgustImg(context),
+              child: CCachedNetworkImage(url: _model.imgURL, yAligment: _model.imgY_Alignment),
+            ),
     );
   }
 }

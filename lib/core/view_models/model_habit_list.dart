@@ -3,8 +3,7 @@ import 'package:habitize3/core/models/Habit.dart';
 import 'package:habitize3/core/serivces/db_api/db.dart';
 import 'package:habitize3/core/utils/locator.dart';
 import 'package:habitize3/ui/screens/habit_list/sub_bottom_time_line.dart';
-import 'package:habitize3/ui/screens/screen_habit_creator.dart';
-import 'package:logger/logger.dart';
+import 'package:habitize3/ui/screens/screen_create_habit/screen_habit_creator.dart';
 
 import '../utils/functions.dart';
 import 'base_model.dart';
@@ -15,13 +14,13 @@ class ModelHabitList extends BaseModel {
 
   DateTime _selectedDate = getTodayDate();
 
-  List<Widget> bottomBarElements;
+  List<Widget> bottomBarElements; 
   bool _showAllHabits = true;
 
   final GlobalKey keyAnimatedList = GlobalKey<AnimatedListState>();
   DB _db;
 
-  Future initModel() async { 
+  Future initModel() async {
     _db = locator<DB>();
     _listHabits = await _db.getAll();
     _majorHabit = await getMajorHabit();

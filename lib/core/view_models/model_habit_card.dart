@@ -7,12 +7,12 @@ import 'package:habitize3/core/utils/functions.dart';
 import 'package:habitize3/core/utils/locator.dart';
 import 'package:habitize3/core/view_models/model_habit_list.dart';
 import 'package:habitize3/ui/screens/habit_info/screen_habit_info.dart';
-import 'package:habitize3/ui/screens/screen_habit_creator.dart';
+import 'package:habitize3/ui/screens/screen_create_habit/screen_habit_creator.dart';
 
 class ModelHabitCard {
   ModelHabitList modelHabitList = locator<ModelHabitList>();
   bool _isHabitChecked;
-  bool _isExtendedGoalChecked;
+
   String _habitStreak;
   Key _key;
   final Habit habit;

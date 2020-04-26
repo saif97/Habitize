@@ -13,9 +13,7 @@ class BottomTimeLine extends StatelessWidget {
         height: 60,
         color: Colors.black45,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: model.bottomBarElements,
-        ),
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: model.bottomBarElements),
       ),
     );
   }

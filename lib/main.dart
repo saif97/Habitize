@@ -1,5 +1,7 @@
+import 'package:colorize_lumberdash/colorize_lumberdash.dart';
 import 'package:flutter/material.dart';
 import 'package:habitize3/core/view_models/model_habit_list.dart';
+import 'package:lumberdash/lumberdash.dart';
 import 'package:provider/provider.dart';
 
 import 'core/utils/locator.dart';
@@ -8,6 +10,7 @@ import 'ui/screens/habit_list/screen_habit_list.dart';
 Future main() async {
   runApp(SplashScreen());
   await setupLocator();
+  putLumberdashToWork(withClients: [ColorizeLumberdash()]);
   runApp(MyApp());
 }
 
@@ -19,8 +22,11 @@ class MyApp extends StatelessWidget {
       value: locator<ModelHabitList>(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+
         theme: ThemeData.dark(),
         home: HomeWid(),
+        // home: ScreenCreateHabit(),
+        // home: ScreenUnsplashImg(),
       ),
     );
   }

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:habitize3/core/models/Habit.dart';
 import 'package:habitize3/core/view_models/model_habit_card.dart';
+import 'package:habitize3/ui/shared/constants.dart';
 import 'package:habitize3/ui/shared/text_styles.dart';
+import 'package:habitize3/ui/shared/widgets.dart';
 import 'package:provider/provider.dart';
 
 class HabitCard extends StatelessWidget {
@@ -12,7 +14,7 @@ class HabitCard extends StatelessWidget {
   const HabitCard(this.habit);
 
   // TODO: The swiping bit that comes when you swipe is odd.
-  // TODO: apply one single rounded clip to the whole widget. 
+  // TODO: apply one single rounded clip to the whole widget.
   @override
   Widget build(BuildContext context) {
     const double cardRadius = 15;
@@ -24,17 +26,17 @@ class HabitCard extends StatelessWidget {
         highlightColor: Colors.transparent,
         onTap: () => model.openHabitInfo(context),
         child: Container(
-          height: 185,
+          height: habit.imgUrl == null ? 85 : (85 + UNSPLASH_IMAGE_HEIGHT),
           child: Column(
             children: <Widget>[
-              ClipRRect( 
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(cardRadius),
-                  topRight: Radius.circular(cardRadius),
+              if (habit.imgUrl != null)
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(cardRadius),
+                    topRight: Radius.circular(cardRadius),
+                  ),
+                  child: CCachedNetworkImage(url: habit.imgUrl, yAligment: habit.imgY_Alignment),
                 ),
-                child: Image.asset("assets/test_images/work.jpg",
-                    height: 100, width: double.infinity, fit: BoxFit.fitWidth),
-              ),
               CustomSlidable(
                 habit: habit,
                 child: ListTile(

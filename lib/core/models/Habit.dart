@@ -50,6 +50,12 @@ class Habit {
   @HiveField(7)
   String reward;
 
+  @HiveField(8)
+  String imgUrl;
+
+  @HiveField(9)
+  double imgY_Alignment; 
+
   Habit(
       {this.dates,
       this.name,

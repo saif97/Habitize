@@ -34,3 +34,5 @@ final List<String> weekDaysNames = [
 	'Sat',
 	'Sun',
 ];
+
+const double UNSPLASH_IMAGE_HEIGHT = 100;
