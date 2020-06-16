@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:habitize3/ui/shared/widgets.dart';
+
+import '../../shared/widgets.dart';
 
 class DialogAdgustUnsplashImg extends StatefulWidget {
   String url;

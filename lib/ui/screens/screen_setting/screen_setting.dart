@@ -11,7 +11,9 @@ class ScreenSettings extends StatelessWidget {
             ListTile(
               leading: const Text("Only check habit when major is checked"),
               trailing: Switch(
-                onChanged: (v) {},
+                onChanged: (v) {
+
+                },
                 value: false,
               ),
             ),

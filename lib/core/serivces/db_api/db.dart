@@ -1,4 +1,4 @@
-import 'package:habitize3/core/models/Habit.dart';
+import '../../models/Habit.dart';
 
 abstract class DB {
   Future instantiateDB();
@@ -12,5 +12,4 @@ abstract class DB {
   Future<List<Habit>> getAll();
 
   Future<bool> delete(String id);
-
 }

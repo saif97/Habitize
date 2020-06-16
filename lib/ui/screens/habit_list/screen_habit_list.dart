@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:habitize3/core/models/Habit.dart';
-import 'package:habitize3/core/utils/locator.dart';
-import 'package:habitize3/core/view_models/model_habit_card.dart';
-import 'package:habitize3/core/view_models/model_habit_list.dart';
-import 'package:habitize3/ui/shared/text_styles.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/models/Habit.dart';
+import '../../../core/utils/locator.dart';
+import '../../../core/view_models/model_habit_card.dart';
+import '../../../core/view_models/model_habit_list.dart';
+import '../../shared/text_styles.dart';
 import 'sub_bottom_time_line.dart';
 import 'sub_habit_card.dart';
 
@@ -18,7 +18,8 @@ class HomeWid extends StatelessWidget {
         backgroundColor: const Color(0xFF393e46),
         body: SafeArea(
           child: Consumer<ModelHabitList>(
-            builder: (_, model, __) => Column(children: <Widget>[CAppbar(), HabitListing(), BottomTimeLine()]),
+            builder: (_, model, __) =>
+                Column(children: <Widget>[CAppbar(), HabitListing(), BottomTimeLine()]),
           ),
         ),
       ),

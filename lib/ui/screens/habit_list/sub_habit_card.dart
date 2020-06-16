@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:habitize3/core/models/Habit.dart';
-import 'package:habitize3/core/view_models/model_habit_card.dart';
-import 'package:habitize3/ui/shared/constants.dart';
-import 'package:habitize3/ui/shared/text_styles.dart';
-import 'package:habitize3/ui/shared/widgets.dart';
 import 'package:provider/provider.dart';
+
+import '../../../core/models/Habit.dart';
+import '../../../core/view_models/model_habit_card.dart';
+import '../../shared/constants.dart';
+import '../../shared/text_styles.dart';
+import '../../shared/widgets.dart';
 
 class HabitCard extends StatelessWidget {
   final Habit habit;

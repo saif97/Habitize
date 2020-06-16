@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:habitize3/core/models/Habit.dart';
-import 'package:habitize3/core/utils/functions.dart';
-import 'package:habitize3/core/view_models/model_habit_creator.dart';
-import 'package:habitize3/core/view_models/model_habit_list.dart';
-import 'package:habitize3/ui/shared/constants.dart';
-import 'package:habitize3/ui/shared/widgets.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
+
+import '../../../core/models/Habit.dart';
+import '../../../core/utils/functions.dart';
+import '../../../core/view_models/model_habit_creator.dart';
+import '../../../core/view_models/model_habit_list.dart';
+import '../../shared/constants.dart';
+import '../../shared/widgets.dart';
 
 class ScreenCreateHabit extends StatelessWidget {
   final Habit habitToBeEditted;

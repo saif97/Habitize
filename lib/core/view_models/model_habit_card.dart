@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:habitize3/core/models/Habit.dart';
-import 'package:habitize3/core/serivces/db_api/db.dart';
-import 'package:habitize3/core/utils/functions.dart';
-import 'package:habitize3/core/utils/locator.dart';
-import 'package:habitize3/core/view_models/model_habit_list.dart';
-import 'package:habitize3/ui/screens/habit_info/screen_habit_info.dart';
-import 'package:habitize3/ui/screens/screen_create_habit/screen_habit_creator.dart';
+
+import '../../ui/screens/habit_info/screen_habit_info.dart';
+import '../../ui/screens/screen_create_habit/screen_habit_creator.dart';
+import '../models/Habit.dart';
+import '../serivces/db_api/db.dart';
+import '../utils/functions.dart';
+import '../utils/locator.dart';
+import 'model_habit_list.dart';
 
 class ModelHabitCard {
   ModelHabitList modelHabitList = locator<ModelHabitList>();

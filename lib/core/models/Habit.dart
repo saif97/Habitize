@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:habitize3/core/utils/habitUtils.dart';
 import 'package:hive/hive.dart';
+
+import '../utils/habitUtils.dart';
 
 part 'Habit.g.dart';
 
@@ -54,7 +55,7 @@ class Habit {
   String imgUrl;
 
   @HiveField(9)
-  double imgY_Alignment; 
+  double imgY_Alignment;
 
   Habit(
       {this.dates,
@@ -73,6 +74,5 @@ class Habit {
   HabitUtils get utils => _utils;
 
 //=============> GETTERS & SETTERS <==============\\
-
 
 }

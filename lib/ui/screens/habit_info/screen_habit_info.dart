@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:habitize3/core/models/Habit.dart';
-import 'package:habitize3/core/view_models/model_habit_info.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/models/Habit.dart';
+import '../../../core/view_models/model_habit_info.dart';
 import 'sub_monthly_calendar.dart';
 
 class ScreenHabitInfo extends StatelessWidget {

@@ -1,8 +1,7 @@
-import 'package:habitize3/core/models/Habit.dart';
-import 'package:habitize3/core/serivces/db_api/db.dart';
-import 'package:habitize3/core/utils/functions.dart';
-
+import '../models/Habit.dart';
+import '../serivces/db_api/db.dart';
 import 'audio.dart';
+import 'functions.dart';
 import 'locator.dart';
 
 class HabitUtils {
@@ -21,11 +20,11 @@ class HabitUtils {
   Future checkHabit(DateTime date, {bool checkAll}) async {
     final int dateInt = date.millisecondsSinceEpoch;
     final AudioUtils _audioUtils = locator<AudioUtils>();
-		_habit.dates[dateInt] ??=0;
+    _habit.dates[dateInt] ??= 0;
     if (checkAll)
       _habit.dates[dateInt] = _habit.goal;
     else
-			_habit.dates[dateInt] ++;
+      _habit.dates[dateInt]++;
 
     await locator<DB>().update(_habit);
 
@@ -41,13 +40,12 @@ class HabitUtils {
     await locator<DB>().update(_habit);
   }
 
-  List<int> getListCheckedDatesKeys({bool sorted=true}){
-		// sort the keys decending order to have latest days checked first printed.
-		List<int> listKeys = _habit.dates.keys.toList(growable: false);
+  List<int> getListCheckedDatesKeys({bool sorted = true}) {
+    // sort the keys decending order to have latest days checked first printed.
+    List<int> listKeys = _habit.dates.keys.toList(growable: false);
 
-		if(sorted)
-				 listKeys.sort((a, b) => b.compareTo(a));
+    if (sorted) listKeys.sort((a, b) => b.compareTo(a));
 
-		return listKeys;
-	}
+    return listKeys;
+  }
 }

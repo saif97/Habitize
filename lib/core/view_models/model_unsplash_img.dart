@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:habitize3/core/view_models/base_model.dart';
 import 'package:unsplash_client/unsplash_client.dart';
+
+import 'base_model.dart';
 
 class ModelUnsplashImg extends BaseModel {
   final String accessKey = 'mqkykid9C80zodvTWUSjEsNhqBw4IpXesoRiy2-UELw';

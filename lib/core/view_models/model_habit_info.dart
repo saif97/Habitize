@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:habitize3/core/models/Habit.dart';
-import 'package:habitize3/core/utils/functions.dart';
-import 'package:habitize3/ui/screens/habit_info/sub_monthly_calendar.dart';
-import 'package:habitize3/ui/shared/constants.dart';
+
+import '../../ui/screens/habit_info/sub_monthly_calendar.dart';
+import '../../ui/shared/constants.dart';
+import '../models/Habit.dart';
+import '../utils/functions.dart';
 
 //TODO: by using ValueListenableBuilder I don't need to use basemodels anymore.
 class ModelHabitInfo {
@@ -11,13 +12,11 @@ class ModelHabitInfo {
   List<List<Widget>> getMatrixDateCircles(String month) {
     final List<List<Widget>> matrixDateCircles = [];
     final DateTime now = DateTime.now();
-    final DateTime firstDayOfMonth =
-        DateTime(now.year, months.indexOf(month) + 1);
+    final DateTime firstDayOfMonth = DateTime(now.year, months.indexOf(month) + 1);
 
     final int weekday = firstDayOfMonth.weekday;
 
-    final DateTime firstMonday =
-        firstDayOfMonth.subtract(Duration(days: weekday - 1));
+    final DateTime firstMonday = firstDayOfMonth.subtract(Duration(days: weekday - 1));
 
     int dayCounter = 0;
     for (var row = 0; row < 6; ++row) {

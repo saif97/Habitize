@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:habitize3/core/view_models/model_unsplash_img.dart';
 import 'package:provider/provider.dart';
+
+import '../../core/view_models/model_unsplash_img.dart';
 
 class ScreenUnsplashImg extends StatelessWidget {
   @override

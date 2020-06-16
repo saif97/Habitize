@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:habitize3/core/utils/functions.dart';
-import 'package:habitize3/core/view_models/model_habit_info.dart';
-import 'package:habitize3/ui/shared/constants.dart';
 import 'package:provider/provider.dart';
+
+import '../../../core/utils/functions.dart';
+import '../../../core/view_models/model_habit_info.dart';
+import '../../shared/constants.dart';
 
 class MonthlyCalender extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final List<String> untilCurrentMonth =
-        months.sublist(0, getTodayDate().month);
+    final List<String> untilCurrentMonth = months.sublist(0, getTodayDate().month);
 
-    final PageController pageController =
-        PageController(initialPage: untilCurrentMonth.length);
+    final PageController pageController = PageController(initialPage: untilCurrentMonth.length);
 
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       child: Card(
         child: PageView(
           controller: pageController,
-          children: untilCurrentMonth
-              .map((String month) => OneMonthCalender(month))
-              .toList(),
+          children: untilCurrentMonth.map((String month) => OneMonthCalender(month)).toList(),
         ),
       ),
     );
@@ -36,17 +33,14 @@ class OneMonthCalender extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ModelHabitInfo>(
       builder: (_, model, __) {
-        final List<List<Widget>> matrixDateCircles =
-            model.getMatrixDateCircles(month);
+        final List<List<Widget>> matrixDateCircles = model.getMatrixDateCircles(month);
 
         return Column(
           children: <Widget>[
             Text(month),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                for (var str in weekDaysNames) StandardBox(child: Text(str))
-              ],
+              children: [for (var str in weekDaysNames) StandardBox(child: Text(str))],
             ),
             Expanded(
               // didn't use gid bcz I had issues aligning it w/ the weekday names
@@ -91,11 +85,9 @@ class _DateCircleState extends State<DateCircle> {
 
     isChecked = model.habit.utils.isHabitChecked(widget.date);
 
-    isLeftChecked = model.habit.utils
-        .isHabitChecked(widget.date.subtract(const Duration(days: 1)));
+    isLeftChecked = model.habit.utils.isHabitChecked(widget.date.subtract(const Duration(days: 1)));
 
-    isRightChecked = model.habit.utils
-        .isHabitChecked(widget.date.add(const Duration(days: 1)));
+    isRightChecked = model.habit.utils.isHabitChecked(widget.date.add(const Duration(days: 1)));
 
     return Stack(
       children: <Widget>[
@@ -135,8 +127,7 @@ class _DateCircleState extends State<DateCircle> {
             ),
             child: CircleAvatar(
               backgroundColor: isChecked ? Colors.greenAccent : Colors.black,
-              foregroundColor:
-                  widget.date == getTodayDate() ? Colors.redAccent : null,
+              foregroundColor: widget.date == getTodayDate() ? Colors.redAccent : null,
               child: Text((widget.date.day).toString()),
             ),
           ),

@@ -9,30 +9,31 @@ const String HABIT_MODE = 'importance';
 
 const String HIVE_BOX_HABITS = 'habitsBox';
 
+const String SETTINGS_CHECK_IF_MAJOR_IS_CHECKED = 'settingsCheckIfMajorIsCHecked';
 
 final List<String> months = [
-	'January',
-	'February',
-	'March',
-	'April',
-	'May',
-	'June',
-	'July',
-	'August',
-	'September',
-	'October',
-	'November',
-	'December',
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ];
 
 final List<String> weekDaysNames = [
-	'Mon',
-	'Tue',
-	'Wed',
-	'Thu',
-	'Fri',
-	'Sat',
-	'Sun',
+  'Mon',
+  'Tue',
+  'Wed',
+  'Thu',
+  'Fri',
+  'Sat',
+  'Sun',
 ];
 
 const double UNSPLASH_IMAGE_HEIGHT = 100;

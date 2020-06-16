@@ -1,8 +1,9 @@
-import 'package:habitize3/core/models/Habit.dart';
-import 'package:habitize3/core/serivces/db_api/db.dart';
-import 'package:habitize3/ui/shared/constants.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import '../../../ui/shared/constants.dart';
+import '../../models/Habit.dart';
+import 'db.dart';
 
 class RealHabitDB implements DB {
   Box _box;

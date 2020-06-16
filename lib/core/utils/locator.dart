@@ -1,9 +1,9 @@
 import 'package:get_it/get_it.dart';
-import 'package:habitize3/core/serivces/db_api/db.dart';
-import 'package:habitize3/core/serivces/db_api/real_db.dart';
-import 'package:habitize3/core/utils/audio.dart';
-import 'package:habitize3/core/view_models/model_habit_list.dart';
-import 'package:logging/logging.dart';
+
+import '../serivces/db_api/db.dart';
+import '../serivces/db_api/real_db.dart';
+import '../view_models/model_habit_list.dart';
+import 'audio.dart';
 
 GetIt locator = GetIt.instance;
 

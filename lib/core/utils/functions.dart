@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:habitize3/core/models/Habit.dart';
-import 'package:habitize3/core/utils/habitUtils.dart';
 import 'package:intl/intl.dart';
+
+import '../models/Habit.dart';
 
 DateTime getTodayDate({Duration addDuration = Duration.zero}) {
   DateTime now = DateTime.now();
@@ -12,8 +12,7 @@ DateTime getTodayDate({Duration addDuration = Duration.zero}) {
 int getTodayDateInt({Duration addDuration = Duration.zero}) =>
     getTodayDate(addDuration: addDuration).millisecondsSinceEpoch;
 
-HabitMode modeFromString(String str) =>
-    HabitMode.values.firstWhere((e) => e.toString() == str);
+HabitMode modeFromString(String str) => HabitMode.values.firstWhere((e) => e.toString() == str);
 
 String strFromMode(HabitMode habitMode) {
   switch (habitMode) {
@@ -26,16 +25,15 @@ String strFromMode(HabitMode habitMode) {
 
 DateTime dateFromInt(int i) => DateTime.fromMillisecondsSinceEpoch(i);
 
-int intFromDate(DateTime date)=> date.millisecondsSinceEpoch;
+int intFromDate(DateTime date) => date.millisecondsSinceEpoch;
 
-String  printDate(DateTime date){
-	final DateFormat formatter = DateFormat('yyyy-MM-dd');
+String printDate(DateTime date) {
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
-	return formatter.format(date);
+  return formatter.format(date);
 }
 
-void printData(Habit habit,
-    {bool detailedDatesInfo = false, bool onlyThisMonth = true}) {
+void printData(Habit habit, {bool detailedDatesInfo = false, bool onlyThisMonth = true}) {
   String map = '';
   // sort the keys decending order to have latest days checked first printed.
   final List<int> listSortedKeys = habit.dates.keys.toList(growable: false)
@@ -48,8 +46,7 @@ void printData(Habit habit,
       final date = DateTime.fromMillisecondsSinceEpoch(dateInMill);
 
       // only print dates from this month.
-      if (onlyThisMonth &&
-          date.isBefore(DateTime(DateTime.now().year, DateTime.now().month)))
+      if (onlyThisMonth && date.isBefore(DateTime(DateTime.now().year, DateTime.now().month)))
         break;
 
       map += " \t ${printDate(date)} : $iteration , \n";
@@ -83,8 +80,7 @@ void printThisMonthDates(Habit habit) {
     else
       map += " $formatedDateString : Checked";
 
-    if (!isDateZeroedAtDayStart(date))
-      map += " ---- Warning, Date is not Zeroed";
+    if (!isDateZeroedAtDayStart(date)) map += " ---- Warning, Date is not Zeroed";
   });
 
   String str = "---------- START ----------  \n"

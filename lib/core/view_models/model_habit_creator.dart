@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:habitize3/core/models/Habit.dart';
-import 'package:habitize3/core/serivces/db_api/db.dart';
-import 'package:habitize3/core/utils/locator.dart';
-import 'package:habitize3/core/view_models/base_model.dart';
-import 'package:habitize3/ui/screens/screen_create_habit/dialog_img.dart';
-import 'package:habitize3/ui/screens/screen_unsplash_image.dart';
 import 'package:lumberdash/lumberdash.dart';
+
+import '../../ui/screens/screen_create_habit/dialog_img.dart';
+import '../../ui/screens/screen_unsplash_image.dart';
+import '../models/Habit.dart';
+import '../serivces/db_api/db.dart';
+import '../utils/locator.dart';
+import 'base_model.dart';
 
 class ModelHabitCreator extends BaseModel {
   final TextEditingController _controller_name = TextEditingController();
