@@ -1,9 +1,9 @@
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../../ui/shared/constants.dart';
-import '../../models/Habit.dart';
-import 'db.dart';
+import '../../ui/shared/constants.dart';
+import '../../domain/habit/Habit.dart';
+import '../../domain/habit/db.dart';
 
 class RealHabitDB implements DB {
   Box _box;

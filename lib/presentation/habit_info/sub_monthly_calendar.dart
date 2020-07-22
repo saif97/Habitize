@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/utils/functions.dart';
-import '../../../core/view_models/model_habit_info.dart';
-import '../../shared/constants.dart';
+import '../../application/functions.dart';
+import '../../application/view_models/model_habit_info.dart';
+import '../../ui/shared/constants.dart';
 
 class MonthlyCalender extends StatelessWidget {
   @override

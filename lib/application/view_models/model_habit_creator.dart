@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lumberdash/lumberdash.dart';
 
-import '../../ui/screens/screen_create_habit/dialog_img.dart';
-import '../../ui/screens/screen_unsplash_image.dart';
-import '../models/Habit.dart';
-import '../serivces/db_api/db.dart';
-import '../utils/locator.dart';
+import '../../presentation/screen_create_habit/dialog_img.dart';
+import '../../presentation/screen_unsplash_image.dart';
+import '../../domain/habit/Habit.dart';
+import '../../domain/habit/db.dart';
+import '../../locator.dart';
 import 'base_model.dart';
 
 class ModelHabitCreator extends BaseModel {

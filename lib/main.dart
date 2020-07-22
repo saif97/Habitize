@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'core/utils/locator.dart';
-import 'core/view_models/model_habit_list.dart';
-import 'ui/screens/habit_list/screen_habit_list.dart';
+import 'locator.dart';
+import 'application/view_models/model_habit_list.dart';
+import 'presentation/screen_habit_list/screen_habit_list.dart';
 
 Future main() async {
   runApp(SplashScreen());

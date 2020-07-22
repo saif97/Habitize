@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../../ui/screens/habit_info/screen_habit_info.dart';
-import '../../ui/screens/screen_create_habit/screen_habit_creator.dart';
-import '../models/Habit.dart';
-import '../serivces/db_api/db.dart';
-import '../utils/functions.dart';
-import '../utils/locator.dart';
+import '../../presentation/screen_create_habit/screen_habit_creator.dart';
+import '../../presentation/screen_habit_info/screen_habit_info.dart';
+import '../../domain/habit/Habit.dart';
+import '../../domain/habit/db.dart';
+import '../functions.dart';
+import '../../locator.dart';
 import 'model_habit_list.dart';
 
 class ModelHabitCard {

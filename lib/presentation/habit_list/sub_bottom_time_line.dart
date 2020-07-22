@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/view_models/model_habit_list.dart';
+import '../../application/view_models/model_habit_list.dart';
 
 class BottomTimeLine extends StatelessWidget {
   @override

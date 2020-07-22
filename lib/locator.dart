@@ -1,9 +1,9 @@
 import 'package:get_it/get_it.dart';
 
-import '../serivces/db_api/db.dart';
-import '../serivces/db_api/real_db.dart';
-import '../view_models/model_habit_list.dart';
-import 'audio.dart';
+import 'domain/habit/db.dart';
+import 'infrastructure/habit/real_db.dart';
+import 'application/view_models/model_habit_list.dart';
+import 'infrastructure/core/audio.dart';
 
 GetIt locator = GetIt.instance;
 

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/models/Habit.dart';
-import '../../../core/utils/locator.dart';
-import '../../../core/view_models/model_habit_card.dart';
-import '../../../core/view_models/model_habit_list.dart';
-import '../../shared/text_styles.dart';
+import '../../domain/habit/Habit.dart';
+import '../../locator.dart';
+import '../../application/view_models/model_habit_card.dart';
+import '../../application/view_models/model_habit_list.dart';
+import '../../ui/shared/text_styles.dart';
 import 'sub_bottom_time_line.dart';
 import 'sub_habit_card.dart';
 

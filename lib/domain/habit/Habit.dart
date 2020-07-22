@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
-import '../utils/habitUtils.dart';
+import 'habitUtils.dart';
 
 part 'Habit.g.dart';
 
 // Make sure file name, class, and <part> are alls same case.
 // run the command below to generate folders files.
-// flutter pub run build_runner build --delete-conflicting-outputs
+// flutterS pub run build_runner build --delete-conflicting-outputs
 
 @HiveType(typeId: 2)
 enum HabitMode {

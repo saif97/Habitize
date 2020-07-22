@@ -1,4 +1,4 @@
-import '../../models/Habit.dart';
+import 'Habit.dart';
 
 abstract class DB {
   Future instantiateDB();

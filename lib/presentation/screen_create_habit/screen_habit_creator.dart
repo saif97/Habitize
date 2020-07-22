@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/models/Habit.dart';
-import '../../../core/utils/functions.dart';
-import '../../../core/view_models/model_habit_creator.dart';
-import '../../../core/view_models/model_habit_list.dart';
-import '../../shared/constants.dart';
-import '../../shared/widgets.dart';
+import '../../domain/habit/Habit.dart';
+import '../../application/functions.dart';
+import '../../application/view_models/model_habit_creator.dart';
+import '../../application/view_models/model_habit_list.dart';
+import '../../ui/shared/constants.dart';
+import '../../ui/shared/widgets.dart';
 
 class ScreenCreateHabit extends StatelessWidget {
   final Habit habitToBeEditted;

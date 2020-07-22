@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../ui/screens/habit_list/sub_bottom_time_line.dart';
-import '../../ui/screens/screen_create_habit/screen_habit_creator.dart';
-import '../models/Habit.dart';
-import '../serivces/db_api/db.dart';
-import '../utils/functions.dart';
-import '../utils/locator.dart';
+import '../../presentation/habit_list/sub_bottom_time_line.dart';
+import '../../presentation/screen_create_habit/screen_habit_creator.dart';
+import '../../domain/habit/Habit.dart';
+import '../../domain/habit/db.dart';
+import '../functions.dart';
+import '../../locator.dart';
 import 'base_model.dart';
 
 class ModelHabitList extends BaseModel {

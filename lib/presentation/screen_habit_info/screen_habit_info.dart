@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/models/Habit.dart';
-import '../../../core/view_models/model_habit_info.dart';
+import '../../domain/habit/Habit.dart';
+import '../../application/view_models/model_habit_info.dart';
 import 'sub_monthly_calendar.dart';
 
 class ScreenHabitInfo extends StatelessWidget {
   final Habit habit;
 
   const ScreenHabitInfo(this.habit);
-
   @override
   Widget build(BuildContext context) {
 //    return const Center(child: Text('To be'));
