@@ -40,7 +40,7 @@ class HabitHiveDto {
   int goal;
 
   @HiveField(4)
-  // @protected
+  // @protected 
   Map<int, int> dates;
   @HiveField(5)
   int extendedGoal;

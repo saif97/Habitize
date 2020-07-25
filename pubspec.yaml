@@ -9,6 +9,7 @@ environment:
 
 dependencies:
   uic: ^0.3.3
+  validators: ^2.0.1
   floating_search_bar: ^0.3.0
   unsplash_client:
     git:
@@ -30,6 +31,7 @@ dependencies:
   google_sign_in: ^4.5.1
   cloud_firestore: ^0.13.6
   firebase_auth: ^0.16.1
+  enum_to_string: ^1.0.9
   flutter:
     sdk: flutter
 
