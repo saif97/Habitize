@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 import '../../domain/habit/habitUtils.dart';
 
-part '../../domain/habit/Habit.g.dart';
+part 'Habit_hive_dto.g.dart';
 
 // Make sure file name, class, and <part> are alls same case.
 // run the command below to generate folders files.
@@ -18,7 +18,7 @@ enum HabitMode {
 }
 
 @HiveType(typeId: 1)
-class Habit {
+class HabitHiveDto {
   HabitUtils _utils;
   @HiveField(0)
   @required
@@ -57,7 +57,7 @@ class Habit {
   @HiveField(9)
   double imgY_Alignment;
 
-  Habit({
+  HabitHiveDto({
     this.dates,
     this.name,
     this.streak,

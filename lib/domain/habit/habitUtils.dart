@@ -1,11 +1,11 @@
 import '../../application/functions.dart';
 import '../../infrastructure/core/audio.dart';
 import '../../locator.dart';
-import '../../infrastructure/habit/Habit.dart';
+import '../../infrastructure/habit/Habit_hive_dto.dart';
 import 'db.dart';
 
 class HabitUtils {
-  final Habit _habit;
+  final HabitHiveDto _habit;
 
   HabitUtils(this._habit);
 

@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
-import '../../infrastructure/habit/Habit.dart';
+import '../../infrastructure/habit/Habit_hive_dto.dart';
 import '../../application/view_models/model_habit_card.dart';
 import '../../domain/shared/constants.dart';
 import '../../domain/shared/text_styles.dart';
 import '../../domain/shared/widgets.dart';
 
 class HabitCard extends StatelessWidget {
-  final Habit habit;
+  final HabitHiveDto habit;
 
   const HabitCard(this.habit);
 
@@ -71,7 +71,7 @@ class HabitCard extends StatelessWidget {
 class CustomSlidable extends StatelessWidget {
   ModelHabitCard model;
   @required
-  final Habit habit;
+  final HabitHiveDto habit;
   @required
   final Widget child;
 

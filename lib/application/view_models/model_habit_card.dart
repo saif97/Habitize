@@ -4,7 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../presentation/screen_create_habit/screen_habit_creator.dart';
 import '../../presentation/screen_habit_info/screen_habit_info.dart';
-import '../../infrastructure/habit/Habit.dart';
+import '../../infrastructure/habit/Habit_hive_dto.dart';
 import '../../domain/habit/db.dart';
 import '../functions.dart';
 import '../../locator.dart';
@@ -16,7 +16,7 @@ class ModelHabitCard {
 
   String _habitStreak;
   Key _key;
-  final Habit habit;
+  final HabitHiveDto habit;
   final DateTime selectedDate;
 
   void initModel() {

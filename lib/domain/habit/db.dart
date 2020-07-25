@@ -1,15 +1,15 @@
-import '../../infrastructure/habit/Habit.dart';
+import '../../infrastructure/habit/Habit_hive_dto.dart';
 
 abstract class DB {
   Future instantiateDB();
 
-  Future<bool> put(Habit habit);
+  Future<bool> put(HabitHiveDto habit);
 
-  Future<bool> update(Habit habit);
+  Future<bool> update(HabitHiveDto habit);
 
-  Future<Habit> get(int id);
+  Future<HabitHiveDto> get(int id);
 
-  Future<List<Habit>> getAll();
+  Future<List<HabitHiveDto>> getAll();
 
   Future<bool> delete(String id);
 }

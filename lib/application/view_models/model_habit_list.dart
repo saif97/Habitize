@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 import '../../presentation/habit_list/sub_bottom_time_line.dart';
 import '../../presentation/screen_create_habit/screen_habit_creator.dart';
-import '../../infrastructure/habit/Habit.dart';
+import '../../infrastructure/habit/Habit_hive_dto.dart';
 import '../../domain/habit/db.dart';
 import '../functions.dart';
 import '../../locator.dart';
 import 'base_model.dart';
 
 class ModelHabitList extends BaseModel {
-  Habit _majorHabit;
-  List<Habit> _listHabits;
+  HabitHiveDto _majorHabit;
+  List<HabitHiveDto> _listHabits;
 
   DateTime _selectedDate = getTodayDate();
 
@@ -73,13 +73,13 @@ class ModelHabitList extends BaseModel {
         selectedMode.contains(HabitMode.Majror);
   }
 
-  Future<Habit> getMajorHabit() async {
-    final List<Habit> listHabits = await _db.getAll();
+  Future<HabitHiveDto> getMajorHabit() async {
+    final List<HabitHiveDto> listHabits = await _db.getAll();
     return listHabits.firstWhere((v) => v.mode == HabitMode.Majror, orElse: () => null);
   }
 
-  List<Habit> filterHabits({List<HabitMode> habitMode, @required bool showChecked}) {
-    return (_listHabits.cast<Habit>())?.where((habit) {
+  List<HabitHiveDto> filterHabits({List<HabitMode> habitMode, @required bool showChecked}) {
+    return (_listHabits.cast<HabitHiveDto>())?.where((habit) {
           final bool isHabitChecked = habit.utils.isHabitChecked(_selectedDate);
           return habitMode.contains(habit.mode) && isHabitChecked == showChecked;
         })?.toList() ??
@@ -111,7 +111,7 @@ class ModelHabitList extends BaseModel {
 
   DateTime get selectedDate => _selectedDate;
 
-  Habit get majorHabit => _majorHabit;
+  HabitHiveDto get majorHabit => _majorHabit;
 
   set selectedDate(DateTime value) {
     assert(value.difference(getTodayDate()).inDays <= 0);

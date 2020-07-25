@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../infrastructure/habit/Habit.dart';
+import '../infrastructure/habit/Habit_hive_dto.dart';
 
 DateTime getTodayDate({Duration addDuration = Duration.zero}) {
   DateTime now = DateTime.now();
@@ -33,7 +33,7 @@ String printDate(DateTime date) {
   return formatter.format(date);
 }
 
-void printData(Habit habit, {bool detailedDatesInfo = false, bool onlyThisMonth = true}) {
+void printData(HabitHiveDto habit, {bool detailedDatesInfo = false, bool onlyThisMonth = true}) {
   String map = '';
   // sort the keys decending order to have latest days checked first printed.
   final List<int> listSortedKeys = habit.dates.keys.toList(growable: false)
@@ -63,7 +63,7 @@ void printData(Habit habit, {bool detailedDatesInfo = false, bool onlyThisMonth 
 }
 
 ///Takes a habit and prints its the dates when the habit is checked.
-void printThisMonthDates(Habit habit) {
+void printThisMonthDates(HabitHiveDto habit) {
   // sort the keys decending order to have latest days checked first printed.
   List<int> listSortedKeys = habit.utils.getListCheckedDatesKeys();
   DateFormat formatter = DateFormat('yyyy-MM-dd');

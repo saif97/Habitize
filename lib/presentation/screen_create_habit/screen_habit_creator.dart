@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 
-import '../../infrastructure/habit/Habit.dart';
+import '../../infrastructure/habit/Habit_hive_dto.dart';
 import '../../application/functions.dart';
 import '../../application/view_models/model_habit_creator.dart';
 import '../../application/view_models/model_habit_list.dart';
@@ -11,7 +11,7 @@ import '../../domain/shared/constants.dart';
 import '../../domain/shared/widgets.dart';
 
 class ScreenCreateHabit extends StatelessWidget {
-  final Habit habitToBeEditted;
+  final HabitHiveDto habitToBeEditted;
 
   const ScreenCreateHabit({this.habitToBeEditted});
 

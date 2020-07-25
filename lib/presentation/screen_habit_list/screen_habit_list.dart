@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../application/view_models/model_habit_card.dart';
 import '../../application/view_models/model_habit_list.dart';
-import '../../infrastructure/habit/Habit.dart';
+import '../../infrastructure/habit/Habit_hive_dto.dart';
 import '../../domain/shared/text_styles.dart';
 import '../../locator.dart';
 import 'sub_bottom_time_line.dart';
@@ -78,7 +78,7 @@ class HabitListing extends StatelessWidget {
     final ModelHabitList _model = locator<ModelHabitList>();
 
     if (_model.isShowHabitFor(selectedHabitMode)) {
-      final List<Habit> filteredHabits =
+      final List<HabitHiveDto> filteredHabits =
           _model.filterHabits(showChecked: showChecked, habitMode: selectedHabitMode);
 
       return filteredHabits

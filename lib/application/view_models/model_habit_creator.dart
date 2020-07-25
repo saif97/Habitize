@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lumberdash/lumberdash.dart';
 
+import '../../domain/habit/db.dart';
+import '../../infrastructure/habit/Habit_hive_dto.dart';
+import '../../locator.dart';
 import '../../presentation/screen_create_habit/dialog_img.dart';
 import '../../presentation/screen_unsplash_image.dart';
-import '../../infrastructure/habit/Habit.dart';
-import '../../domain/habit/db.dart';
-import '../../locator.dart';
 import 'base_model.dart';
 
 class ModelHabitCreator extends BaseModel {
@@ -15,7 +15,7 @@ class ModelHabitCreator extends BaseModel {
   final TextEditingController _controller_reward = TextEditingController();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   HabitMode habitMode = HabitMode.Bonus;
-  final Habit _habitToBeEditted;
+  final HabitHiveDto _habitToBeEditted;
   int extendedGoal;
   int goal = 1;
   String when;
@@ -23,7 +23,7 @@ class ModelHabitCreator extends BaseModel {
   String imgURL;
   double imgY_Alignment = 0;
 
-  ModelHabitCreator({Habit habit}) : _habitToBeEditted = habit {
+  ModelHabitCreator({HabitHiveDto habit}) : _habitToBeEditted = habit {
     if (_habitToBeEditted != null) {
       _controller_name.text = _habitToBeEditted.name;
       habitMode = _habitToBeEditted.mode;
@@ -38,7 +38,7 @@ class ModelHabitCreator extends BaseModel {
 
   Future<bool> submit(BuildContext context) async {
     if (globalKey.currentState.validate()) {
-      final Habit habit = _habitToBeEditted ?? Habit(key: UniqueKey().toString());
+      final HabitHiveDto habit = _habitToBeEditted ?? HabitHiveDto(key: UniqueKey().toString());
       habit.name = _controller_name.text;
       habit.mode = habitMode;
       habit.goal = goal;

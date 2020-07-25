@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../presentation/habit_info/sub_monthly_calendar.dart';
 import '../../domain/shared/constants.dart';
-import '../../infrastructure/habit/Habit.dart';
+import '../../infrastructure/habit/Habit_hive_dto.dart';
 import '../functions.dart';
 
 //TODO: by using ValueListenableBuilder I don't need to use basemodels anymore.
 class ModelHabitInfo {
-  final Habit _habit;
+  final HabitHiveDto _habit;
 
   List<List<Widget>> getMatrixDateCircles(String month) {
     final List<List<Widget>> matrixDateCircles = [];
@@ -45,5 +45,5 @@ class ModelHabitInfo {
 
   ModelHabitInfo(this._habit);
 
-  Habit get habit => _habit;
+  HabitHiveDto get habit => _habit;
 }

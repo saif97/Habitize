@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../../infrastructure/habit/Habit.dart';
+part of 'Habit_hive_dto.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
@@ -35,17 +35,17 @@ class HabitModeAdapter extends TypeAdapter<HabitMode> {
   }
 }
 
-class HabitAdapter extends TypeAdapter<Habit> {
+class HabitHiveDtoAdapter extends TypeAdapter<HabitHiveDto> {
   @override
   final typeId = 1;
 
   @override
-  Habit read(BinaryReader reader) {
+  HabitHiveDto read(BinaryReader reader) {
     var numOfFields = reader.readByte();
     var fields = <int, dynamic>{
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Habit(
+    return HabitHiveDto(
       dates: (fields[4] as Map)?.cast<int, int>(),
       name: fields[1] as String,
       goal: fields[3] as int,
@@ -60,7 +60,7 @@ class HabitAdapter extends TypeAdapter<Habit> {
   }
 
   @override
-  void write(BinaryWriter writer, Habit obj) {
+  void write(BinaryWriter writer, HabitHiveDto obj) {
     writer
       ..writeByte(10)
       ..writeByte(0)
