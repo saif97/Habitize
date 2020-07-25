@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../application/view_models/model_habit_card.dart';
 import '../../application/view_models/model_habit_list.dart';
-import '../../infrastructure/habit/Habit_hive_dto.dart';
 import '../../domain/shared/text_styles.dart';
+import '../../infrastructure/habit/Habit_hive_dto.dart';
 import '../../locator.dart';
 import 'sub_bottom_time_line.dart';
 import 'sub_habit_card.dart';
@@ -59,8 +59,7 @@ class HabitListing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ReorderableListView(
-        onReorder: (oldIndex, newIndex) => {},
+      child: ListView(
         children: <Widget>[
           ..._getHabits(selectedHabitMode: [HabitMode.Majror], showChecked: false),
           Saperator(color: Colors.red),
