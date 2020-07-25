@@ -4,7 +4,7 @@ import 'package:lumberdash/lumberdash.dart';
 
 import '../../presentation/screen_create_habit/dialog_img.dart';
 import '../../presentation/screen_unsplash_image.dart';
-import '../../domain/habit/Habit.dart';
+import '../../infrastructure/habit/Habit.dart';
 import '../../domain/habit/db.dart';
 import '../../locator.dart';
 import 'base_model.dart';

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
-import '../../domain/habit/Habit.dart';
 import '../../application/view_models/model_habit_card.dart';
-import '../../ui/shared/constants.dart';
-import '../../ui/shared/text_styles.dart';
-import '../../ui/shared/widgets.dart';
+import '../../infrastructure/habit/Habit.dart';
+import '../../domain/shared/constants.dart';
+import '../../domain/shared/text_styles.dart';
+import '../../domain/shared/widgets.dart';
 
 class HabitCard extends StatelessWidget {
   final Habit habit;

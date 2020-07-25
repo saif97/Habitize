@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../presentation/habit_info/sub_monthly_calendar.dart';
-import '../../ui/shared/constants.dart';
-import '../../domain/habit/Habit.dart';
+import '../../domain/shared/constants.dart';
+import '../../infrastructure/habit/Habit.dart';
 import '../functions.dart';
 
 //TODO: by using ValueListenableBuilder I don't need to use basemodels anymore.

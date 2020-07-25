@@ -1,8 +1,8 @@
-import 'Habit.dart';
-import 'db.dart';
-import '../../infrastructure/core/audio.dart';
 import '../../application/functions.dart';
+import '../../infrastructure/core/audio.dart';
 import '../../locator.dart';
+import '../../infrastructure/habit/Habit.dart';
+import 'db.dart';
 
 class HabitUtils {
   final Habit _habit;

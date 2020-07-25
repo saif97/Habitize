@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
-import 'habitUtils.dart';
+import '../../domain/habit/habitUtils.dart';
 
-part 'Habit.g.dart';
+part '../../domain/habit/Habit.g.dart';
 
 // Make sure file name, class, and <part> are alls same case.
 // run the command below to generate folders files.
@@ -40,7 +40,7 @@ class Habit {
   int goal;
 
   @HiveField(4)
-  @protected
+  // @protected
   Map<int, int> dates;
   @HiveField(5)
   int extendedGoal;
@@ -57,16 +57,17 @@ class Habit {
   @HiveField(9)
   double imgY_Alignment;
 
-  Habit(
-      {this.dates,
-      this.name,
-      this.streak,
-      this.goal,
-      this.mode,
-      this.key,
-      this.reward,
-      this.when,
-      this.extendedGoal}) {
+  Habit({
+    this.dates,
+    this.name,
+    this.streak,
+    this.goal,
+    this.mode,
+    this.key,
+    this.reward,
+    this.when,
+    this.extendedGoal,
+  }) {
     dates ??= <int, int>{};
     _utils = HabitUtils(this);
   }

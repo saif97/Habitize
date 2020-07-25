@@ -23,6 +23,8 @@ dependencies:
   get_it: 4.0.2
   cached_network_image: ^2.1.0+1
   #  flushbar: ^1.9.1
+  dartz: ^0.9.1
+  kt_dart: ^0.7.0+1
 
   flutter:
     sdk: flutter
@@ -38,7 +40,7 @@ dev_dependencies:
   lint: ^1.1.1
   intl: ^0.16.1
   # flutter_test:
-    # sdk: flutter
+  # sdk: flutter
   flutter_launcher_icons: ^0.7.5
 
 flutter_icons:

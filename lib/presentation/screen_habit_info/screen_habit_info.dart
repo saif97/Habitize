@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../domain/habit/Habit.dart';
+import '../../infrastructure/habit/Habit.dart';
 import '../../application/view_models/model_habit_info.dart';
 import 'sub_monthly_calendar.dart';
 

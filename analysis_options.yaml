@@ -11,11 +11,19 @@ include: package:lint/analysis_options.yaml
 # To modify rule state
 analyzer:
   errors:
-#    Possible values ignore, info, warning and error.
-#    inva
+    #    Possible values ignore, info, warning and error.
     missing_required_param: error
     avoid_single_cascade_in_expression_statements: ignore
     non_constant_identifier_names: ignore
     curly_braces_in_flow_control_structures: ignore
+    argument_type_not_assignable: ignore
+    invalid_assignment: ignore
+    constant_identifier_names: ignore
     avoid_void_async: error
     file_names: ignore
+    avoid_returning_null_for_future: error
+    invalid_use_of_protected_member: error
+    missing_enum_constant_in_switch: error
+    unawaited_futures: error
+    sort_unnamed_constructors_first: ignore
+    

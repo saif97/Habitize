@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../domain/habit/Habit.dart';
-import '../../locator.dart';
 import '../../application/view_models/model_habit_card.dart';
 import '../../application/view_models/model_habit_list.dart';
-import '../../ui/shared/text_styles.dart';
+import '../../infrastructure/habit/Habit.dart';
+import '../../domain/shared/text_styles.dart';
+import '../../locator.dart';
 import 'sub_bottom_time_line.dart';
 import 'sub_habit_card.dart';
 
@@ -59,7 +59,8 @@ class HabitListing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView(
+      child: ReorderableListView(
+        onReorder: (oldIndex, newIndex) => {},
         children: <Widget>[
           ..._getHabits(selectedHabitMode: [HabitMode.Majror], showChecked: false),
           Saperator(color: Colors.red),

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'Habit.dart';
+part of '../../infrastructure/habit/Habit.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

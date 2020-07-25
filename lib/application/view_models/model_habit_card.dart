@@ -4,7 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../presentation/screen_create_habit/screen_habit_creator.dart';
 import '../../presentation/screen_habit_info/screen_habit_info.dart';
-import '../../domain/habit/Habit.dart';
+import '../../infrastructure/habit/Habit.dart';
 import '../../domain/habit/db.dart';
 import '../functions.dart';
 import '../../locator.dart';

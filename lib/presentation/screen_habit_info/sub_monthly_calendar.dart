@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../application/functions.dart';
 import '../../application/view_models/model_habit_info.dart';
-import '../../ui/shared/constants.dart';
+import '../../domain/shared/constants.dart';
 
 class MonthlyCalender extends StatelessWidget {
   @override

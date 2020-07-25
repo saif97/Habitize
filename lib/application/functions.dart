@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../domain/habit/Habit.dart';
+import '../infrastructure/habit/Habit.dart';
 
 DateTime getTodayDate({Duration addDuration = Duration.zero}) {
   DateTime now = DateTime.now();
