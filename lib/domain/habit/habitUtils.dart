@@ -2,7 +2,7 @@ import '../../application/functions.dart';
 import '../../infrastructure/core/audio.dart';
 import '../../locator.dart';
 import '../../infrastructure/habit/Habit_hive_dto.dart';
-import 'db.dart';
+import 'i_habit_repo.dart';
 
 class HabitUtils {
   final HabitHiveDto _habit;
@@ -26,7 +26,7 @@ class HabitUtils {
     else
       _habit.dates[dateInt]++;
 
-    await locator<DB>().update(_habit);
+    await locator<IHabitRepo>().update(_habit);
 
     if (_habit.dates[dateInt] == _habit.goal)
       _audioUtils.playSoundAllChecked();
@@ -37,7 +37,7 @@ class HabitUtils {
   Future resetIteration(DateTime date) async {
     final int dateInt = date.millisecondsSinceEpoch;
     _habit.dates[dateInt] = _habit.goal;
-    await locator<DB>().update(_habit);
+    await locator<IHabitRepo>().update(_habit);
   }
 
   List<int> getListCheckedDatesKeys({bool sorted = true}) {

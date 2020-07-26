@@ -1,3 +1,5 @@
+class NotAuthenticatedError extends Error {}
+
 class UnexpectedValueError<F> extends Error {
   final F _failureType;
 

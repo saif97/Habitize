@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../presentation/habit_list/sub_bottom_time_line.dart';
 import '../../presentation/screen_create_habit/screen_habit_creator.dart';
 import '../../infrastructure/habit/Habit_hive_dto.dart';
-import '../../domain/habit/db.dart';
+import '../../domain/habit/i_habit_repo.dart';
 import '../functions.dart';
 import '../../locator.dart';
 import 'base_model.dart';
@@ -18,10 +18,10 @@ class ModelHabitList extends BaseModel {
   bool _showAllHabits = true;
 
   final GlobalKey keyAnimatedList = GlobalKey<AnimatedListState>();
-  DB _db;
+  IHabitRepo _db;
 
   Future initModel() async {
-    _db = locator<DB>();
+    _db = locator<IHabitRepo>();
     _listHabits = await _db.getAll();
     _majorHabit = await getMajorHabit();
 

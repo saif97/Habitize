@@ -25,6 +25,7 @@ abstract class HabitFirebaseDto implements _$HabitFirebaseDto {
     String imageUrl,
     double imgY_Alignment,
   }) = _HabitFirebaseDto;
+
   factory HabitFirebaseDto.fromJson(Map<String, dynamic> json) => _$HabitFirebaseDtoFromJson(json);
   factory HabitFirebaseDto.fromFirestore(DocumentSnapshot doc) =>
       HabitFirebaseDto.fromJson(doc.data).copyWith(id: doc.documentID);

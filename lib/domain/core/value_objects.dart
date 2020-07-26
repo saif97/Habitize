@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:uuid/uuid.dart';
 
 import '../auth/validators.dart';
 import 'enums.dart';
@@ -9,7 +10,11 @@ class UniqueId extends ValueObject<EnumFailureValueObj, String> {
   @override
   final Either<EnumFailureValueObj, String> value;
 
-  factory UniqueId(String input) {
+  factory UniqueId() {
+    return UniqueId._(right(Uuid().v1()));
+  }
+
+  factory UniqueId.FromUniqueString(String input) {
     assert(input != null);
     return UniqueId._(validateEmpty(input));
   }

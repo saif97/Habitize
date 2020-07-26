@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lumberdash/lumberdash.dart';
 
-import '../../domain/habit/db.dart';
+import '../../domain/habit/i_habit_repo.dart';
 import '../../infrastructure/habit/Habit_hive_dto.dart';
 import '../../locator.dart';
 import '../../presentation/screen_create_habit/dialog_img.dart';
@@ -50,7 +50,7 @@ class ModelHabitCreator extends BaseModel {
       // If we're creating a new habit, a new key will be created. If we're
       // editing a habit, _habitToBeEditted's key will be used.
 
-      await locator<DB>().put(habit);
+      await locator<IHabitRepo>().create(habit);
 
       Navigator.pop(context, true);
       return true;

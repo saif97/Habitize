@@ -4,3 +4,15 @@ enum EnumFailureValueObj {
   empty,
   invalidUrl,
 }
+
+enum EnumFailureHabit {
+  unexpected,
+  insufficientPermission,
+  unableToUpdate,
+}
+enum EnumFailureAuth {
+  cancelledByUser,
+  serverError,
+  emailAlreadyInUse,
+  invalidEmailAndPasswordCombination,
+}

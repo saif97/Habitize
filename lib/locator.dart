@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 
-import 'domain/habit/db.dart';
-import 'infrastructure/habit/real_db.dart';
+import 'domain/habit/i_habit_repo.dart';
+import 'infrastructure/habit/local_habit_repo.dart';
 import 'application/view_models/model_habit_list.dart';
 import 'infrastructure/core/audio.dart';
 
@@ -14,7 +14,7 @@ Future setupLocator() async {
 //  DB_API db_api = USE_FAKE_DB_IMPLEMENTATION ? Fake_DB_API() : Real_DB_API;
   AudioUtils utilsAudio = AudioUtils();
 
-  final DB db_api = RealHabitDB();
+  final IHabitRepo db_api = LocalHabitRepo();
   await db_api.instantiateDB();
 
   ModelHabitList modelHabitList = ModelHabitList();

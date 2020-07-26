@@ -887,12 +887,12 @@ packages:
     source: hosted
     version: "0.1.1+2"
   uuid:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: uuid
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.4"
+    version: "2.2.0"
   validators:
     dependency: "direct main"
     description:

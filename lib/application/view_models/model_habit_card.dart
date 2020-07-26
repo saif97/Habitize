@@ -5,7 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../presentation/screen_create_habit/screen_habit_creator.dart';
 import '../../presentation/screen_habit_info/screen_habit_info.dart';
 import '../../infrastructure/habit/Habit_hive_dto.dart';
-import '../../domain/habit/db.dart';
+import '../../domain/habit/i_habit_repo.dart';
 import '../functions.dart';
 import '../../locator.dart';
 import 'model_habit_list.dart';
@@ -130,7 +130,7 @@ class ModelHabitCard {
   }
 
   Future deleteHabit() async {
-    final DB db = locator<DB>();
+    final IHabitRepo db = locator<IHabitRepo>();
     await db.delete(habit.key);
     await modelHabitList.initModel();
   }
