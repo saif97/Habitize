@@ -1,3 +1,30 @@
 {
-    "dart.flutterSdkPath": "C:\\src\\flutter_stable"
+    "dart.flutterSdkPath": "/Users/saif/dev/sdks/flutter_stable",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/*.freezed.dart": true,
+        "**/*.g.dart": true,
+        ".dart_tool": true,
+        ".history": true,
+        ".idea": true,
+        ".vscode": true,
+        ".*": true,
+        "pubspec.lock": true,
+        "*.log": true,
+        "*.iml": true,
+        "android": true,
+        "ios": true,
+        "gen": true,
+        "build": true,
+        "analysis_options.yaml": true,
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "explorerExclude.backup": null
 }

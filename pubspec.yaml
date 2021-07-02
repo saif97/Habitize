@@ -8,19 +8,20 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  ffi: ^1.0.0
   uic: ^0.3.3
   floating_search_bar: ^0.3.0
   unsplash_client:
     git:
       url: https://github.com/saif97/unsplash_client
-  hive: ^1.4.1+1
+  hive: ^1.4.4
   hive_flutter: ^0.3.0+2
   provider: ^4.0.5+1
   numberpicker: ^1.2.0
-  flutter_slidable: ^0.5.4
+  flutter_slidable: ^0.6.0
   material_design_icons_flutter: ^4.0.5145
-  audioplayers:
-  get_it: 4.0.2
+  audioplayers: ^0.17.4
+  get_it: ^4.0.2
   cached_network_image: ^2.1.0+1
   #  flushbar: ^1.9.1
 
@@ -38,7 +39,7 @@ dev_dependencies:
   lint: ^1.1.1
   intl: ^0.16.1
   # flutter_test:
-    # sdk: flutter
+  # sdk: flutter
   flutter_launcher_icons: ^0.7.5
 
 flutter_icons:

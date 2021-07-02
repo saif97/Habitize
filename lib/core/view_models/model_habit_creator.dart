@@ -66,6 +66,7 @@ class ModelHabitCreator extends BaseModel {
 
   Future openDialogAdgustImg(BuildContext context) async {
     var r = await showDialog(
+
       context: context,
       barrierDismissible: true,
       builder: (context) => DialogAdgustUnsplashImg(imgURL),
