@@ -14,7 +14,9 @@ class BottomTimeLine extends StatelessWidget {
         height: 60,
         color: Colors.black45,
         child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: model.bottomBarElements),
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: model.bottomBarElements,
+        ),
       ),
     );
   }
@@ -22,9 +24,9 @@ class BottomTimeLine extends StatelessWidget {
 
 class TimeLineCircle extends StatelessWidget {
   final DateTime day;
-  final bool isAllchecked;
+  final bool isAllChecked;
 
-  const TimeLineCircle(this.day, {@required this.isAllchecked});
+  const TimeLineCircle(this.day, {required this.isAllChecked});
 
   @override
   Widget build(BuildContext context) {
@@ -34,23 +36,24 @@ class TimeLineCircle extends StatelessWidget {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       child: Container(
-        decoration: BoxDecoration(boxShadow: [
-          BoxShadow(
-            color: Colors.green,
-            blurRadius: 20,
-            spreadRadius: -10,
-            offset: const Offset(0, 0),
-          )
-        ]),
+        decoration: const BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.green,
+              blurRadius: 20,
+              spreadRadius: -10,
+            )
+          ],
+        ),
         child: CircleAvatar(
           backgroundColor: Colors.green,
           radius: model.selectedDate == day ? 25 : 20,
           child: CircleAvatar(
             radius: 18,
-            backgroundColor: isAllchecked ? Colors.green : null,
+            backgroundColor: isAllChecked ? Colors.green : null,
             child: Text(
               day.day.toString(),
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         ),

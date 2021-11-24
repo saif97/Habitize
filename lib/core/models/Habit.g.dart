@@ -6,56 +6,27 @@ part of 'Habit.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class HabitModeAdapter extends TypeAdapter<HabitMode> {
-  @override
-  final typeId = 2;
-
-  @override
-  HabitMode read(BinaryReader reader) {
-    switch (reader.readByte()) {
-      case 0:
-        return HabitMode.Majror;
-      case 1:
-        return HabitMode.Bonus;
-      default:
-        return null;
-    }
-  }
-
-  @override
-  void write(BinaryWriter writer, HabitMode obj) {
-    switch (obj) {
-      case HabitMode.Majror:
-        writer.writeByte(0);
-        break;
-      case HabitMode.Bonus:
-        writer.writeByte(1);
-        break;
-    }
-  }
-}
-
 class HabitAdapter extends TypeAdapter<Habit> {
   @override
-  final typeId = 1;
+  final int typeId = 1;
 
   @override
   Habit read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Habit(
-      dates: (fields[4] as Map)?.cast<int, int>(),
+      dates: (fields[4] as Map).cast<int, int>(),
       name: fields[1] as String,
       goal: fields[3] as int,
       mode: fields[2] as HabitMode,
       key: fields[0] as String,
-      reward: fields[7] as String,
-      when: fields[6] as String,
-      extendedGoal: fields[5] as int,
+      reward: fields[7] as String?,
+      when: fields[6] as String?,
+      extendedGoal: fields[5] as int?,
     )
-      ..imgUrl = fields[8] as String
+      ..imgUrl = fields[8] as String?
       ..imgY_Alignment = fields[9] as double;
   }
 
@@ -84,4 +55,53 @@ class HabitAdapter extends TypeAdapter<Habit> {
       ..writeByte(9)
       ..write(obj.imgY_Alignment);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is HabitAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class HabitModeAdapter extends TypeAdapter<HabitMode> {
+  @override
+  final int typeId = 2;
+
+  @override
+  HabitMode read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return HabitMode.major;
+      case 1:
+        return HabitMode.bonus;
+      default:
+        return HabitMode.major;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, HabitMode obj) {
+    switch (obj) {
+      case HabitMode.major:
+        writer.writeByte(0);
+        break;
+      case HabitMode.bonus:
+        writer.writeByte(1);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is HabitModeAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

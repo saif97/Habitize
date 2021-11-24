@@ -16,9 +16,9 @@ HabitMode modeFromString(String str) => HabitMode.values.firstWhere((e) => e.toS
 
 String strFromMode(HabitMode habitMode) {
   switch (habitMode) {
-    case HabitMode.Bonus:
+    case HabitMode.bonus:
       return "Bonus";
-    case HabitMode.Majror:
+    case HabitMode.major:
       return "Major";
   }
 }
@@ -36,18 +36,16 @@ String printDate(DateTime date) {
 void printData(Habit habit, {bool detailedDatesInfo = false, bool onlyThisMonth = true}) {
   String map = '';
   // sort the keys decending order to have latest days checked first printed.
-  final List<int> listSortedKeys = habit.dates.keys.toList(growable: false)
-    ..sort((a, b) => b.compareTo(a));
+  final List<int> listSortedKeys = habit.dates.keys.toList(growable: false)..sort((a, b) => b.compareTo(a));
 
   for (final int dateInMill in listSortedKeys) {
-    final int iteration = habit.dates[dateInMill];
+    final int iteration = habit.dates[dateInMill] ?? 0;
 
     if (detailedDatesInfo || ((!detailedDatesInfo) && iteration == 0)) {
       final date = DateTime.fromMillisecondsSinceEpoch(dateInMill);
 
       // only print dates from this month.
-      if (onlyThisMonth && date.isBefore(DateTime(DateTime.now().year, DateTime.now().month)))
-        break;
+      if (onlyThisMonth && date.isBefore(DateTime(DateTime.now().year, DateTime.now().month))) break;
 
       map += " \t ${printDate(date)} : $iteration , \n";
     }
@@ -70,7 +68,7 @@ void printThisMonthDates(Habit habit) {
 
   String map = "";
   listSortedKeys.forEach((dateInMill) {
-    int iteration = habit.dates[dateInMill];
+    int iteration = habit.dates[dateInMill] ?? 0;
     final DateTime date = DateTime.fromMillisecondsSinceEpoch(dateInMill);
 
     var formatedDateString = formatter.format(date);

@@ -6,8 +6,9 @@ import '../../models/Habit.dart';
 import 'db.dart';
 
 class RealHabitDB implements DB {
-  Box _box;
+  late final Box _box;
 
+  @override
   Future instantiateDB() async {
     await Hive.initFlutter();
     Hive.registerAdapter(HabitAdapter());

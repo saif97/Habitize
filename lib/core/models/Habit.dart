@@ -12,14 +12,14 @@ part 'Habit.g.dart';
 @HiveType(typeId: 2)
 enum HabitMode {
   @HiveField(0)
-  Majror,
+  major,
   @HiveField(1)
-  Bonus
+  bonus
 }
 
 @HiveType(typeId: 1)
 class Habit {
-  HabitUtils _utils;
+  late final HabitUtils _utils;
   @HiveField(0)
   @required
   final String key;
@@ -29,8 +29,8 @@ class Habit {
   String name;
 
 // 100.580 there a{ 46
-  @Deprecated('Calculate it on runtime is more maintainalbe')
-  final int streak;
+  // @Deprecated('Calculate it on runtime is more maintainalbe')
+  // final int streak;
 
   @HiveField(2)
   HabitMode mode;
@@ -43,36 +43,32 @@ class Habit {
   @protected
   Map<int, int> dates;
   @HiveField(5)
-  int extendedGoal;
+  int? extendedGoal;
 
   @HiveField(6)
-  String when;
+  String? when;
 
   @HiveField(7)
-  String reward;
+  String? reward;
 
   @HiveField(8)
-  String imgUrl;
+  String? imgUrl;
 
   @HiveField(9)
-  double imgY_Alignment;
+  double imgY_Alignment = 0;
 
-  Habit(
-      {this.dates,
-      this.name,
-      this.streak,
-      this.goal,
-      this.mode,
-      this.key,
-      this.reward,
-      this.when,
-      this.extendedGoal}) {
-    dates ??= <int, int>{};
+  Habit({
+    this.dates = const <int, int>{},
+    required this.name,
+    required this.goal,
+    required this.mode,
+    required this.key,
+    this.reward,
+    this.when,
+    this.extendedGoal,
+  }) {
     _utils = HabitUtils(this);
   }
 
   HabitUtils get utils => _utils;
-
-//=============> GETTERS & SETTERS <==============\\
-
 }

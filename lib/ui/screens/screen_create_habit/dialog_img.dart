@@ -1,16 +1,15 @@
+import 'package:Streak/ui/shared/shared_wids.dart';
 import 'package:flutter/material.dart';
 
-import '../../shared/widgets.dart';
-
-class DialogAdgustUnsplashImg extends StatefulWidget {
-  String url;
-  DialogAdgustUnsplashImg(this.url);
+class DialogAdjustUnsplashImg extends StatefulWidget {
+  final String url;
+  const DialogAdjustUnsplashImg(this.url);
 
   @override
-  _DialogAdgustUnsplashImgState createState() => _DialogAdgustUnsplashImgState();
+  _DialogAdjustUnsplashImgState createState() => _DialogAdjustUnsplashImgState();
 }
 
-class _DialogAdgustUnsplashImgState extends State<DialogAdgustUnsplashImg> {
+class _DialogAdjustUnsplashImgState extends State<DialogAdjustUnsplashImg> {
   double yAlignment = 0;
 
   @override
@@ -19,23 +18,23 @@ class _DialogAdgustUnsplashImgState extends State<DialogAdgustUnsplashImg> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
-      child: Container(
+      child: SizedBox(
         height: 200,
         width: double.infinity,
         child: Column(
           children: <Widget>[
             GestureDetector(
               onVerticalDragUpdate: (update) => dragImage(update),
-              child: CCachedNetworkImage(url: widget.url, yAligment: yAlignment),
+              child: SharedCachedNetworkImage(url: widget.url, yAlignment: yAlignment),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () => Navigator.pop(context, yAlignment),
                   child: const Text("Apply"),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () => Navigator.pop(context, true),
                   child: const Text("Remove"),
                 ),
@@ -48,7 +47,7 @@ class _DialogAdgustUnsplashImgState extends State<DialogAdgustUnsplashImg> {
   }
 
   void dragImage(DragUpdateDetails dragInfo) {
-    double dy = dragInfo.delta.dy;
+    final double dy = dragInfo.delta.dy;
     if (dy == 0) return;
     setState(() {
       yAlignment += -dy / 100;

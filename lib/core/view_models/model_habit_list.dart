@@ -9,19 +9,20 @@ import '../utils/locator.dart';
 import 'base_model.dart';
 
 class ModelHabitList extends BaseModel {
-  Habit _majorHabit;
-  List<Habit> _listHabits;
+  Habit? _majorHabit;
+  List<Habit> _listHabits = [];
 
   DateTime _selectedDate = getTodayDate();
 
-  List<Widget> bottomBarElements;
+  List<Widget> bottomBarElements = [];
   bool _showAllHabits = true;
 
   final GlobalKey keyAnimatedList = GlobalKey<AnimatedListState>();
-  DB _db;
+  final DB _db;
+
+  ModelHabitList() : _db = locator<DB>();
 
   Future initModel() async {
-    _db = locator<DB>();
     _listHabits = await _db.getAll();
     _majorHabit = await getMajorHabit();
 
@@ -55,12 +56,12 @@ class ModelHabitList extends BaseModel {
       bool isAllChecked = false;
       if (_majorHabit != null) {
         final DateTime date = getTodayDate().subtract(Duration(days: indexDay));
-        isAllChecked = _majorHabit.utils.isHabitChecked(date);
+        isAllChecked = _majorHabit!.utils.isHabitChecked(date);
       }
 
       bottomBarElements.add(TimeLineCircle(
         day,
-        isAllchecked: isAllChecked,
+        isAllChecked: isAllChecked,
       ));
     }
     bottomBarElements = List.from(bottomBarElements.reversed);
@@ -68,28 +69,27 @@ class ModelHabitList extends BaseModel {
 
   bool isShowHabitFor(List<HabitMode> selectedMode) {
     if (majorHabit == null) return true;
-    return showAllHabits ||
-        majorHabit.utils.isHabitChecked(selectedDate) ||
-        selectedMode.contains(HabitMode.Majror);
+    return showAllHabits || majorHabit!.utils.isHabitChecked(selectedDate) || selectedMode.contains(HabitMode.major);
   }
 
-  Future<Habit> getMajorHabit() async {
+  Future<Habit?> getMajorHabit() async {
     final List<Habit> listHabits = await _db.getAll();
-    return listHabits.firstWhere((v) => v.mode == HabitMode.Majror, orElse: () => null);
+    for (final eachHabit in listHabits) {
+      if (eachHabit.mode == HabitMode.major) return eachHabit;
+    }
+    return null;
   }
 
-  List<Habit> filterHabits({List<HabitMode> habitMode, @required bool showChecked}) {
-    return (_listHabits.cast<Habit>())?.where((habit) {
-          final bool isHabitChecked = habit.utils.isHabitChecked(_selectedDate);
-          return habitMode.contains(habit.mode) && isHabitChecked == showChecked;
-        })?.toList() ??
-        [];
+  List<Habit> filterHabits({required List<HabitMode> habitMode, required bool showChecked}) {
+    return (_listHabits.cast<Habit>()).where((habit) {
+      final bool isHabitChecked = habit.utils.isHabitChecked(_selectedDate);
+      return habitMode.contains(habit.mode) && isHabitChecked == showChecked;
+    }).toList();
   }
 
   Future openHabitCreator(BuildContext context) async {
-    final bool response = await Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const ScreenCreateHabit())) ??
-        false;
+    final bool response =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) => const ScreenCreateHabit())) ?? false;
     if (response) await initModel();
   }
 
@@ -111,7 +111,7 @@ class ModelHabitList extends BaseModel {
 
   DateTime get selectedDate => _selectedDate;
 
-  Habit get majorHabit => _majorHabit;
+  Habit? get majorHabit => _majorHabit;
 
   set selectedDate(DateTime value) {
     assert(value.difference(getTodayDate()).inDays <= 0);

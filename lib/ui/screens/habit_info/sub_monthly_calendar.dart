@@ -49,10 +49,7 @@ class OneMonthCalender extends StatelessWidget {
                   for (var i = 0; i < matrixDateCircles.length; ++i)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        for (var j = 0; j < matrixDateCircles[i].length; ++j)
-                          matrixDateCircles[i][j]
-                      ],
+                      children: <Widget>[for (var j = 0; j < matrixDateCircles[i].length; ++j) matrixDateCircles[i][j]],
                     )
                 ],
               ),
@@ -74,20 +71,21 @@ class DateCircle extends StatefulWidget {
 }
 
 class _DateCircleState extends State<DateCircle> {
-  bool isChecked;
-  bool isLeftChecked;
-  bool isRightChecked;
-  ModelHabitInfo model;
+  late final ModelHabitInfo model;
+
+  @override
+  void initState() {
+    model = Provider.of(context, listen: false);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    model ??= Provider.of(context);
+    final bool isChecked = model.habit.utils.isHabitChecked(widget.date);
 
-    isChecked = model.habit.utils.isHabitChecked(widget.date);
+    final bool isLeftChecked = model.habit.utils.isHabitChecked(widget.date.subtract(const Duration(days: 1)));
 
-    isLeftChecked = model.habit.utils.isHabitChecked(widget.date.subtract(const Duration(days: 1)));
-
-    isRightChecked = model.habit.utils.isHabitChecked(widget.date.add(const Duration(days: 1)));
+    final bool isRightChecked = model.habit.utils.isHabitChecked(widget.date.add(const Duration(days: 1)));
 
     return Stack(
       children: <Widget>[
@@ -140,7 +138,7 @@ class _DateCircleState extends State<DateCircle> {
 class StandardBox extends StatelessWidget {
   final Widget child;
 
-  const StandardBox({this.child});
+  const StandardBox({required this.child});
 
   @override
   Widget build(BuildContext context) {

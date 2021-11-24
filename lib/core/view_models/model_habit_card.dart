@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../ui/screens/habit_info/screen_habit_info.dart';
 import '../../ui/screens/screen_create_habit/screen_habit_creator.dart';
@@ -14,22 +13,21 @@ class ModelHabitCard {
   ModelHabitList modelHabitList = locator<ModelHabitList>();
   bool _isHabitChecked;
 
-  String _habitStreak;
+  late String _habitStreak;
   Key _key;
   final Habit habit;
   final DateTime selectedDate;
 
-  void initModel() {
-    _isHabitChecked = habit.utils.isHabitChecked(selectedDate);
-
+  ModelHabitCard(this.habit, this.selectedDate)
+      : _key = Key(habit.key),
+        _isHabitChecked = habit.utils.isHabitChecked(selectedDate) {
     _habitStreak = _getHabitStreak2();
-
-    _key = Key("${habit.key}-${habit.dates[selectedDate.millisecondsSinceEpoch] ?? -2}");
   }
 
+// <<< <<===================>     METHODS     <===================>> >>> //
+
   Future openHabitInfo(BuildContext context) async {
-    final bool r = await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ScreenHabitInfo(habit)));
+    final bool? r = await Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenHabitInfo(habit)));
     if (r ?? false) {
       modelHabitList.initModel();
     }
@@ -50,8 +48,7 @@ class ModelHabitCard {
     // check if today and yesterday for this habit is checked all or more.
     // all in this case is 0 more is in the minus.
     final bool bool1 = habit.utils.isHabitChecked(getTodayDate());
-    final bool bool2 =
-        habit.utils.isHabitChecked(getTodayDate(addDuration: const Duration(days: -1)));
+    final bool bool2 = habit.utils.isHabitChecked(getTodayDate(addDuration: const Duration(days: -1)));
 
     if (bool1 || bool2) {
       // iterate over all the dates in the map and check if they're in row.
@@ -114,16 +111,16 @@ class ModelHabitCard {
     return swipeRightText;
   }
 
-  Future<bool> slidableOnWillDismiss(SlideActionType actionType) async {
-    if (actionType == SlideActionType.primary) {
-      // check if habit is checked for today.
-      await slidableCheckHabit(checkAll: false);
-      return true;
-    }
-    return false;
-  }
+  // Future<bool> slidableOnWillDismiss(SlideActionType actionType) async {
+  // if (actionType == SlideActionType.primary) {
+  // // check if habit is checked for today.
+  // await slidableCheckHabit(checkAll: false);
+  // return true;
+  // }
+  // return false;
+  // }
 
-  Future slidableCheckHabit({@required bool checkAll}) async {
+  Future slidableCheckHabit({required bool checkAll}) async {
     habit.utils.checkHabit(selectedDate, checkAll: checkAll);
 
     await modelHabitList.initModel();
@@ -141,23 +138,21 @@ class ModelHabitCard {
     if (isHabitChecked && habit.extendedGoal != null) {
       return Text("$iteration / ${habit.extendedGoal}");
     } else
-      return habit.goal > 1 ? Text("$iteration / ${habit.goal}") : null;
+      return Text(habit.goal > 1 ? "$iteration / ${habit.goal}" : '');
   }
 
   Future OpenHabitEditor(BuildContext context) async {
-    final bool response = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ScreenCreateHabit(
-                  habitToBeEditted: habit,
-                )));
-    if (response) modelHabitList.initModel();
+    final bool? response = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ScreenCreateHabit(
+          habitToBeEdited: habit,
+        ),
+      ),
+    );
+    if (response != null) modelHabitList.initModel();
   }
-  //=============> GETTERS & SETTERS <==============\\
-
-  ModelHabitCard(this.habit, this.selectedDate) {
-    initModel();
-  }
+// <<< <<===================> GETTERS SETTERS <===================>> >>> //
 
   bool get isHabitChecked => _isHabitChecked;
 

@@ -18,8 +18,7 @@ class HomeWid extends StatelessWidget {
         backgroundColor: const Color(0xFF393e46),
         body: SafeArea(
           child: Consumer<ModelHabitList>(
-            builder: (_, model, __) =>
-                Column(children: <Widget>[CAppbar(), HabitListing(), BottomTimeLine()]),
+            builder: (_, model, __) => Column(children: <Widget>[CAppbar(), HabitListing(), BottomTimeLine()]),
           ),
         ),
       ),
@@ -40,14 +39,12 @@ class CAppbar extends StatelessWidget {
           child: Text(model.getTitle(), style: CTextStyle.title),
         ),
         const Spacer(),
-        FlatButton(
+        ElevatedButton(
           onPressed: () => model.showAllHabits = !model.showAllHabits,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          color: model.showAllHabits ? Colors.greenAccent : Colors.redAccent,
           child: Text(model.showAllHabits ? "Hide All" : "Show All"),
         ),
         IconButton(
-          icon: Icon(Icons.edit, size: 30),
+          icon: const Icon(Icons.edit, size: 30),
           onPressed: () async => model.openHabitCreator(context),
         ),
       ],
@@ -61,24 +58,22 @@ class HabitListing extends StatelessWidget {
     return Expanded(
       child: ListView(
         children: <Widget>[
-          ..._getHabits(selectedHabitMode: [HabitMode.Majror], showChecked: false),
-          Saperator(color: Colors.red),
-          Saperator(color: Colors.amber),
-          ..._getHabits(selectedHabitMode: [HabitMode.Bonus], showChecked: false),
-          Saperator(color: Colors.green),
+          ..._getHabits(selectedHabitMode: [HabitMode.major], showChecked: false),
+          const Separator(color: Colors.red),
+          const Separator(color: Colors.amber),
+          ..._getHabits(selectedHabitMode: [HabitMode.bonus], showChecked: false),
+          const Separator(color: Colors.green),
           ..._getHabits(selectedHabitMode: HabitMode.values, showChecked: true),
         ],
       ),
     );
   }
 
-  List<Widget> _getHabits(
-      {@required List<HabitMode> selectedHabitMode, @required bool showChecked}) {
+  List<Widget> _getHabits({required List<HabitMode> selectedHabitMode, required bool showChecked}) {
     final ModelHabitList _model = locator<ModelHabitList>();
 
     if (_model.isShowHabitFor(selectedHabitMode)) {
-      final List<Habit> filteredHabits =
-          _model.filterHabits(showChecked: showChecked, habitMode: selectedHabitMode);
+      final List<Habit> filteredHabits = _model.filterHabits(showChecked: showChecked, habitMode: selectedHabitMode);
 
       return filteredHabits
           .map((habit) => ProxyProvider0(
@@ -91,10 +86,10 @@ class HabitListing extends StatelessWidget {
   }
 }
 
-class Saperator extends StatelessWidget {
+class Separator extends StatelessWidget {
   final MaterialColor color;
 
-  const Saperator({this.color});
+  const Separator({required this.color});
 
   @override
   Widget build(BuildContext context) {

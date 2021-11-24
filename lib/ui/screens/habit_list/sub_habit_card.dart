@@ -1,3 +1,4 @@
+import 'package:Streak/ui/shared/shared_wids.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -7,7 +8,6 @@ import '../../../core/models/Habit.dart';
 import '../../../core/view_models/model_habit_card.dart';
 import '../../shared/constants.dart';
 import '../../shared/text_styles.dart';
-import '../../shared/widgets.dart';
 
 class HabitCard extends StatelessWidget {
   final Habit habit;
@@ -26,7 +26,7 @@ class HabitCard extends StatelessWidget {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         onTap: () => model.openHabitInfo(context),
-        child: Container(
+        child: SizedBox(
           height: habit.imgUrl == null ? 85 : (85 + UNSPLASH_IMAGE_HEIGHT),
           child: Column(
             children: <Widget>[
@@ -36,12 +36,12 @@ class HabitCard extends StatelessWidget {
                     topLeft: Radius.circular(cardRadius),
                     topRight: Radius.circular(cardRadius),
                   ),
-                  child: CCachedNetworkImage(url: habit.imgUrl, yAligment: habit.imgY_Alignment),
+                  child: SharedCachedNetworkImage(url: habit.imgUrl!, yAlignment: habit.imgY_Alignment),
                 ),
               CustomSlidable(
                 habit: habit,
                 child: ListTile(
-                  key: Key(habit.key.toString()),
+                  key: Key(habit.key),
                   title: Text(
                     habit.name,
                     style: model.isHabitChecked ? CTextStyle.checkHabits : null,
@@ -69,81 +69,73 @@ class HabitCard extends StatelessWidget {
 }
 
 class CustomSlidable extends StatelessWidget {
-  ModelHabitCard model;
-  @required
   final Habit habit;
-  @required
+
   final Widget child;
 
-  CustomSlidable({this.habit, this.child});
+  CustomSlidable({required this.habit, required this.child});
 
   @override
   Widget build(BuildContext context) {
-    final SlidableController slidableController = SlidableController();
-    model = Provider.of(context);
+    final ModelHabitCard model = Provider.of(context);
 
     return Slidable(
-      controller: slidableController,
       key: model.key,
-      actionPane: const SlidableDrawerActionPane(),
-      dismissal: SlidableDismissal(
-        dismissThresholds: const <SlideActionType, double>{
-          SlideActionType.primary: 0,
-          SlideActionType.secondary: 1
-        },
-        onWillDismiss: (actionType) => model.slidableOnWillDismiss(actionType),
-        child: const SlidableDrawerDismissal(),
+      startActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        children: [
+          SlidableAction(
+            label: model.getSwipeRightText(),
+            icon: Icons.done,
+            backgroundColor: Colors.lightGreen,
+            onPressed: (_) => model.slidableCheckHabit(checkAll: false),
+          ),
+          if (habit.goal > 1)
+            SlidableAction(
+              label: "Check All",
+              icon: model.isHabitChecked ? Icons.done_outline : Icons.done_all,
+              backgroundColor: model.isHabitChecked ? Colors.amber : Colors.green,
+              onPressed: (_) => model.slidableCheckHabit(checkAll: true),
+            )
+        ],
       ),
-      actions: <Widget>[
-        IconSlideAction(
-          caption: model.getSwipeRightText(),
-          icon: Icons.done,
-          color: Colors.lightGreen,
-          onTap: () => model.slidableCheckHabit(checkAll: false),
-        ),
-        if (habit.goal > 1)
-          IconSlideAction(
-            caption: "Check All",
-            icon: model.isHabitChecked ? Icons.done_outline : Icons.done_all,
-            color: model.isHabitChecked ? Colors.amber : Colors.green,
-            onTap: () => model.slidableCheckHabit(checkAll: true),
-          )
-      ],
-      secondaryActions: <Widget>[
-        IconSlideAction(
-          caption: "Delete",
-          icon: Icons.delete,
-          color: Colors.redAccent,
-          onTap: () {
-            createDeletionAlertDialog(context);
-          },
-        ),
-        IconSlideAction(
-          caption: "Edit",
-          icon: Icons.edit,
-          onTap: () => model.OpenHabitEditor(context),
-          color: Colors.orangeAccent,
-        ),
-      ],
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        children: [
+          SlidableAction(
+            label: "Delete",
+            icon: Icons.delete,
+            backgroundColor: Colors.redAccent,
+            onPressed: (_) => createDeletionAlertDialog(context),
+          ),
+          SlidableAction(
+            label: "Edit",
+            icon: Icons.edit,
+            onPressed: (_) => model.OpenHabitEditor(context),
+            backgroundColor: Colors.orangeAccent,
+          ),
+        ],
+      ),
       child: child,
     );
   }
 
   void createDeletionAlertDialog(BuildContext context) {
+    final ModelHabitCard model = Provider.of(context, listen: false);
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Delete Habit?'),
           actions: <Widget>[
-            FlatButton(
+            ElevatedButton(
               onPressed: () async {
                 await model.deleteHabit();
                 Navigator.pop(context);
               },
               child: const Text('Accept'),
             ),
-            FlatButton(
+            ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
               },

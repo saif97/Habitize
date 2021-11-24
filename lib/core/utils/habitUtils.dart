@@ -11,20 +11,23 @@ class HabitUtils {
 
   bool isHabitCheckedToday() => isHabitChecked(getTodayDate());
 
-  bool isHabitChecked(DateTime date) =>
-      (_habit.dates[date.millisecondsSinceEpoch] ?? 0) >= _habit.goal;
+  bool isHabitChecked(DateTime date) => (_habit.dates[date.millisecondsSinceEpoch] ?? 0) >= _habit.goal;
 
-  bool isExtendedGoalChecked(DateTime date) =>
-      _habit.dates[date.millisecondsSinceEpoch] >= _habit.extendedGoal;
+  bool isExtendedGoalChecked(DateTime date) {
+    if (_habit.extendedGoal != null && _habit.dates[date.millisecondsSinceEpoch] != null) {
+      return _habit.dates[date.millisecondsSinceEpoch]! >= _habit.extendedGoal!;
+    } else
+      return false;
+  }
 
-  Future checkHabit(DateTime date, {bool checkAll}) async {
+  Future checkHabit(DateTime date, {bool checkAll = false}) async {
     final int dateInt = date.millisecondsSinceEpoch;
     final AudioUtils _audioUtils = locator<AudioUtils>();
     _habit.dates[dateInt] ??= 0;
     if (checkAll)
       _habit.dates[dateInt] = _habit.goal;
     else
-      _habit.dates[dateInt]++;
+      _habit.dates[dateInt] = (_habit.dates[dateInt] ?? 0) + 1;
 
     await locator<DB>().update(_habit);
 
@@ -42,7 +45,7 @@ class HabitUtils {
 
   List<int> getListCheckedDatesKeys({bool sorted = true}) {
     // sort the keys decending order to have latest days checked first printed.
-    List<int> listKeys = _habit.dates.keys.toList(growable: false);
+    final List<int> listKeys = _habit.dates.keys.toList(growable: false);
 
     if (sorted) listKeys.sort((a, b) => b.compareTo(a));
 

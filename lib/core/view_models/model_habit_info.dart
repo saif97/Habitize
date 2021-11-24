@@ -31,7 +31,7 @@ class ModelHabitInfo {
     return matrixDateCircles;
   }
 
-  void checkHabitInCalender(DateTime date, {bool undo, bool checkAll}) {
+  void checkHabitInCalender(DateTime date, {bool undo = false, bool checkAll = false}) {
     // make sure the checked date isn't not after today to prevent checks in future
     if (date.isBefore(getTodayDate().add(const Duration(days: 1)))) {
       if (undo)

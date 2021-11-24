@@ -7,11 +7,9 @@ class ModelUnsplashImg extends BaseModel {
   final String accessKey = 'mqkykid9C80zodvTWUSjEsNhqBw4IpXesoRiy2-UELw';
   final String secretKey = 'ATJmWIJWkNao6UDRbEdXilfWDqiUd00zOy-cDwCk38g';
   TextEditingController txtControllerUnsplashImg = TextEditingController();
-  List<Photo> _listPhotos;
+  List<Photo> _listPhotos = [];
 
-  ModelUnsplashImg() {
-    _listPhotos ?? getImgages();
-  }
+  ModelUnsplashImg();
 
   Future getImgages() async {
     String searchTerm = txtControllerUnsplashImg.text;
@@ -31,7 +29,7 @@ class ModelUnsplashImg extends BaseModel {
     // Check that the request was successful.
     if (!response.isOk) throw 'Something is wrong: $response';
 
-    _listPhotos = response.data;
+    _listPhotos = response.data ?? [];
     notifyListeners();
   }
 

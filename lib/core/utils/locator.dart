@@ -17,10 +17,9 @@ Future setupLocator() async {
   final DB db_api = RealHabitDB();
   await db_api.instantiateDB();
 
-  ModelHabitList modelHabitList = ModelHabitList();
-
 //  locator.register
   locator.registerLazySingleton(() => db_api);
+  ModelHabitList modelHabitList = ModelHabitList();
 
   locator.registerLazySingleton(() => utilsAudio);
   locator.registerLazySingleton(() => modelHabitList);

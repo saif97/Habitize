@@ -1,3 +1,4 @@
+import 'package:Streak/ui/shared/shared_wids.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -8,20 +9,19 @@ import '../../../core/utils/functions.dart';
 import '../../../core/view_models/model_habit_creator.dart';
 import '../../../core/view_models/model_habit_list.dart';
 import '../../shared/constants.dart';
-import '../../shared/widgets.dart';
 
 class ScreenCreateHabit extends StatelessWidget {
-  final Habit habitToBeEditted;
+  final Habit? habitToBeEdited;
 
-  const ScreenCreateHabit({this.habitToBeEditted});
+  const ScreenCreateHabit({this.habitToBeEdited});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ModelHabitCreator>(
-      create: (context) => ModelHabitCreator(habit: habitToBeEditted),
+      create: (context) => ModelHabitCreator(habit: habitToBeEdited),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(habitToBeEditted == null ? "Create Habit" : "Edit Habit"),
+          title: Text(habitToBeEdited == null ? "Create Habit" : "Edit Habit"),
         ),
         body: _Main(),
       ),
@@ -35,17 +35,19 @@ class _Main extends StatefulWidget {
 }
 
 class __MainState extends State<_Main> {
-  bool isBonusHabit;
-  ModelHabitCreator _model;
-  ModelHabitList _modelHabitList;
+  late final ModelHabitCreator _model;
+  late final ModelHabitList _modelHabitList;
   List<bool> _listSelectedItems = [false, true];
-  final List<HabitMode> _listToggleOptions = List.of(HabitMode.values);
+
+  @override
+  void initState() {
+    _model = Provider.of(context);
+    _modelHabitList = Provider.of(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    _model ??= Provider.of(context);
-    _modelHabitList ??= Provider.of(context);
-
     final bool isMajorHabitExist = _modelHabitList.majorHabit != null;
 
     return SingleChildScrollView(
@@ -58,19 +60,17 @@ class __MainState extends State<_Main> {
               children: <Widget>[
                 TextFormField(
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value?.isEmpty ?? true) {
                       return 'Please Enter a Name';
                     }
                     return null;
                   },
                   controller: _model.controller_name,
-                  maxLines: 1,
                   maxLength: 40,
                   decoration: const InputDecoration(labelText: 'name'),
                 ),
                 TextFormField(
                   controller: _model.controller_when,
-                  maxLines: 1,
                   maxLength: 20,
                   decoration: const InputDecoration(labelText: 'when'),
                 ),
@@ -88,33 +88,30 @@ class __MainState extends State<_Main> {
               borderRadius: BorderRadius.circular(10),
               isSelected: _listSelectedItems,
               onPressed: (int i) => setState(() {
-                if (_listToggleOptions[i] == HabitMode.Majror && isMajorHabitExist) {
-                  CFlushBar(context, "You already have Majro Habit");
-                  return;
-                }
-                _listSelectedItems = [false, false];
+                if (HabitMode.values[i] == HabitMode.major && isMajorHabitExist) {
+                  utilsShowSnakeBar(context, 'Major habit exists', "You already have Major Habit");
+                } else {
+                  _listSelectedItems = [false, false];
 
-                _listSelectedItems[i] = true;
-                _model.habitMode = _listToggleOptions[i];
+                  _listSelectedItems[i] = true;
+                  _model.habitMode = HabitMode.values[i];
+                }
               }),
-              children: _listToggleOptions.map((f) => Text(strFromMode(f))).toList(),
+              children: HabitMode.values.map((f) => Text(strFromMode(f))).toList(),
             ),
           ),
           Padding(
               padding: const EdgeInsets.all(20),
-              child: Align(child: Text("Goal", style: getTextTheme(context).subtitle))),
-          Container(
+              child: Align(child: Text("Goal", style: getTextTheme(context).subtitle1))),
+          SizedBox(
             height: 30,
             child: Align(
-              child: NumberPicker.integer(
-                initialValue: _model.goal,
+              child: NumberPicker(
+                value: _model.goal,
                 minValue: 1,
                 maxValue: 100,
-                scrollDirection: Axis.horizontal,
-                listViewWidth: 150,
-                itemExtent: 30,
                 onChanged: (val) => setState(() {
-                  _model.goal = val as int;
+                  _model.goal = val;
                   _model.extendedGoal = _model.goal;
                 }),
               ),
@@ -122,28 +119,23 @@ class __MainState extends State<_Main> {
           ),
           Padding(
             padding: const EdgeInsets.all(20),
-            child: Align(child: Text("Extended Goal", style: getTextTheme(context).subtitle)),
+            child: Align(child: Text("Extended Goal", style: getTextTheme(context).subtitle1)),
           ),
-          Container(
+          SizedBox(
             height: 30,
             child: Align(
-              child: NumberPicker.integer(
-                initialValue: _model.extendedGoal ?? _model.goal,
+              child: NumberPicker(
+                value: _model.extendedGoal ?? _model.goal,
                 minValue: _model.goal,
                 maxValue: 100,
-                scrollDirection: Axis.horizontal,
-                listViewWidth: 150,
-                itemExtent: 30,
-                highlightSelectedValue: true,
-                onChanged: (val) => setState(() => _model.extendedGoal = val as int),
+                onChanged: (val) => setState(() => _model.extendedGoal = val),
               ),
             ),
           ),
           Unsplash(),
           Align(
-            child: RaisedButton(
+            child: ElevatedButton(
               onPressed: () => _model.submit(context),
-              color: Colors.green,
               child: const Text('Done'),
             ),
           ),
@@ -161,17 +153,17 @@ class Unsplash extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: _model.imgURL == null
-          ? Container(
+          ? SizedBox(
               height: UNSPLASH_IMAGE_HEIGHT,
               width: double.infinity,
-              child: RaisedButton(
+              child: ElevatedButton(
                 onPressed: () => _model.openUnsplash(context),
                 child: const Text("Tap to Choose Image"),
               ),
             )
           : InkWell(
-              onTap: () => _model.openDialogAdgustImg(context),
-              child: CCachedNetworkImage(url: _model.imgURL, yAligment: _model.imgY_Alignment),
+              onTap: () => _model.openDialogAdjustImg(context),
+              child: SharedCachedNetworkImage(url: _model.imgURL!, yAlignment: _model.imgY_Alignment),
             ),
     );
   }
